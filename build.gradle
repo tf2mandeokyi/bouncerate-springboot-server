@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'com.mndk'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    var jdbiVersion = '3.36.0'
+    implementation "org.jdbi:jdbi3-core:$jdbiVersion"
+    implementation "org.jdbi:jdbi3-sqlobject:$jdbiVersion"
+
+    var mysqlConnectorVersion = '8.0.31'
+    implementation "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    var lombokVersion = '1.18.24'
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    implementation 'org.slf4j:slf4j-simple:1.7.5'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
