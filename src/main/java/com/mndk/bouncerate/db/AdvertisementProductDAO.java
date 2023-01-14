@@ -15,7 +15,8 @@ public interface AdvertisementProductDAO {
                     `id`                INT             NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     `name`              VARCHAR(100)    NOT NULL,
                     `availability`      BOOLEAN         NOT NULL,
-                    `bouncerate_score`  FLOAT           DEFAULT 0.5
+                    `bouncerate_score`  FLOAT           DEFAULT 0.5,
+                    `score_updated`     DATE
             );
     """)
     void initializeTable();
@@ -39,7 +40,12 @@ public interface AdvertisementProductDAO {
     );
 
 
-    @SqlUpdate("UPDATE `products` SET `bouncerate_score` = :bouncerate_score WHERE `id` = :id")
+    @SqlUpdate("""
+            UPDATE `products` SET
+                    `bouncerate_score` = :bouncerate_score,
+                    `score_updated` = NOW()
+                            WHERE `id` = :id
+    """)
     void updateBounceRateScore(
             @Bind("id")                 int productId,
             @Bind("bouncerate_score")   float score

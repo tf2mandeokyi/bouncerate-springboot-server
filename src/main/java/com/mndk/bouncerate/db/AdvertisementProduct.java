@@ -1,19 +1,19 @@
 package com.mndk.bouncerate.db;
 
-import lombok.RequiredArgsConstructor;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
-@RequiredArgsConstructor
-public class AdvertisementProduct {
-
-    private final int id;
-    private final String name;
-    private final boolean availability;
-    private final float bounceRateScore;
+public record AdvertisementProduct(
+        int id,
+        String name,
+        boolean availability,
+        float bounceRateScore,
+        Date scoreUpdatedDate
+) {
 
     public static class Mapper implements RowMapper<AdvertisementProduct> {
 
@@ -23,7 +23,8 @@ public class AdvertisementProduct {
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
                     resultSet.getBoolean("availability"),
-                    resultSet.getFloat("bouncerate_score")
+                    resultSet.getFloat("bouncerate_score"),
+                    resultSet.getDate("score_updated")
             );
         }
 

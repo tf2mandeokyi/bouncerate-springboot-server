@@ -34,7 +34,7 @@ public interface BounceRateDAO {
     void setBounceRate(
             @Bind("product_id")     int productId,
             @Bind("settopbox_id")   int setTopBoxId,
-            @Bind("bouncerate")     float bouncerate
+            @Bind("bouncerate")     float bounceRate
     );
 
 
@@ -48,14 +48,24 @@ public interface BounceRateDAO {
     }
 
 
+    @SqlQuery("""
+            SELECT `bouncerate` FROM `bouncerates`
+                    WHERE `product_id` = :product_id AND `settopbox_id` = :settopbox_id
+    """)
+    Float getBounceRate(
+            @Bind("product_id")     int productId,
+            @Bind("settopbox_id")   int setTopBoxId
+    );
+
+
     @SqlQuery("SELECT `bouncerate` FROM `bouncerates` WHERE `product_id` = :product_id")
-    List<Float> getBounceRates(@Bind("product_id") int productId);
+    List<Float> getBounceRatesOfProduct(@Bind("product_id") int productId);
 
 
     default float getScore(int productId, float bounceRateThreshold) {
         int lessThanThreshold = 0;
 
-        List<Float> bounceRates = this.getBounceRates(productId);
+        List<Float> bounceRates = this.getBounceRatesOfProduct(productId);
         for(float bounceRate : bounceRates) {
             if(bounceRate <= bounceRateThreshold) lessThanThreshold++;
         }
