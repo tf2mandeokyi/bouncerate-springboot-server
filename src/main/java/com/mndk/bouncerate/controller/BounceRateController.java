@@ -4,6 +4,8 @@ import com.mndk.bouncerate.db.AdvertisementProduct;
 import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.util.NullValidator;
+import com.mndk.bouncerate.util.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class BounceRateController {
             @PathVariable("product_id")     int productId,
             @PathVariable("settopbox_id")   int setTopBoxId
     ) {
-        return bounceRateDAO.getBounceRate(productId, setTopBoxId);
+        return NullValidator.check(bounceRateDAO.getBounceRate(productId, setTopBoxId), ResourceNotFoundException::new);
     }
 
 

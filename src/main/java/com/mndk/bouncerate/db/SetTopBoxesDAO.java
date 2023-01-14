@@ -4,6 +4,7 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+import org.jdbi.v3.sqlobject.statement.UseRowMapper;
 
 import java.util.List;
 
@@ -20,6 +21,16 @@ public interface SetTopBoxesDAO {
 
     @SqlUpdate("DROP TABLE IF EXISTS `settopboxes`")
     void deleteTable();
+
+
+    @SqlQuery("SELECT * FROM `settopboxes`")
+    @UseRowMapper(SetTopBox.Mapper.class)
+    List<SetTopBox> getAll();
+
+
+    @SqlQuery("SELECT * FROM `settopboxes` WHERE `id` = :id")
+    @UseRowMapper(SetTopBox.Mapper.class)
+    SetTopBox getSetTopBox(@Bind("id") int setTopBoxId);
 
 
     @SqlUpdate("INSERT INTO `settopboxes` (name) VALUES (:name)")

@@ -4,6 +4,8 @@ import com.mndk.bouncerate.db.AdvertisementProduct;
 import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.util.MapUtils;
+import com.mndk.bouncerate.util.NullValidator;
+import com.mndk.bouncerate.util.ResourceNotFoundException;
 import com.mndk.bouncerate.util.StringRandomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +26,17 @@ public class AdvertisementProductController {
     @Autowired BounceRateDAO bounceRateDAO;
 
 
+    @GetMapping("")
+    @ResponseBody
+    public List<AdvertisementProduct> getProducts() {
+        return productDAO.getAll();
+    }
+
+
     @GetMapping("/{id}")
     @ResponseBody
     public AdvertisementProduct getProduct(@PathVariable("id") int id) {
-        return productDAO.getProduct(id);
+        return NullValidator.check(productDAO.getProduct(id), ResourceNotFoundException::new);
     }
 
 

@@ -16,7 +16,6 @@ public record AdvertisementProduct(
 ) {
 
     public static class Mapper implements RowMapper<AdvertisementProduct> {
-
         @Override
         public AdvertisementProduct map(ResultSet resultSet, StatementContext context) throws SQLException {
             return new AdvertisementProduct(
@@ -27,6 +26,5 @@ public record AdvertisementProduct(
                     resultSet.getDate("score_updated")
             );
         }
-
     }
 }
