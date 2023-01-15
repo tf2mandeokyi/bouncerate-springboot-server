@@ -24,20 +24,20 @@ public class BounceRateController {
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
-    @GetMapping("/{product_id}/{settopbox_id}")
+    @GetMapping("/{productId}/{setTopBoxId}")
     @ResponseBody
     public float getBounceRate(
-            @PathVariable("product_id")     int productId,
-            @PathVariable("settopbox_id")   int setTopBoxId
+            @PathVariable("productId")     int productId,
+            @PathVariable("setTopBoxId")   int setTopBoxId
     ) {
         return NullValidator.check(bounceRateDAO.getBounceRate(productId, setTopBoxId), ResourceNotFoundException::new);
     }
 
 
-    @PostMapping("/{product_id}/{settopbox_id}")
+    @PostMapping("/{productId}/{setTopBoxId}")
     public ResponseEntity<?> setBounceRate(
-            @PathVariable("product_id")     int productId,
-            @PathVariable("settopbox_id")   int setTopBoxId,
+            @PathVariable("productId")     int productId,
+            @PathVariable("setTopBoxId")   int setTopBoxId,
             @RequestBody float requestBody
     ) {
         bounceRateDAO.setBounceRate(productId, setTopBoxId, requestBody);
@@ -45,7 +45,7 @@ public class BounceRateController {
     }
 
 
-    @PostMapping("/setRandom")
+    @PostMapping("/randomize")
     public void setBounceRatesRandom() {
         List<AdvertisementProduct> products = productDAO.getAll();
         List<Integer> productIdList = products.stream().map(AdvertisementProduct::id).toList();
