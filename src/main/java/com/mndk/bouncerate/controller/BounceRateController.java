@@ -7,8 +7,6 @@ import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.NullValidator;
 import com.mndk.bouncerate.util.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +33,12 @@ public class BounceRateController {
 
 
     @PostMapping("/{productId}/{setTopBoxId}")
-    public ResponseEntity<?> setBounceRate(
+    public void setBounceRate(
             @PathVariable("productId")     int productId,
             @PathVariable("setTopBoxId")   int setTopBoxId,
             @RequestBody float requestBody
     ) {
         bounceRateDAO.setBounceRate(productId, setTopBoxId, requestBody);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
