@@ -4,17 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config-overrides.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Attach react into spring boot">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/handler/HttpStatusCodeExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/MinMax.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/AdvertisementProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/AdvertisementProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AdvertisementProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AdvertisementProductDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/ResourceNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/ResourceNotFoundExceptionHandler.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +171,7 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--info" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -230,11 +231,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.BounceRate [reactStart]" />
-        <item itemvalue="Gradle.BounceRate [reactRun]" />
         <item itemvalue="Gradle.BounceRate [bootRun]" />
-        <item itemvalue="Gradle.BounceRate [build]" />
+        <item itemvalue="Gradle.BounceRate [reactStart]" />
         <item itemvalue="Gradle.BounceRate [reactBuild]" />
+        <item itemvalue="Gradle.BounceRate [reactRun]" />
+        <item itemvalue="Gradle.BounceRate [build]" />
       </list>
     </recent_temporary>
   </component>
@@ -275,8 +276,18 @@
       <option name="project" value="LOCAL" />
       <updated>1673760052999</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Attach react into spring boot">
+      <created>1674291269437</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1674291269437</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.tsx" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -284,6 +295,7 @@
     <MESSAGE value="Implemented rest api" />
     <MESSAGE value="Implemented set-top box api + null handler" />
     <MESSAGE value="rest api: ../bounceRates/setRandom -&gt; ../bounceRates/randomize" />
-    <option name="LAST_COMMIT_MESSAGE" value="rest api: ../bounceRates/setRandom -&gt; ../bounceRates/randomize" />
+    <MESSAGE value="Attach react into spring boot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attach react into spring boot" />
   </component>
 </project>

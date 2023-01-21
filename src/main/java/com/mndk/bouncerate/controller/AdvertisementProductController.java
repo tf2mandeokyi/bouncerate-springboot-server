@@ -5,10 +5,11 @@ import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.util.MapUtils;
 import com.mndk.bouncerate.util.NullValidator;
-import com.mndk.bouncerate.util.ResourceNotFoundException;
 import com.mndk.bouncerate.util.StringRandomizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -28,15 +29,66 @@ public class AdvertisementProductController {
 
     @GetMapping("")
     @ResponseBody
-    public List<AdvertisementProduct> getProducts() {
-        return productDAO.getAll();
+    public List<AdvertisementProduct> getProducts(
+            @RequestParam(value = "count", defaultValue = "-1") int count,
+            @RequestParam(value = "page", defaultValue = "1") int pageNum
+    ) {
+        if(count == -1) {
+            return productDAO.getAll();
+        }
+        else if(count >= 1 && pageNum >= 1) {
+            return productDAO.getBulk(count, (pageNum - 1) * count);
+        }
+        else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    record AddProductBody(
+            String name,
+            boolean availability
+    ) {}
+
+    @PostMapping("")
+    public void add(
+            @RequestParam(value = "random", defaultValue = "false") boolean random,
+            @RequestParam(value = "count", defaultValue = "1") int count,
+            @RequestBody(required = false) AddProductBody requestBody
+    ) {
+        if(random) {
+            for (int i = 0; i < count; i++) {
+                productDAO.addProduct(StringRandomizer.nextAZaz09String(5), true);
+            }
+        } else if(requestBody != null) {
+            productDAO.addProduct(requestBody.name, requestBody.availability);
+        } else {
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+        }
     }
 
 
     @GetMapping("/{id}")
     @ResponseBody
     public AdvertisementProduct getProduct(@PathVariable("id") int id) {
-        return NullValidator.check(productDAO.getProduct(id), ResourceNotFoundException::new);
+        return NullValidator.check(
+                productDAO.getProduct(id),
+                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
+        );
+    }
+
+
+    record UpdateProductBody(
+            String name,
+            Boolean availability
+    ) {}
+    @PostMapping("/{id}")
+    public void updateSetTopBox(
+            @PathVariable("id") int id,
+            @RequestBody UpdateProductBody requestBody
+    ) {
+        if(requestBody.name != null) productDAO.updateName(id, requestBody.name);
+        if(requestBody.availability != null) productDAO.updateAvailability(id, requestBody.availability);
     }
 
 
@@ -63,17 +115,15 @@ public class AdvertisementProductController {
             float newScore = bounceRateDAO.getScore(id, 30);
             productDAO.updateBounceRateScore(id, newScore);
             return newScore;
-        } else {
-            return product.bounceRateScore();
         }
+        return product.bounceRateScore();
     }
 
 
-    @PostMapping("/addRandom/{count}")
-    public void addRandomProducts(@PathVariable("count") int count) {
-        for(int i = 0; i < count; i++) {
-            productDAO.addProduct(StringRandomizer.nextAZaz09String(5), true);
-        }
+    @GetMapping("/count")
+    @ResponseBody
+    public int getCount() {
+        return productDAO.getCount();
     }
 
 
@@ -91,5 +141,4 @@ public class AdvertisementProductController {
 
         return MapUtils.sortByValue(bounceRateScoreMap).subList(0, count);
     }
-
 }

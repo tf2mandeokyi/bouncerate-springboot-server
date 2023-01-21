@@ -1,11 +1,14 @@
 package com.mndk.bouncerate.db;
 
+import org.jdbi.v3.sqlobject.config.KeyColumn;
+import org.jdbi.v3.sqlobject.config.ValueColumn;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public interface BounceRateDAO {
@@ -58,19 +61,27 @@ public interface BounceRateDAO {
     );
 
 
-    @SqlQuery("SELECT `bouncerate` FROM `bouncerates` WHERE `product_id` = :product_id")
-    List<Float> getBounceRatesOfProduct(@Bind("product_id") int productId);
+    @SqlQuery("SELECT `settopbox_id`, `bouncerate` FROM `bouncerates` WHERE `product_id` = :product_id")
+    @KeyColumn("settopbox_id")
+    @ValueColumn("bouncerate")
+    Map<Integer, Float> getBounceRatesOfProduct(@Bind("product_id") int productId);
+
+
+    @SqlQuery("SELECT `product_id`, `bouncerate` FROM `bouncerates` WHERE `settopbox_id` = :settopbox_id")
+    @KeyColumn("product_id")
+    @ValueColumn("bouncerate")
+    Map<Integer, Float> getBounceRatesOfSetTopBox(@Bind("settopbox_id") int productId);
 
 
     default float getScore(int productId, float bounceRateThreshold) {
         int lessThanThreshold = 0;
 
-        List<Float> bounceRates = this.getBounceRatesOfProduct(productId);
-        for(float bounceRate : bounceRates) {
-            if(bounceRate <= bounceRateThreshold) lessThanThreshold++;
+        var bounceRateMap = this.getBounceRatesOfProduct(productId);
+        for(var bounceRateEntry : bounceRateMap.entrySet()) {
+            if(bounceRateEntry.getValue() <= bounceRateThreshold) lessThanThreshold++;
         }
 
-        return (lessThanThreshold + 1) / (float) (bounceRates.size() + 2);
+        return (lessThanThreshold + 1) / (float) (bounceRateMap.size() + 2);
     }
 
 }

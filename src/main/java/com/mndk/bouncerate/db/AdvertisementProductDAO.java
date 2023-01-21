@@ -33,6 +33,13 @@ public interface AdvertisementProductDAO {
     );
 
 
+    @SqlUpdate("UPDATE `products` SET `name` = :name WHERE `id` = :id")
+    void updateName(
+            @Bind("id")     int productId,
+            @Bind("name")   String newName
+    );
+
+
     @SqlUpdate("UPDATE `products` SET `availability` = :availability WHERE `id` = :id")
     void updateAvailability(
             @Bind("id")             int productId,
@@ -57,9 +64,25 @@ public interface AdvertisementProductDAO {
     List<AdvertisementProduct> getAll();
 
 
+    /**
+     * @param count Product count per page
+     * @param offset Works as same way as mysql's select offset
+     */
+    @SqlQuery("SELECT * FROM `products` LIMIT :count OFFSET :offset")
+    @UseRowMapper(AdvertisementProduct.Mapper.class)
+    List<AdvertisementProduct> getBulk(
+            @Bind("count")      int count,
+            @Bind("offset")     int offset
+    );
+
+
     @SqlQuery("SELECT * FROM `products` WHERE `id` = :id")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     AdvertisementProduct getProduct(@Bind("id") int productId);
+
+
+    @SqlQuery("SELECT COUNT(*) FROM `products`")
+    int getCount();
 
 
     @SqlQuery("SELECT `id` FROM `products` WHERE `availability` = TRUE")

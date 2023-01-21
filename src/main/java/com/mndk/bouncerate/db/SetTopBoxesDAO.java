@@ -28,13 +28,36 @@ public interface SetTopBoxesDAO {
     List<SetTopBox> getAll();
 
 
+    /**
+     * @param count Product count per page
+     * @param offset Works as same way as mysql's select offset
+     */
+    @SqlQuery("SELECT * FROM `settopboxes` LIMIT :count OFFSET :offset")
+    @UseRowMapper(SetTopBox.Mapper.class)
+    List<SetTopBox> getBulk(
+            @Bind("count")      int count,
+            @Bind("offset")     int offset
+    );
+
+
     @SqlQuery("SELECT * FROM `settopboxes` WHERE `id` = :id")
     @UseRowMapper(SetTopBox.Mapper.class)
     SetTopBox getSetTopBox(@Bind("id") int setTopBoxId);
 
 
+    @SqlQuery("SELECT COUNT(*) FROM `settopboxes`")
+    int getCount();
+
+
     @SqlUpdate("INSERT INTO `settopboxes` (name) VALUES (:name)")
     void addSetTopBox(@Bind("name") String setTopBoxName);
+
+
+    @SqlUpdate("UPDATE `settopboxes` SET `name` = :name WHERE `id` = :id")
+    void updateName(
+            @Bind("id")     int setTopBoxId,
+            @Bind("name")   String newName
+    );
 
 
     @SqlQuery("SELECT `id` FROM `products`")
