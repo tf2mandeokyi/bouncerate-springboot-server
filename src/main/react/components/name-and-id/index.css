@@ -1,0 +1,9 @@
+.name-and-id-name {
+    display: inline;
+}
+
+.name-and-id-id {
+    color: gray;
+    font-size: 15px;
+    display: inline;
+}

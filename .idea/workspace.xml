@@ -4,18 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Attach react into spring boot">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/handler/HttpStatusCodeExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/MinMax.java" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="rest api: Implement page-get + row-update system">
+      <change afterPath="$PROJECT_DIR$/.env.development" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/WebConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SinglePageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/api/products.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/product-ranking/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/product-ranking/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/product-ranking/table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/title/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/advertisement-product-menu/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/AdvertisementProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/AdvertisementProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AdvertisementProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AdvertisementProductDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/ResourceNotFoundExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/MapUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,19 +108,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "D:/Desktop/some_programs/Java/default/BounceRate/src/web/public",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/some_programs/Java/default/BounceRate/src/web/public&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Desktop\some_programs\Java\default\BounceRate\src\web\public" />
@@ -123,7 +136,7 @@
       <recent name="org.example" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.BounceRate [reactStart]">
+  <component name="RunManager" selected="Gradle.BounceRate [bootRun]">
     <configuration name="BounceRate [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -232,8 +245,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.BounceRate [bootRun]" />
-        <item itemvalue="Gradle.BounceRate [reactStart]" />
         <item itemvalue="Gradle.BounceRate [reactBuild]" />
+        <item itemvalue="Gradle.BounceRate [reactStart]" />
         <item itemvalue="Gradle.BounceRate [reactRun]" />
         <item itemvalue="Gradle.BounceRate [build]" />
       </list>
@@ -283,7 +296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674291269437</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="rest api: Implement page-get + row-update system">
+      <created>1674314505412</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1674314505412</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -296,6 +316,7 @@
     <MESSAGE value="Implemented set-top box api + null handler" />
     <MESSAGE value="rest api: ../bounceRates/setRandom -&gt; ../bounceRates/randomize" />
     <MESSAGE value="Attach react into spring boot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attach react into spring boot" />
+    <MESSAGE value="rest api: Implement page-get + row-update system" />
+    <option name="LAST_COMMIT_MESSAGE" value="rest api: Implement page-get + row-update system" />
   </component>
 </project>

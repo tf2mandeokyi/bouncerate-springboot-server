@@ -1,0 +1,41 @@
+.product-ranking {
+    margin-bottom: 50px;
+}
+
+.ranking-title {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.ranking-loading {
+    border: 1px solid gray;
+    margin: 10px 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ranking-table {
+    border: 1px solid gray;
+    margin: 10px 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ranking-table thead {
+    border-bottom: 1px solid gray;
+}
+
+.ranking-table td {
+    padding: 2px 0;
+}
+
+.ranking-table tbody tr:first-child {
+    background-color: rgba(255, 183, 60, 0.219);
+}
+
+.ranking-table td:first-child {
+    border-collapse: collapse;
+    width: 150px;
+    text-align: right;
+    padding-right: 10px;
+}

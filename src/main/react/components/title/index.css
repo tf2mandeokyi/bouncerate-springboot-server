@@ -1,0 +1,10 @@
+.page-title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.page-title-hr {
+    margin: 20px 0;
+    height: 1px;
+    background-color: rgb(190, 190, 190);
+}

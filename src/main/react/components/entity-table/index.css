@@ -1,0 +1,68 @@
+.entity-table-page-numbers {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 30px 1fr;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.entity-table-page-numbers div {
+    display: inline-block;
+}
+
+.entity-table-page-numbers .left {
+    text-align: right;
+}
+
+.entity-table-page-numbers .center {
+    text-align: center;
+    cursor: inherit;
+}
+
+.entity-table-page-numbers .center .entity-table-page-number {
+    color: inherit;
+    cursor: inherit;
+}
+
+.entity-table-page-numbers .center .entity-table-page-number:hover {
+    text-decoration: inherit;
+}
+
+.entity-table-page-numbers .right {
+    text-align: left;
+}
+
+.entity-table-page-number {
+    color: rgb(39, 165, 255);
+    cursor: pointer;
+    padding: 0px 5px;
+}
+
+.entity-table-page-number:hover {
+    text-decoration: underline;
+}
+
+.entity-table {
+    width: 100%;
+    margin: 10px 0;
+    border-bottom: 1px solid gray;
+    border-collapse: collapse;
+}
+
+.entity-table-entitytojsx {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.entity-table thead {
+    border-bottom: 1px solid gray;
+    text-align: center;
+}
+
+.entity-table td {
+    padding: 3px 4px;
+}

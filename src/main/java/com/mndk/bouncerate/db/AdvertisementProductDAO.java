@@ -76,6 +76,18 @@ public interface AdvertisementProductDAO {
     );
 
 
+    /**
+     * @param count Product count per page
+     * @param offset Works as same way as mysql's select offset
+     */
+    @SqlQuery("SELECT * FROM `products` ORDER BY `bouncerate_score` DESC LIMIT :count OFFSET :offset")
+    @UseRowMapper(AdvertisementProduct.Mapper.class)
+    List<AdvertisementProduct> getBulk_orderByScore(
+            @Bind("count")      int count,
+            @Bind("offset")     int offset
+    );
+
+
     @SqlQuery("SELECT * FROM `products` WHERE `id` = :id")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     AdvertisementProduct getProduct(@Bind("id") int productId);

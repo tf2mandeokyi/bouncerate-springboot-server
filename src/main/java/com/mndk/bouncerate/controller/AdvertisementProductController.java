@@ -3,7 +3,6 @@ package com.mndk.bouncerate.controller;
 import com.mndk.bouncerate.db.AdvertisementProduct;
 import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
-import com.mndk.bouncerate.util.MapUtils;
 import com.mndk.bouncerate.util.NullValidator;
 import com.mndk.bouncerate.util.StringRandomizer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -45,11 +42,7 @@ public class AdvertisementProductController {
     }
 
 
-    record AddProductBody(
-            String name,
-            boolean availability
-    ) {}
-
+    record AddProductBody(String name, boolean availability) {}
     @PostMapping("")
     public void add(
             @RequestParam(value = "random", defaultValue = "false") boolean random,
@@ -78,10 +71,7 @@ public class AdvertisementProductController {
     }
 
 
-    record UpdateProductBody(
-            String name,
-            Boolean availability
-    ) {}
+    record UpdateProductBody(String name, Boolean availability) {}
     @PostMapping("/{id}")
     public void updateSetTopBox(
             @PathVariable("id") int id,
@@ -129,16 +119,10 @@ public class AdvertisementProductController {
 
     @GetMapping("/getPriority")
     @ResponseBody
-    public List<Integer> getPriority(
+    public List<AdvertisementProduct> getPriority(
             @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate,
             @RequestParam(value = "count", defaultValue = "3") int count
     ) {
-        Map<Integer, Float> bounceRateScoreMap = new HashMap<>();
-        List<Integer> productIds = productDAO.getAllAvailabileIds();
-        for(int productId : productIds) {
-            bounceRateScoreMap.put(productId, this.getBounceRateScore(productId, forceUpdate));
-        }
-
-        return MapUtils.sortByValue(bounceRateScoreMap).subList(0, count);
+        return productDAO.getBulk_orderByScore(count, 0);
     }
 }
