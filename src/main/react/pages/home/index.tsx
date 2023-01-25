@@ -1,8 +1,6 @@
 import React from 'react'
 import MainPageTableDiv from './table';
-import ProductRanking from '../../components/product-ranking';
-
-import './index.css'
+import ProductRanking from '../advertisement-product-menu/product-ranking';
 
 
 const Home : React.FC = () => {

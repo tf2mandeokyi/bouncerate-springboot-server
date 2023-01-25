@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { AdvertisementProduct, getPriority } from '../../api/products';
+import { AdvertisementProduct, getPriority } from '../../../api/products';
 import ProductRankingTable from './table';
 
-import './index.css'
+import './index.scss'
 
 
 const ProductRanking : React.FC = () => {
@@ -20,10 +20,12 @@ const ProductRanking : React.FC = () => {
     }, [ fetchRankingList ])
 
 
-    return <div className='product-ranking'>
-        <div className='ranking-title'>광고 송출 목록</div>
-        <ProductRankingTable rankingList={ productRankingList } />
-    </div>
+    return (
+        <div className='product-ranking'>
+            <div className='title'>광고 송출 목록</div>
+            <ProductRankingTable rankingList={ productRankingList } />
+        </div>
+    )
 }
 
 export default ProductRanking

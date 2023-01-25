@@ -1,0 +1,10 @@
+.entity-description-table {
+    border-collapse: collapse;
+    
+    tr {
+        td:first-child {
+            font-weight: 600;
+            padding-right: 10px;
+        }
+    }
+}

@@ -6,7 +6,7 @@ import Home from './pages/home'
 import AdvertisementProductMenu from './pages/advertisement-product-menu'
 import SetTopBoxMenu from './pages/set-top-box-menu'
 
-import './index.css';
+import './index.scss';
 
 
 const root = ReactDOM.createRoot(

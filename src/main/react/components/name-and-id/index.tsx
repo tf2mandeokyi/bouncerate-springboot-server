@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './index.css'
+import './index.scss'
 
 
 type Props = {
@@ -16,8 +16,8 @@ const NameAndId : React.FC<Props> = (props) => {
         return NameAndId({ id, children: <>{ name }</> });
     } else return (
         <div className='name-and-id'>
-            <div className='name-and-id-name'>{ props.children }</div>
-            <div className='name-and-id-id'>#{ props.id }</div>
+            <div className='name'>{ props.children }</div>
+            <div className='id'>#{ props.id }</div>
         </div>
     )
 }

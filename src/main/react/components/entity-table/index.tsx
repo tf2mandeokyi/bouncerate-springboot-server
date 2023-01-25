@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import NameAndId from '../name-and-id'
 import EntityTablePageNumbers from './page-numbers'
 
-import './index.css'
+import './index.scss'
 import { ArrayOrSelf, PromiseOrSelf, SupplierOrSelf } from '../../utils/types';
 
 

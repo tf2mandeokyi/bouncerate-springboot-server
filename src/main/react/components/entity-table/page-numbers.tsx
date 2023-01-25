@@ -9,7 +9,7 @@ interface PageNumberProps {
 const Page : React.FC<PageNumberProps> = ({ page, message, callback }) => {
     return (
         <div 
-            className='entity-table-page-number' 
+            className='page-number' 
             onClick={ callback ? () => callback(page) : () => {} }
         >
             { message ?? page }
@@ -100,7 +100,7 @@ const EntityTablePageNumbers : React.FC<Props> = (props) => {
     }, [ props ])
 
     return (
-        <div className='entity-table-page-numbers'>
+        <div className='page-numbers'>
             <div className='left'>{ leftPages }</div>
             <div className='center'>{ centerPage }</div>
             <div className='right'>{ rightPages }</div>

@@ -17,7 +17,7 @@ const SetTopBoxMenu : React.FC = (props) => {
 
     const entityToJSX = useCallback(async (product: AdvertisementProduct) => {
         let bounceRate = await getBounceRate({ productId: product.id, setTopBoxId });
-        return [ <>{ bounceRate }</>, <div className='button edit'>수정</div> ]
+        return [ <>{ bounceRate }</>, <div className='button darkblue'>수정</div> ]
     }, [ setTopBoxId ]);
 
 

@@ -23,7 +23,7 @@ const MainPageTableModeButton : React.FC<MainPageTableModeButtonProps> = (props)
 
     return (
         <div 
-            className={ `button main-page-table-mode-button ${ props.highlight ? 'highlighted' : '' }` }
+            className={ `button big blue ${ props.highlight ? 'highlighted' : '' }` }
             ref={ thisRef }
         >
             { props.children }
@@ -45,14 +45,14 @@ const MainPageTableDiv : React.FC = () => {
     const entityToJSX : EntityToJSXFunction<AdvertisementProduct | SetTopBox> = useCallback(async ({ id }, update) => {
         return [
             <div 
-                className='button delete' 
+                className='button red' 
                 onClick={ async () => { 
                     mode === Mode.PRODUCTS ? await deleteProduct(id) : await deleteSetTopBox(id);
                     update() 
                 } }
             >삭제</div>,
             <div 
-                className='button info'
+                className='button darkblue'
                 onClick={ () => { 
                     window.location.href = `/${mode === Mode.PRODUCTS ? 'products' : 'setTopBoxes'}?id=${id}` 
                 } }

@@ -19,7 +19,7 @@ const AdvertisementProductMenu : React.FC = () => {
 
     const entityToJSX = useCallback(async (setTopBox: SetTopBox) => {
         let bounceRate = await getBounceRate({ productId, setTopBoxId: setTopBox.id });
-        return [ <>{ bounceRate }</>, <div className='button edit'>수정</div> ]
+        return [ <>{ bounceRate }</>, <div className='button darkblue'>수정</div> ]
     }, [ productId ]);
 
 

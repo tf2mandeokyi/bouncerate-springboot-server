@@ -1,7 +1,7 @@
 import React from 'react'
 import { ArrayOrSelf } from '../../utils/types'
 
-import './index.css'
+import './index.scss'
 
 
 type Props = {

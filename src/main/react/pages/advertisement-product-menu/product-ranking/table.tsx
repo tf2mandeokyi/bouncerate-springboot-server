@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { AdvertisementProduct } from '../../api/products';
-import NameAndId from '../name-and-id';
+import { AdvertisementProduct } from '../../../api/products';
+import NameAndId from '../../../components/name-and-id';
 
 
 type Props = {
@@ -30,12 +30,8 @@ const ProductRankingTable : React.FC<Props> = (props) => {
     }, [ props.rankingList ])
 
 
-    return !tableRows ? (
-        <div className='ranking-loading'>
-            Loading...
-        </div>
-    ) : (
-        <table className='ranking-table'>
+    return tableRows ? (
+        <table>
             <thead>
                 <tr>
                     <td></td>
@@ -47,7 +43,7 @@ const ProductRankingTable : React.FC<Props> = (props) => {
                 { tableRows }
             </tbody>
         </table>
-    )
+    ) : <>Loading...</>
 }
 
 export default ProductRankingTable
