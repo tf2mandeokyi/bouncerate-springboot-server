@@ -53,9 +53,10 @@
     border-collapse: collapse;
 }
 
-.entity-table-entitytojsx {
+.entity-table tr td:not(:first-child) {
     width: 1px;
     white-space: nowrap;
+    text-align: center;
 }
 
 .entity-table thead {

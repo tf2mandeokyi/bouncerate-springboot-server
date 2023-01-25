@@ -27,7 +27,7 @@ public interface AdvertisementProductDAO {
 
 
     @SqlUpdate("INSERT INTO `products` (`name`, `availability`) VALUES (:name, :availability)")
-    void addProduct(
+    void addOne(
             @Bind("name")           String productName,
             @Bind("availability")   boolean availability
     );
@@ -90,7 +90,7 @@ public interface AdvertisementProductDAO {
 
     @SqlQuery("SELECT * FROM `products` WHERE `id` = :id")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
-    AdvertisementProduct getProduct(@Bind("id") int productId);
+    AdvertisementProduct getOne(@Bind("id") int productId);
 
 
     @SqlQuery("SELECT COUNT(*) FROM `products`")
@@ -99,5 +99,9 @@ public interface AdvertisementProductDAO {
 
     @SqlQuery("SELECT `id` FROM `products` WHERE `availability` = TRUE")
     List<Integer> getAllAvailabileIds();
+
+
+    @SqlUpdate("DELETE FROM `products` WHERE `id` = :id")
+    void deleteOne(@Bind("id") int productId);
 
 }

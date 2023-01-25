@@ -60,7 +60,11 @@ public interface SetTopBoxesDAO {
     );
 
 
-    @SqlQuery("SELECT `id` FROM `products`")
+    @SqlQuery("SELECT `id` FROM `settopboxes`")
     List<Integer> getAllIds();
+
+
+    @SqlUpdate("DELETE FROM `settopboxes` WHERE `id` = :id")
+    void deleteOne(@Bind("id") int setTopBoxId);
 
 }

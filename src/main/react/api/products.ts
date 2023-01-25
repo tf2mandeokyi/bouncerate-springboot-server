@@ -6,13 +6,20 @@ export interface AdvertisementProduct {
     name: string;
     availability: boolean;
     bounceRateScore: number;
-    scoreUpdatedDate: number;
+    scoreUpdatedDate: Date;
 }
 
 
 export async function getProduct(id: number) : Promise<AdvertisementProduct> {
     let response = await fetchFromApi(`/api/v1/products/${id}`);
     return await response.json();
+}
+
+
+export async function deleteProduct(id: number) : Promise<void> {
+    await fetchFromApi(`/api/v1/products/${id}`, {
+        method: 'DELETE'
+    });
 }
 
 

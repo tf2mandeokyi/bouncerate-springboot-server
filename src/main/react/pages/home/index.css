@@ -1,0 +1,10 @@
+.main-page-table-mode-button {
+    border: 1px solid rgb(48, 152, 255);
+    padding: 7px 8px;
+    margin-right: 10px;
+}
+
+.main-page-table-mode-button.highlighted {
+    color: white;
+    background:rgb(48, 152, 255)
+}

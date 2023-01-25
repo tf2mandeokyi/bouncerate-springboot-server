@@ -1,6 +1,4 @@
 import React from 'react'
-import { AdvertisementProduct } from '../../api/products';
-import { SetTopBox } from '../../api/settopboxes';
 
 import './index.css'
 

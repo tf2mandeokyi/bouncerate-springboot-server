@@ -26,7 +26,7 @@ public class AdvertisementProductController {
 
     @GetMapping("")
     @ResponseBody
-    public List<AdvertisementProduct> getProducts(
+    public List<AdvertisementProduct> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page", defaultValue = "1") int pageNum
     ) {
@@ -44,17 +44,17 @@ public class AdvertisementProductController {
 
     record AddProductBody(String name, boolean availability) {}
     @PostMapping("")
-    public void add(
+    public void addOneOrMany(
             @RequestParam(value = "random", defaultValue = "false") boolean random,
             @RequestParam(value = "count", defaultValue = "1") int count,
             @RequestBody(required = false) AddProductBody requestBody
     ) {
         if(random) {
             for (int i = 0; i < count; i++) {
-                productDAO.addProduct(StringRandomizer.nextAZaz09String(5), true);
+                productDAO.addOne(StringRandomizer.nextAZaz09String(5), true);
             }
         } else if(requestBody != null) {
-            productDAO.addProduct(requestBody.name, requestBody.availability);
+            productDAO.addOne(requestBody.name, requestBody.availability);
         } else {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
@@ -63,9 +63,9 @@ public class AdvertisementProductController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public AdvertisementProduct getProduct(@PathVariable("id") int id) {
+    public AdvertisementProduct getOne(@PathVariable("id") int id) {
         return NullValidator.check(
-                productDAO.getProduct(id),
+                productDAO.getOne(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
         );
     }
@@ -73,12 +73,18 @@ public class AdvertisementProductController {
 
     record UpdateProductBody(String name, Boolean availability) {}
     @PostMapping("/{id}")
-    public void updateSetTopBox(
+    public void updateOne(
             @PathVariable("id") int id,
             @RequestBody UpdateProductBody requestBody
     ) {
         if(requestBody.name != null) productDAO.updateName(id, requestBody.name);
         if(requestBody.availability != null) productDAO.updateAvailability(id, requestBody.availability);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public void deleteOne(@PathVariable("id") int id) {
+        productDAO.deleteOne(id);
     }
 
 
@@ -88,7 +94,7 @@ public class AdvertisementProductController {
             @PathVariable(value = "id") int id,
             @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate
     ) {
-        AdvertisementProduct product = productDAO.getProduct(id);
+        AdvertisementProduct product = productDAO.getOne(id);
 
         boolean update = forceUpdate;
         if(!forceUpdate) {

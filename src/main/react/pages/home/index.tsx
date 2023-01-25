@@ -1,8 +1,11 @@
 import React from 'react'
-import MainPageTableDiv from '../../components/main-page-table';
+import MainPageTableDiv from './table';
 import ProductRanking from '../../components/product-ranking';
 
-const Home : React.FC = (props) => {
+import './index.css'
+
+
+const Home : React.FC = () => {
     return <>
         <ProductRanking />
         <MainPageTableDiv />

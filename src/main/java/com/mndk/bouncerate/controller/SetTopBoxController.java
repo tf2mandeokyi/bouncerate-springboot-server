@@ -22,7 +22,7 @@ public class SetTopBoxController {
 
     @GetMapping("")
     @ResponseBody
-    public List<SetTopBox> getSetTopBoxes(
+    public List<SetTopBox> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page", defaultValue = "1") int pageNum
     ) {
@@ -40,7 +40,7 @@ public class SetTopBoxController {
 
     record AddSetTopBoxBody(String name) {}
     @PostMapping("")
-    public void add(
+    public void addOneOrMany(
             @RequestParam(value = "random", defaultValue = "false") boolean random,
             @RequestParam(value = "count", defaultValue = "1") int count,
             @RequestBody(required = false) AddSetTopBoxBody requestBody
@@ -59,7 +59,7 @@ public class SetTopBoxController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public SetTopBox getSetTopBox(@PathVariable("id") int id) {
+    public SetTopBox getOne(@PathVariable("id") int id) {
         return NullValidator.check(
                 setTopBoxesDAO.getSetTopBox(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
@@ -69,11 +69,17 @@ public class SetTopBoxController {
 
     record UpdateSetTopBoxBody(String name) {}
     @PostMapping("/{id}")
-    public void updateSetTopBox(
+    public void updateOne(
             @PathVariable("id") int id,
             @RequestBody UpdateSetTopBoxBody requestBody
     ) {
         if(requestBody.name != null) setTopBoxesDAO.updateName(id, requestBody.name);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public void deleteOne(@PathVariable("id") int id) {
+        setTopBoxesDAO.deleteOne(id);
     }
 
 
