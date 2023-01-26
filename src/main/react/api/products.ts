@@ -44,5 +44,5 @@ export async function getProductsPage(count: number, pageNum: number) : Promise<
 
 export async function getProductsCount() : Promise<number> {
     let response = await fetchFromApi(`/api/v1/products/count`);
-    return await response.json();
+    return (await response.json())['value'];
 }

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { getBounceRate } from '../../api/bouncerate';
+import { getBounceRate, setBounceRate } from '../../api/bouncerate';
 import { AdvertisementProduct, getProduct } from '../../api/products';
 import { getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
-import EntityTable from '../../components/entity-table';
+import EntityTable, { EntityToJSXFunction } from '../../components/entity-table';
 
 
 const AdvertisementProductMenu : React.FC = () => {
@@ -15,21 +15,47 @@ const AdvertisementProductMenu : React.FC = () => {
     const productId = parseInt(params.get('id') ?? '-1');
 
     const [ product, setProduct ] = useState<AdvertisementProduct>();
+    const [ updateBool, setUpdateBool ] = useState<boolean>();
+
+
+    const onBounceRateEditButtonClick = useCallback(async (setTopBox: SetTopBox, update: () => void) => {
+        let promptInput = prompt('새로운 Bounce rate 값을 입력해주세요.');
+        if(!promptInput) return;
+
+        let newBounceRate = parseFloat(promptInput);
+        if(isNaN(newBounceRate)) return;
+
+        await setBounceRate({ productId, setTopBoxId: setTopBox.id }, newBounceRate);
+        update();
+        setUpdateBool(true);
+    }, [ productId ]);
 
 
     const getEntityCount = useCallback(async () => await getSetTopBoxesCount(), []);
     const getEntitiesPage = useCallback(async (e: number, p: number) => await getSetTopBoxesPage(e, p), []);
-    const entityToJSX = useCallback(async (setTopBox: SetTopBox) => {
+    const entityToJSX : EntityToJSXFunction<SetTopBox> = useCallback(async (setTopBox, update) => {
         let bounceRate = await getBounceRate({ productId, setTopBoxId: setTopBox.id });
-        return [ <>{ bounceRate }</>, <div key={ setTopBox.id } className='button darkblue'>수정</div> ]
-    }, [ productId ]);
+        return [ 
+            <>{ bounceRate ?? '-' }</>, 
+            <div 
+                key={ setTopBox.id } 
+                className='button darkblue'
+                onClick={ () => onBounceRateEditButtonClick(setTopBox, update) }
+            >
+                수정
+            </div>
+        ]
+    }, [ productId, onBounceRateEditButtonClick ]);
 
 
     useEffect(() => {
         (async () => {
             setProduct(await getProduct(productId));
         })();
-    }, [ productId, setProduct ]);
+        if(updateBool) {
+            setUpdateBool(false);
+        }
+    }, [ productId, setProduct, updateBool ]);
 
 
     return product ? (

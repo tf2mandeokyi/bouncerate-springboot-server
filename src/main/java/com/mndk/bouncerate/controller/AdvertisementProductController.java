@@ -6,6 +6,7 @@ import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.NullValidator;
 import com.mndk.bouncerate.util.StringRandomizer;
+import com.mndk.bouncerate.util.ValueWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -91,8 +92,8 @@ public class AdvertisementProductController {
 
     @GetMapping("/count")
     @ResponseBody
-    public int getCount() {
-        return productDAO.getCount();
+    public ValueWrapper<Integer> getCount() {
+        return new ValueWrapper<>(productDAO.getCount());
     }
 
 

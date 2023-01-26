@@ -5,11 +5,9 @@ import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.MinMax;
-import com.mndk.bouncerate.util.NullValidator;
+import com.mndk.bouncerate.util.ValueWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 
@@ -71,14 +69,11 @@ public class BounceRateController {
 
     @GetMapping({ "/product/{productId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{productId}" })
     @ResponseBody
-    public float getBounceRate(
+    public ValueWrapper<Float> getBounceRate(
             @PathVariable("productId")     int productId,
             @PathVariable("setTopBoxId")   int setTopBoxId
     ) {
-        return NullValidator.check(
-                bounceRateDAO.getBounceRate(productId, setTopBoxId),
-                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
-        );
+        return new ValueWrapper<>(bounceRateDAO.getBounceRate(productId, setTopBoxId));
     }
 
 

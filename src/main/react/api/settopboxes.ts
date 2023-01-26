@@ -28,5 +28,5 @@ export async function getSetTopBoxesPage(count: number, pageNum: number) : Promi
 
 export async function getSetTopBoxesCount() : Promise<number> {
     let response = await fetchFromApi(`/api/v1/setTopBoxes/count`);
-    return await response.json();
+    return (await response.json())['value'];
 }
