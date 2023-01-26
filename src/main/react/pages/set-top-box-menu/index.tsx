@@ -15,9 +15,11 @@ const SetTopBoxMenu : React.FC = (props) => {
     const [ setTopBox, setSetTopBox ] = useState<SetTopBox>();
 
 
+    const getEntityCount = useCallback(async () => await getProductsCount(), []);
+    const getEntitiesPage = useCallback(async (e: number, p: number) => await getProductsPage(e, p), []);
     const entityToJSX = useCallback(async (product: AdvertisementProduct) => {
         let bounceRate = await getBounceRate({ productId: product.id, setTopBoxId });
-        return [ <>{ bounceRate }</>, <div className='button darkblue'>수정</div> ]
+        return [ <>{ bounceRate }</>, <div key={ product.id } className='button darkblue'>수정</div> ]
     }, [ setTopBoxId ]);
 
 
@@ -35,8 +37,8 @@ const SetTopBoxMenu : React.FC = (props) => {
             </EntityDescriptionTable>
             <EntityTable<AdvertisementProduct>
                 entityNameColumnHead={ [ '광고 상품 이름', 'Bounce rate' ] }
-                getEntityCount={ async () => await getProductsCount() }
-                getEntitiesPage={ async (e, p) => await getProductsPage(e, p) }
+                getEntityCount={ getEntityCount }
+                getEntitiesPage={ getEntitiesPage }
                 entityToJSX={ entityToJSX }
             />
         </>

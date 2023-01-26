@@ -1,0 +1,10 @@
+.back-to-home {
+    color: blue;
+    margin-bottom: 20px;
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {  
+        text-decoration: underline;
+    }
+}

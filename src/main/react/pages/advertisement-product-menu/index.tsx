@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { getBounceRate } from '../../api/bouncerate';
 import { AdvertisementProduct, getProduct } from '../../api/products';
 import { getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
+import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
 import EntityTable from '../../components/entity-table';
 
@@ -33,6 +34,7 @@ const AdvertisementProductMenu : React.FC = () => {
 
     return product ? (
         <>
+            <BackToHome />
             <EntityDescriptionTable>
                 <tr><td>이름:</td><td>{ product.name }</td></tr>
                 <tr><td>데이터베이스 ID:</td><td>{ product.id }</td></tr>
