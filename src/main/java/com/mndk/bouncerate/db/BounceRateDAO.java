@@ -7,9 +7,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public interface BounceRateDAO {
 
@@ -41,16 +39,6 @@ public interface BounceRateDAO {
     );
 
 
-    default void insertRandomizedBounceRates(
-            List<Integer> productIdList, List<Integer> setTopBoxIdList, float min, float max
-    ) {
-        Random random = new Random();
-        for(int productId : productIdList) for(int setTopBoxId : setTopBoxIdList) {
-            this.setBounceRate(productId, setTopBoxId, random.nextFloat(min, max));
-        }
-    }
-
-
     @SqlQuery("""
             SELECT `bouncerate` FROM `bouncerates`
                     WHERE `product_id` = :product_id AND `settopbox_id` = :settopbox_id
@@ -73,15 +61,31 @@ public interface BounceRateDAO {
     Map<Integer, Float> getBounceRatesOfSetTopBox(@Bind("settopbox_id") int productId);
 
 
-    default float getScore(int productId, float bounceRateThreshold) {
-        int lessThanThreshold = 0;
+    @SqlQuery("SELECT `product_id` FROM `bouncerates`")
+    List<Integer> getAllProductIds();
 
-        var bounceRateMap = this.getBounceRatesOfProduct(productId);
-        for(var bounceRateEntry : bounceRateMap.entrySet()) {
-            if(bounceRateEntry.getValue() <= bounceRateThreshold) lessThanThreshold++;
-        }
 
-        return (lessThanThreshold + 1) / (float) (bounceRateMap.size() + 2);
-    }
+    @SqlQuery("SELECT `settopbox_id` FROM `bouncerates`")
+    List<Integer> getAllSetTopBoxIds();
+
+
+    @SqlUpdate("""
+            DELETE FROM `bouncerates`
+                    WHERE `product_id` = :product_id AND `settopbox_id` = :settopbox_id
+    """)
+    void deleteBounceRate(
+            @Bind("product_id")     int productId,
+            @Bind("settopbox_id")   int setTopBoxId
+    );
+
+
+    @SqlUpdate("DELETE FROM `bouncerates` WHERE `product_id` = :product_id")
+    void deleteBounceRatesOfProduct(@Bind("product_id") int productId);
+
+
+    @SqlUpdate("DELETE FROM `bouncerates` WHERE `settopbox_id` = :settopbox_id")
+    void deleteBounceRatesOfSetTopBox(@Bind("settopbox_id") int setTopBoxId);
+
+
 
 }

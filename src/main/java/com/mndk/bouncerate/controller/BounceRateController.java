@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/bounceRates")
@@ -65,7 +62,7 @@ public class BounceRateController {
         List<AdvertisementProduct> products = productDAO.getAll();
         List<Integer> productIdList = products.stream().map(AdvertisementProduct::id).toList();
 
-        bounceRateDAO.insertRandomizedBounceRates(
+        insertRandomizedBounceRates(
                 productIdList, Collections.singletonList(setTopBoxId),
                 bounceRateMinMax.min(), bounceRateMinMax.max()
         );
@@ -102,10 +99,20 @@ public class BounceRateController {
         List<AdvertisementProduct> products = productDAO.getAll();
         List<Integer> productIdList = products.stream().map(AdvertisementProduct::id).toList();
         List<Integer> setTopBoxIdList = setTopBoxesDAO.getAllIds();
-        bounceRateDAO.insertRandomizedBounceRates(
+        insertRandomizedBounceRates(
                 productIdList, setTopBoxIdList,
                 bounceRateMinMax.min(), bounceRateMinMax.max()
         );
+    }
+
+
+    private void insertRandomizedBounceRates(
+            List<Integer> productIdList, List<Integer> setTopBoxIdList, float min, float max
+    ) {
+        Random random = new Random();
+        for(int productId : productIdList) for(int setTopBoxId : setTopBoxIdList) {
+            this.setBounceRate(productId, setTopBoxId, random.nextFloat(min, max));
+        }
     }
 
 }

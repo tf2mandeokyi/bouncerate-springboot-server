@@ -10,13 +10,30 @@ import java.util.List;
 
 public interface AdvertisementProductDAO {
 
+
+    String PRODUCT_QUERY = """
+            SELECT  id,
+                    name,
+                    availability,
+                    CAST((enough_count + 1) / (available_count + 2) AS DECIMAL(11, 10)) AS bouncerate_score
+            FROM (
+                    SELECT  A.`id`,
+                            A.`name`,
+                            A.`availability`,
+                            SUM(if(B.`bouncerate` < 30, 1, 0)) AS enough_count,
+                            CAST(COUNT(B.`bouncerate`) AS DECIMAL(30, 10)) AS available_count
+                    from `products` A
+                            LEFT JOIN `bouncerates` B ON B.`product_id`=A.id
+                    GROUP BY A.id
+            ) AS C\s
+    """;
+
+
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `products` (
                     `id`                INT             NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     `name`              VARCHAR(100)    NOT NULL,
                     `availability`      BOOLEAN         NOT NULL,
-                    `bouncerate_score`  FLOAT           DEFAULT 0.5,
-                    `score_updated`     DATE
             );
     """)
     void initializeTable();
@@ -47,19 +64,7 @@ public interface AdvertisementProductDAO {
     );
 
 
-    @SqlUpdate("""
-            UPDATE `products` SET
-                    `bouncerate_score` = :bouncerate_score,
-                    `score_updated` = NOW()
-                            WHERE `id` = :id
-    """)
-    void updateBounceRateScore(
-            @Bind("id")                 int productId,
-            @Bind("bouncerate_score")   float score
-    );
-
-
-    @SqlQuery("SELECT * FROM `products`")
+    @SqlQuery(PRODUCT_QUERY)
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     List<AdvertisementProduct> getAll();
 
@@ -68,7 +73,7 @@ public interface AdvertisementProductDAO {
      * @param count Product count per page
      * @param offset Works as same way as mysql's select offset
      */
-    @SqlQuery("SELECT * FROM `products` LIMIT :count OFFSET :offset")
+    @SqlQuery(PRODUCT_QUERY + "LIMIT :count OFFSET :offset")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     List<AdvertisementProduct> getBulk(
             @Bind("count")      int count,
@@ -80,7 +85,7 @@ public interface AdvertisementProductDAO {
      * @param count Product count per page
      * @param offset Works as same way as mysql's select offset
      */
-    @SqlQuery("SELECT * FROM `products` ORDER BY `bouncerate_score` DESC LIMIT :count OFFSET :offset")
+    @SqlQuery(PRODUCT_QUERY + "ORDER BY bouncerate_score DESC LIMIT :count OFFSET :offset")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     List<AdvertisementProduct> getBulk_orderByScore(
             @Bind("count")      int count,
@@ -88,7 +93,7 @@ public interface AdvertisementProductDAO {
     );
 
 
-    @SqlQuery("SELECT * FROM `products` WHERE `id` = :id")
+    @SqlQuery(PRODUCT_QUERY + "WHERE `id` = :id")
     @UseRowMapper(AdvertisementProduct.Mapper.class)
     AdvertisementProduct getOne(@Bind("id") int productId);
 
@@ -97,8 +102,9 @@ public interface AdvertisementProductDAO {
     int getCount();
 
 
-    @SqlQuery("SELECT `id` FROM `products` WHERE `availability` = TRUE")
-    List<Integer> getAllAvailabileIds();
+    @SqlQuery(PRODUCT_QUERY + "WHERE `availability` = TRUE")
+    @UseRowMapper(AdvertisementProduct.Mapper.class)
+    List<AdvertisementProduct> getAllAvailable();
 
 
     @SqlUpdate("DELETE FROM `products` WHERE `id` = :id")

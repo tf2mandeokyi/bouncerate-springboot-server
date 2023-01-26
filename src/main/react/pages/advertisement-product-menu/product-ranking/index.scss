@@ -15,21 +15,30 @@
         thead {
             border-bottom: 1px solid gray;
         }
-        tr {
-            &:first-child {
-                background-color: rgba(255, 183, 60, 0.219);
-            }
-
-            td {
-                padding: 2px 0;
-
+        tbody {
+            tr {
                 &:first-child {
-                    border-collapse: collapse;
-                    width: 150px;
-                    text-align: right;
-                    padding-right: 10px;
+                    background-color: rgba(255, 183, 60, 0.219);
                 }
             }
+        }
+
+        td {
+            padding: 2px 0;
+
+            &:first-child {
+                width: 150px;
+                text-align: right;
+                padding-right: 10px;
+            }
+        }
+    }
+
+    .bottom {
+        text-align: right;
+        
+        .count-div {
+            display: inline-block;
         }
     }
 }

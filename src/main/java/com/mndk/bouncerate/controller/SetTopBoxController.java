@@ -1,5 +1,7 @@
 package com.mndk.bouncerate.controller;
 
+import com.mndk.bouncerate.db.AdvertisementProductDAO;
+import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBox;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.NullValidator;
@@ -17,6 +19,8 @@ import java.util.List;
 public class SetTopBoxController {
 
 
+    @Autowired AdvertisementProductDAO productDAO;
+    @Autowired BounceRateDAO bounceRateDAO;
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
@@ -78,8 +82,9 @@ public class SetTopBoxController {
 
 
     @DeleteMapping("/{id}")
-    public void deleteOne(@PathVariable("id") int id) {
-        setTopBoxesDAO.deleteOne(id);
+    public void deleteOne(@PathVariable("id") int setTopBoxId) {
+        setTopBoxesDAO.deleteOne(setTopBoxId);
+        bounceRateDAO.deleteBounceRatesOfSetTopBox(setTopBoxId);
     }
 
 

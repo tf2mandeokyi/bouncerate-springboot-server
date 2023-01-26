@@ -3,6 +3,7 @@ package com.mndk.bouncerate.controller;
 import com.mndk.bouncerate.db.AdvertisementProduct;
 import com.mndk.bouncerate.db.AdvertisementProductDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.NullValidator;
 import com.mndk.bouncerate.util.StringRandomizer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/v1/products")
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class AdvertisementProductController {
 
 
     @Autowired AdvertisementProductDAO productDAO;
     @Autowired BounceRateDAO bounceRateDAO;
+    @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
     @GetMapping("")
@@ -85,34 +85,7 @@ public class AdvertisementProductController {
     @DeleteMapping("/{id}")
     public void deleteOne(@PathVariable("id") int id) {
         productDAO.deleteOne(id);
-    }
-
-
-    @GetMapping("/{id}/bounceRateScore")
-    @ResponseBody
-    public float getBounceRateScore(
-            @PathVariable(value = "id") int id,
-            @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate
-    ) {
-        AdvertisementProduct product = productDAO.getOne(id);
-
-        boolean update = forceUpdate;
-        if(!forceUpdate) {
-            Date now = new Date(), scoreUpdatedDate = product.scoreUpdatedDate();
-
-            if(scoreUpdatedDate == null) update = true;
-            else {
-                long days = TimeUnit.MILLISECONDS.toDays(now.getTime() - scoreUpdatedDate.getTime());
-                if (days >= 1) update = true;
-            }
-        }
-
-        if(update) {
-            float newScore = bounceRateDAO.getScore(id, 30);
-            productDAO.updateBounceRateScore(id, newScore);
-            return newScore;
-        }
-        return product.bounceRateScore();
+        bounceRateDAO.deleteBounceRatesOfProduct(id);
     }
 
 
@@ -126,7 +99,6 @@ public class AdvertisementProductController {
     @GetMapping("/getPriority")
     @ResponseBody
     public List<AdvertisementProduct> getPriority(
-            @RequestParam(value = "forceUpdate", defaultValue = "false") boolean forceUpdate,
             @RequestParam(value = "count", defaultValue = "3") int count
     ) {
         return productDAO.getBulk_orderByScore(count, 0);

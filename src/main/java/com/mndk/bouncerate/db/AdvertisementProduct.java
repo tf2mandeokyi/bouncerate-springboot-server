@@ -5,14 +5,12 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 public record AdvertisementProduct(
         int id,
         String name,
         boolean availability,
-        float bounceRateScore,
-        Date scoreUpdatedDate
+        double bounceRateScore
 ) {
 
     public static class Mapper implements RowMapper<AdvertisementProduct> {
@@ -22,8 +20,7 @@ public record AdvertisementProduct(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
                     resultSet.getBoolean("availability"),
-                    resultSet.getFloat("bouncerate_score"),
-                    resultSet.getDate("score_updated")
+                    resultSet.getDouble("bouncerate_score")
             );
         }
     }

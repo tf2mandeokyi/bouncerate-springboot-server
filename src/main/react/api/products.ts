@@ -6,7 +6,6 @@ export interface AdvertisementProduct {
     name: string;
     availability: boolean;
     bounceRateScore: number;
-    scoreUpdatedDate: Date;
 }
 
 
@@ -23,8 +22,16 @@ export async function deleteProduct(id: number) : Promise<void> {
 }
 
 
-export async function getPriority() : Promise<AdvertisementProduct[]> {
-    let response = await fetchFromApi(`/api/v1/products/getPriority`);
+export async function getPriority(params?: { 
+    count?: number, 
+    forceUpdate?: boolean 
+}) : Promise<AdvertisementProduct[]> {
+
+    let count = params?.count ?? 3;
+    let forceUpdate = params?.forceUpdate ?? false;
+    let response = await fetchFromApi(
+        `/api/v1/products/getPriority?count=${count}&forceUpdate=${forceUpdate}`
+    );
     return await response.json();
 }
 
