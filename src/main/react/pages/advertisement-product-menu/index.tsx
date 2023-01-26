@@ -19,10 +19,7 @@ const AdvertisementProductMenu : React.FC = () => {
 
 
     const onBounceRateEditButtonClick = useCallback(async (setTopBox: SetTopBox, update: () => void) => {
-        let promptInput = prompt('새로운 Bounce rate 값을 입력해주세요.');
-        if(!promptInput) return;
-
-        let newBounceRate = parseFloat(promptInput);
+        let newBounceRate = parseFloat(prompt('새로운 Bounce rate 값을 입력해주세요.') as string);
         if(isNaN(newBounceRate)) return;
 
         await setBounceRate({ productId, setTopBoxId: setTopBox.id }, newBounceRate);

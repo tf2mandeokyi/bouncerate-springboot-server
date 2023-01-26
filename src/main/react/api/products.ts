@@ -18,9 +18,7 @@ export async function getProduct(id: number) : Promise<AdvertisementProduct> {
 export async function addProduct(params: { name: string, availability: boolean }) {
     await fetchFromApi('/api/v1/products', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(params)
     });
 }

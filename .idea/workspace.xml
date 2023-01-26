@@ -6,15 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="rest api: Implement page-get + row-update system">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/bouncerate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/bouncerate.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/api/products.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/products.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/buttons.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/pages/advertisement-product-menu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/advertisement-product-menu/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/table.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/utils/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/utils/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

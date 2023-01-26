@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
 import { AdvertisementProduct, getProductsCount, getProductsPage } from '../../api/products';
-import { getSetTopBox, SetTopBox } from '../../api/settopboxes';
+import { getSetTopBox, randomizeBounceRatesOfSetTopBox, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
-import EntityTable, { EntityToJSXFunction } from '../../components/entity-table';
+import EntityTable, { EntityToJSXFunction, TableHeadColumns } from '../../components/entity-table';
 
 const SetTopBoxMenu : React.FC = () => {
 
@@ -17,10 +17,7 @@ const SetTopBoxMenu : React.FC = () => {
 
 
     const onBounceRateEditButtonClick = useCallback(async (product: AdvertisementProduct, update: () => void) => {
-        let promptInput = prompt('새로운 Bounce rate 값을 입력해주세요.');
-        if(!promptInput) return;
-
-        let newBounceRate = parseFloat(promptInput);
+        let newBounceRate = parseFloat(prompt('새로운 Bounce rate 값을 입력해주세요.') as string);
         if(isNaN(newBounceRate)) return;
 
         await setBounceRate({ productId: product.id, setTopBoxId }, newBounceRate);
@@ -30,7 +27,6 @@ const SetTopBoxMenu : React.FC = () => {
 
     const entityToJSX : EntityToJSXFunction<AdvertisementProduct> = useCallback(async (product, update) => {
         let bounceRate = await getBounceRate({ productId: product.id, setTopBoxId });
-        console.log(bounceRate);
         return [ 
             <>{ bounceRate ?? '-' }</>, 
             <div 
@@ -44,11 +40,37 @@ const SetTopBoxMenu : React.FC = () => {
     }, [ setTopBoxId, onBounceRateEditButtonClick ]);
 
 
+    const onRandomizeButtonClick = useCallback(async (update: () => void) => {
+        let min = parseFloat(prompt('랜덤값의 최솟값을 입력해주세요.') as string);
+        if(isNaN(min)) return;
+
+        let max = parseFloat(prompt('랜덤값의 최댓값을 입력해주세요.') as string);
+        if(isNaN(max)) return;
+
+        await randomizeBounceRatesOfSetTopBox(setTopBoxId, { min, max });
+        update();
+    }, [ setTopBoxId ]);
+
+
+    const getTableHeadColumn : (update: () => void) => TableHeadColumns = useCallback((update) => [
+        <>광고 상품 이름</>,
+        <>Bounce rate</>,
+        <div
+            key='randomize'
+            className='button blue'
+            onClick={ () => onRandomizeButtonClick(update) }
+        >
+            랜덤화
+        </div>
+    ], [ onRandomizeButtonClick ]);
+
+
     useEffect(() => {
         (async () => {
             setSetTopBox(await getSetTopBox(setTopBoxId));
         })();
     }, [ setTopBoxId ]);
+
 
     return setTopBox ? (
         <>
@@ -58,7 +80,7 @@ const SetTopBoxMenu : React.FC = () => {
                 <tr><td>데이터베이스 ID:</td><td>{ setTopBox.id }</td></tr>
             </EntityDescriptionTable>
             <EntityTable<AdvertisementProduct>
-                tableHeadColumn={ [ <>광고 상품 이름</>, <>Bounce rate</> ] }
+                tableHeadColumn={ getTableHeadColumn }
                 getEntityCount={ getProductsCount }
                 getEntitiesPage={ getProductsPage }
                 entityToJSX={ entityToJSX }

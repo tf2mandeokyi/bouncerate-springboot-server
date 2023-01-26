@@ -4,7 +4,6 @@ import { addProduct, AdvertisementProduct, deleteProduct, getProductsCount, getP
 import { addSetTopBox, deleteSetTopBox, getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 
 import './index.scss'
-import { ArrayOrSelf } from '../../utils/types';
 
 
 interface MainPageTableModeButtonProps {
