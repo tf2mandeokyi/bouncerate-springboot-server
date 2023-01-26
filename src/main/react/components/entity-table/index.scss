@@ -24,12 +24,13 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 30px 1fr;
-    user-drag: none;
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
+    
+    -webkit-touch-callout: none;
     -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none;
 
     div { display: inline-block; }
 

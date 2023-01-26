@@ -13,6 +13,17 @@ export async function getSetTopBox(id: number) : Promise<SetTopBox> {
 }
 
 
+export async function addSetTopBox(params: { name: string }) {
+    await fetchFromApi('/api/v1/setTopBoxes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    })
+}
+
+
 export async function deleteSetTopBox(id: number) : Promise<void> {
     await fetchFromApi(`/api/v1/setTopBoxes/${id}`, {
         method: 'DELETE'

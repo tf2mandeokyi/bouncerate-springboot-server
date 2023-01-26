@@ -3,16 +3,18 @@ import NameAndId from '../name-and-id'
 import EntityTablePageNumbers from './page-numbers'
 
 import './index.scss'
-import { ArrayOrSelf, PromiseOrSelf, SupplierOrSelf } from '../../utils/types';
+import { ArrayOrSelf, PromiseOrSelf } from '../../utils/types';
 
 
 type Entity = { id: number, name: string };
+export type UpdatableSupplierOrSelf<T> = T | ((update: () => void) => T);
 export type EntityToJSXFunction<T extends Entity> = (entity: T, update: () => void) => PromiseOrSelf<ArrayOrSelf<JSX.Element>>;
+export type TableHeadColumns = ArrayOrSelf<JSX.Element | [ JSX.Element, number ]>;
 
     
 type Props<T extends Entity> = {
     mode?: any;
-    entityNameColumnHead: SupplierOrSelf<ArrayOrSelf<string>>;
+    tableHeadColumn: UpdatableSupplierOrSelf<TableHeadColumns>;
     getEntityCount: () => Promise<number>;
     getEntitiesPage: (elementPerPage: number, pageNumber: number) => Promise<T[]>;
     entityToJSX: EntityToJSXFunction<T>
@@ -20,12 +22,8 @@ type Props<T extends Entity> = {
 
 
 const EntityTable = <T extends Entity>({ 
-    mode, entityNameColumnHead, getEntityCount, getEntitiesPage, entityToJSX 
+    mode, tableHeadColumn: entityNameColumnHead, getEntityCount, getEntitiesPage, entityToJSX 
 }: Props<T>) => {
-
-    let columnHeads = typeof entityNameColumnHead === 'function' ? entityNameColumnHead() : entityNameColumnHead;
-    if(!(columnHeads instanceof Array)) columnHeads = [ columnHeads ];
-    const columnHeadCells = columnHeads.map(c => <td>{ c }</td>)
 
     const [ doUpdate, setDoUpdate ] = useState<boolean>(false);
     const [ pageNumber, setPageNumber ] = useState<number>(1);
@@ -34,10 +32,14 @@ const EntityTable = <T extends Entity>({
 
     const ELEMENT_PER_PAGE = 5;
 
-
     const update = useCallback(() => {
         setDoUpdate(true);
     }, []);
+
+
+    let columnHeads = typeof entityNameColumnHead === 'function' ? entityNameColumnHead(update) : entityNameColumnHead;
+    if(!(columnHeads instanceof Array)) columnHeads = [ columnHeads ];
+    const columnHeadCells = columnHeads.map(c => c instanceof Array ? <td colSpan={ c[1] }>{ c[0] }</td> : <td>{ c }</td>)
 
 
     const getEntities = useCallback(async () => {
@@ -72,14 +74,8 @@ const EntityTable = <T extends Entity>({
     }, [ getEntities, entityToJSX, setEntityCount, update, doUpdate ])
 
 
-    useEffect(() => {
-        setTable();
-    }, [ setTable ]);
-
-
-    useEffect(() => {
-        setPageNumber(1);
-    }, [ mode ])
+    useEffect(() => { setTable() }, [ setTable ]);
+    useEffect(() => { setPageNumber(1) }, [ mode ])
 
 
     return tableRows ? (

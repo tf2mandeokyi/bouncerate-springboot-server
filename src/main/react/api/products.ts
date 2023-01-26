@@ -15,7 +15,18 @@ export async function getProduct(id: number) : Promise<AdvertisementProduct> {
 }
 
 
-export async function deleteProduct(id: number) : Promise<void> {
+export async function addProduct(params: { name: string, availability: boolean }) {
+    await fetchFromApi('/api/v1/products', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    });
+}
+
+
+export async function deleteProduct(id: number) {
     await fetchFromApi(`/api/v1/products/${id}`, {
         method: 'DELETE'
     });

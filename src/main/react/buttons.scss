@@ -4,11 +4,16 @@
     cursor: pointer;
     padding: 4px 8px;
 
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
     &.big {
         padding: 7px 8px;
-        margin-right: 10px;
     }
-
 
     @mixin colored($color) {
         border: 1px solid $color;

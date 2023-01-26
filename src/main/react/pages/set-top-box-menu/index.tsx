@@ -28,8 +28,6 @@ const SetTopBoxMenu : React.FC = () => {
     }, [ setTopBoxId ]);
 
 
-    const getEntityCount = useCallback(async () => await getProductsCount(), []);
-    const getEntitiesPage = useCallback(async (e: number, p: number) => await getProductsPage(e, p), []);
     const entityToJSX : EntityToJSXFunction<AdvertisementProduct> = useCallback(async (product, update) => {
         let bounceRate = await getBounceRate({ productId: product.id, setTopBoxId });
         console.log(bounceRate);
@@ -60,9 +58,9 @@ const SetTopBoxMenu : React.FC = () => {
                 <tr><td>데이터베이스 ID:</td><td>{ setTopBox.id }</td></tr>
             </EntityDescriptionTable>
             <EntityTable<AdvertisementProduct>
-                entityNameColumnHead={ [ '광고 상품 이름', 'Bounce rate' ] }
-                getEntityCount={ getEntityCount }
-                getEntitiesPage={ getEntitiesPage }
+                tableHeadColumn={ [ <>광고 상품 이름</>, <>Bounce rate</> ] }
+                getEntityCount={ getProductsCount }
+                getEntitiesPage={ getProductsPage }
                 entityToJSX={ entityToJSX }
             />
         </>
