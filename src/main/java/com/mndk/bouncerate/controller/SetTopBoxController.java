@@ -1,6 +1,6 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.AdvertisementProductDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBox;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
@@ -20,7 +20,7 @@ import java.util.List;
 public class SetTopBoxController {
 
 
-    @Autowired AdvertisementProductDAO productDAO;
+    @Autowired ProductCategoryDAO categoryDAO;
     @Autowired BounceRateDAO bounceRateDAO;
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
-import { AdvertisementProduct, getProductsCount, getProductsPage } from '../../api/products';
+import { ProductCategory, getProductsCount, getProductsPage } from '../../api/products';
 import { getSetTopBox, randomizeBounceRatesOfSetTopBox, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
@@ -16,23 +16,23 @@ const SetTopBoxMenu : React.FC = () => {
     const [ setTopBox, setSetTopBox ] = useState<SetTopBox>();
 
 
-    const onBounceRateEditButtonClick = useCallback(async (product: AdvertisementProduct, update: () => void) => {
+    const onBounceRateEditButtonClick = useCallback(async (category: ProductCategory, update: () => void) => {
         let newBounceRate = parseFloat(prompt('새로운 Bounce rate 값을 입력해주세요.') as string);
         if(isNaN(newBounceRate)) return;
 
-        await setBounceRate({ productId: product.id, setTopBoxId }, newBounceRate);
+        await setBounceRate({ categoryId: category.id, setTopBoxId }, newBounceRate);
         update();
     }, [ setTopBoxId ]);
 
 
-    const entityToJSX : EntityToJSXFunction<AdvertisementProduct> = useCallback(async (product, update) => {
-        let bounceRate = await getBounceRate({ productId: product.id, setTopBoxId });
+    const entityToJSX : EntityToJSXFunction<ProductCategory> = useCallback(async (product, update) => {
+        let bounceRate = await getBounceRate({ categoryId: category.id, setTopBoxId });
         return [ 
             <>{ bounceRate ?? '-' }</>, 
             <div 
-                key={ product.id } 
+                key={ category.id }
                 className='button darkblue'
-                onClick={ () => { onBounceRateEditButtonClick(product, update) } }
+                onClick={ () => { onBounceRateEditButtonClick(category, update) } }
             >
                 수정
             </div>
@@ -79,10 +79,10 @@ const SetTopBoxMenu : React.FC = () => {
                 <tr><td>이름:</td><td>{ setTopBox.name }</td></tr>
                 <tr><td>데이터베이스 ID:</td><td>{ setTopBox.id }</td></tr>
             </EntityDescriptionTable>
-            <EntityTable<AdvertisementProduct>
+            <EntityTable<ProductCategory>
                 tableHeadColumn={ getTableHeadColumn }
-                getEntityCount={ getProductsCount }
-                getEntitiesPage={ getProductsPage }
+                getEntityCount={ getCategoriesCount }
+                getEntitiesPage={ getCategoriesPage }
                 entityToJSX={ entityToJSX }
             />
         </>

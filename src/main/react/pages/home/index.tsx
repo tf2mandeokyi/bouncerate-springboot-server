@@ -1,11 +1,11 @@
 import React from 'react'
 import MainPageTableDiv from './table';
-import ProductRanking from '../advertisement-product-menu/product-ranking';
+import CategoryRanking from '../product-category-menu/product-ranking';
 
 
 const Home : React.FC = () => {
     return <>
-        <ProductRanking />
+        <CategoryRanking />
         <MainPageTableDiv />
     </>
 }

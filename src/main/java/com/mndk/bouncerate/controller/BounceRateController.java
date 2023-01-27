@@ -1,7 +1,7 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.AdvertisementProduct;
-import com.mndk.bouncerate.db.AdvertisementProductDAO;
+import com.mndk.bouncerate.db.ProductCategory;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.MinMax;
@@ -17,17 +17,15 @@ import java.util.*;
 public class BounceRateController {
 
 
-    @Autowired AdvertisementProductDAO productDAO;
+    @Autowired ProductCategoryDAO categoryDAO;
     @Autowired BounceRateDAO bounceRateDAO;
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
-    @GetMapping("/product/{productId}" )
+    @GetMapping("/category/{categoryId}")
     @ResponseBody
-    public Map<String, Float> getBounceRatesOfProduct(
-            @PathVariable("productId")     int productId
-    ) {
-        var bounceRateMap = bounceRateDAO.getBounceRatesOfProduct(productId);
+    public Map<String, Float> getBounceRatesOfCategory(@PathVariable("categoryId") int categoryId) {
+        var bounceRateMap = bounceRateDAO.getBounceRatesOfCategory(categoryId);
         Map<String, Float> result = new HashMap<>();
 
         for(var bounceRateEntry : bounceRateMap.entrySet()) {
@@ -57,33 +55,33 @@ public class BounceRateController {
             @PathVariable("setTopBoxId")   int setTopBoxId,
             @RequestBody MinMax<Integer> bounceRateMinMax
     ) {
-        List<AdvertisementProduct> products = productDAO.getAll();
-        List<Integer> productIdList = products.stream().map(AdvertisementProduct::id).toList();
-
+        List<ProductCategory> categories = categoryDAO.getAll();
+        List<Integer> categoryIdList = categories.stream().map(ProductCategory::id).toList();
+        
         insertRandomizedBounceRates(
-                productIdList, Collections.singletonList(setTopBoxId),
+                categoryIdList, Collections.singletonList(setTopBoxId),
                 bounceRateMinMax.min(), bounceRateMinMax.max()
         );
     }
 
 
-    @GetMapping({ "/product/{productId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{productId}" })
+    @GetMapping({ "/category/{categoryId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{categoryId}" })
     @ResponseBody
     public ValueWrapper<Float> getBounceRate(
-            @PathVariable("productId")     int productId,
+            @PathVariable("categoryId")    int categoryId,
             @PathVariable("setTopBoxId")   int setTopBoxId
     ) {
-        return new ValueWrapper<>(bounceRateDAO.getBounceRate(productId, setTopBoxId));
+        return new ValueWrapper<>(bounceRateDAO.getBounceRate(categoryId, setTopBoxId));
     }
 
 
-    @PostMapping({ "/product/{productId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{productId}" })
+    @PostMapping({ "/category/{categoryId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{categoryId}" })
     public void setBounceRate(
-            @PathVariable("productId")     int productId,
+            @PathVariable("categoryId")    int categoryId,
             @PathVariable("setTopBoxId")   int setTopBoxId,
             @RequestBody float requestBody
     ) {
-        bounceRateDAO.setBounceRate(productId, setTopBoxId, requestBody);
+        bounceRateDAO.setBounceRate(categoryId, setTopBoxId, requestBody);
     }
 
 
@@ -91,22 +89,22 @@ public class BounceRateController {
     public void setBounceRatesRandom(
             @RequestBody MinMax<Integer> bounceRateMinMax
     ) {
-        List<AdvertisementProduct> products = productDAO.getAll();
-        List<Integer> productIdList = products.stream().map(AdvertisementProduct::id).toList();
+        List<ProductCategory> categories = categoryDAO.getAll();
+        List<Integer> categoryIdList = categories.stream().map(ProductCategory::id).toList();
         List<Integer> setTopBoxIdList = setTopBoxesDAO.getAllIds();
         insertRandomizedBounceRates(
-                productIdList, setTopBoxIdList,
+                categoryIdList, setTopBoxIdList,
                 bounceRateMinMax.min(), bounceRateMinMax.max()
         );
     }
 
 
     private void insertRandomizedBounceRates(
-            List<Integer> productIdList, List<Integer> setTopBoxIdList, float min, float max
+            List<Integer> categoryIdList, List<Integer> setTopBoxIdList, float min, float max
     ) {
         Random random = new Random();
-        for(int productId : productIdList) for(int setTopBoxId : setTopBoxIdList) {
-            this.setBounceRate(productId, setTopBoxId, random.nextFloat(min, max));
+        for(int categoryId : categoryIdList) for(int setTopBoxId : setTopBoxIdList) {
+            this.setBounceRate(categoryId, setTopBoxId, random.nextFloat(min, max));
         }
     }
 

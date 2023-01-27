@@ -6,10 +6,7 @@ import org.jdbi.v3.core.statement.StatementContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public record SetTopBox(
-        int id,
-        String name
-) {
+public record SetTopBox(int id, String name) {
 
     public static class Mapper implements RowMapper<SetTopBox> {
         @Override

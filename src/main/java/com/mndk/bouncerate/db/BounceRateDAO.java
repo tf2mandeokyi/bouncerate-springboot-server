@@ -13,11 +13,11 @@ public interface BounceRateDAO {
 
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `bouncerates` (
-                    `product_id`    INT     NOT NULL,
+                    `category_id`   INT     NOT NULL,
                     `settopbox_id`  INT     NOT NULL,
                     `bouncerate`    FLOAT   NOT NULL
             );
-            ALTER TABLE `bouncerates` ADD UNIQUE `unique_index` (`product_id`, `settopbox_id`);
+            ALTER TABLE `bouncerates` ADD UNIQUE `unique_index` (`category_id`, `settopbox_id`);
     """)
     void initializeTable();
 
@@ -27,13 +27,13 @@ public interface BounceRateDAO {
 
 
     @SqlUpdate("""
-            INSERT INTO `bouncerates` (`product_id`, `settopbox_id`, `bouncerate`)
-                    VALUES (:product_id, :settopbox_id, :bouncerate)
+            INSERT INTO `bouncerates` (`category_id`, `settopbox_id`, `bouncerate`)
+                    VALUES (:category_id, :settopbox_id, :bouncerate)
                     ON DUPLICATE KEY UPDATE
                             `bouncerate` = :bouncerate;
     """)
     void setBounceRate(
-            @Bind("product_id")     int productId,
+            @Bind("category_id")     int categoryId,
             @Bind("settopbox_id")   int setTopBoxId,
             @Bind("bouncerate")     float bounceRate
     );
@@ -41,28 +41,28 @@ public interface BounceRateDAO {
 
     @SqlQuery("""
             SELECT `bouncerate` FROM `bouncerates`
-                    WHERE `product_id` = :product_id AND `settopbox_id` = :settopbox_id
+                    WHERE `category_id` = :category_id AND `settopbox_id` = :settopbox_id
     """)
     Float getBounceRate(
-            @Bind("product_id")     int productId,
+            @Bind("category_id")     int categoryId,
             @Bind("settopbox_id")   int setTopBoxId
     );
 
 
-    @SqlQuery("SELECT `settopbox_id`, `bouncerate` FROM `bouncerates` WHERE `product_id` = :product_id")
+    @SqlQuery("SELECT `settopbox_id`, `bouncerate` FROM `bouncerates` WHERE `category_id` = :category_id")
     @KeyColumn("settopbox_id")
     @ValueColumn("bouncerate")
-    Map<Integer, Float> getBounceRatesOfProduct(@Bind("product_id") int productId);
+    Map<Integer, Float> getBounceRatesOfCategory(@Bind("category_id") int categoryId);
 
 
-    @SqlQuery("SELECT `product_id`, `bouncerate` FROM `bouncerates` WHERE `settopbox_id` = :settopbox_id")
-    @KeyColumn("product_id")
+    @SqlQuery("SELECT `category_id`, `bouncerate` FROM `bouncerates` WHERE `settopbox_id` = :settopbox_id")
+    @KeyColumn("category_id")
     @ValueColumn("bouncerate")
-    Map<Integer, Float> getBounceRatesOfSetTopBox(@Bind("settopbox_id") int productId);
+    Map<Integer, Float> getBounceRatesOfSetTopBox(@Bind("settopbox_id") int categoryId);
 
 
-    @SqlQuery("SELECT `product_id` FROM `bouncerates`")
-    List<Integer> getAllProductIds();
+    @SqlQuery("SELECT `category_id` FROM `bouncerates`")
+    List<Integer> getAllCategoryIds();
 
 
     @SqlQuery("SELECT `settopbox_id` FROM `bouncerates`")
@@ -71,16 +71,16 @@ public interface BounceRateDAO {
 
     @SqlUpdate("""
             DELETE FROM `bouncerates`
-                    WHERE `product_id` = :product_id AND `settopbox_id` = :settopbox_id
+                    WHERE `category_id` = :category_id AND `settopbox_id` = :settopbox_id
     """)
     void deleteBounceRate(
-            @Bind("product_id")     int productId,
+            @Bind("category_id")    int categoryId,
             @Bind("settopbox_id")   int setTopBoxId
     );
 
 
-    @SqlUpdate("DELETE FROM `bouncerates` WHERE `product_id` = :product_id")
-    void deleteBounceRatesOfProduct(@Bind("product_id") int productId);
+    @SqlUpdate("DELETE FROM `bouncerates` WHERE `category_id` = :category_id")
+    void deleteBounceRatesOfCategory(@Bind("category_id") int categoryId);
 
 
     @SqlUpdate("DELETE FROM `bouncerates` WHERE `settopbox_id` = :settopbox_id")

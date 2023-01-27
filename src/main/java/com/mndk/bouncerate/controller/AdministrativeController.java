@@ -1,6 +1,6 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.AdvertisementProductDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdministrativeController {
 
 
-    @Autowired AdvertisementProductDAO productDAO;
+    @Autowired ProductCategoryDAO categoryDAO;
     @Autowired BounceRateDAO bounceRateDAO;
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
     @PostMapping("/resetEverything")
     public void resetEverything() {
-        productDAO.deleteTable();
-        productDAO.initializeTable();
+        categoryDAO.deleteTable();
+        categoryDAO.initializeTable();
         bounceRateDAO.deleteTable();
         bounceRateDAO.initializeTable();
         setTopBoxesDAO.deleteTable();

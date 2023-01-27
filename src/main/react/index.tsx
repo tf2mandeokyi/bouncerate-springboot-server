@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Home from './pages/home'
-import AdvertisementProductMenu from './pages/advertisement-product-menu'
+import ProductCategoryMenu from './pages/product-category-menu'
 import SetTopBoxMenu from './pages/set-top-box-menu'
 
 import './index.scss';
@@ -18,7 +18,7 @@ root.render(
         <div className='main'>
             <Routes>
                 <Route index element={ <Home /> } />
-                <Route path='/products' element={ <AdvertisementProductMenu /> } />
+                <Route path='/products' element={ <ProductCategoryMenu /> } />
                 <Route path='/settopboxes' element={ <SetTopBoxMenu /> } />
             </Routes>
         </div>

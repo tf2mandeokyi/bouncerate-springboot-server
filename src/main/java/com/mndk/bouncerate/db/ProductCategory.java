@@ -6,20 +6,18 @@ import org.jdbi.v3.core.statement.StatementContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public record AdvertisementProduct(
+public record ProductCategory(
         int id,
         String name,
-        boolean availability,
         double bounceRateScore
 ) {
 
-    public static class Mapper implements RowMapper<AdvertisementProduct> {
+    public static class Mapper implements RowMapper<ProductCategory> {
         @Override
-        public AdvertisementProduct map(ResultSet resultSet, StatementContext context) throws SQLException {
-            return new AdvertisementProduct(
+        public ProductCategory map(ResultSet resultSet, StatementContext context) throws SQLException {
+            return new ProductCategory(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getBoolean("availability"),
                     resultSet.getDouble("bouncerate_score")
             );
         }

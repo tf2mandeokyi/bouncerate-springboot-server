@@ -1,6 +1,6 @@
 package com.mndk.bouncerate.config;
 
-import com.mndk.bouncerate.db.AdvertisementProductDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import org.jdbi.v3.core.Jdbi;
@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
-@ComponentScan(basePackageClasses = AdvertisementProductDAO.class)
+@ComponentScan(basePackageClasses = ProductCategoryDAO.class)
 @PropertySource("file:application.properties")
 @SuppressWarnings("unused")
 public class JdbiConfiguration {
@@ -50,8 +50,8 @@ public class JdbiConfiguration {
     }
 
     @Bean
-    public AdvertisementProductDAO productDAO(Jdbi jdbi) {
-        return jdbi.onDemand(AdvertisementProductDAO.class);
+    public ProductCategoryDAO productCategoryDAO(Jdbi jdbi) {
+        return jdbi.onDemand(ProductCategoryDAO.class);
     }
 
     @Bean

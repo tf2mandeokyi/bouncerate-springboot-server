@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { AdvertisementProduct, getPriority } from '../../../api/products';
+import { ProductCategory, getPriority } from '../../../api/products';
 import ProductRankingTable from './table';
 
 import './index.scss'
@@ -7,7 +7,7 @@ import './index.scss'
 
 const ProductRanking : React.FC = () => {
 
-    const [ productRankingList, setProductRankingList ] = useState<AdvertisementProduct[]>([]);
+    const [ productRankingList, setProductRankingList ] = useState<ProductCategory[]>([]);
     const rankingCountInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -27,7 +27,7 @@ const ProductRanking : React.FC = () => {
     return (
         <div className='product-ranking'>
             <div className='title'>광고 송출 목록</div>
-            <ProductRankingTable rankingList={ productRankingList } />
+            <CategoryRankingTable rankingList={ productRankingList } />
             <div className='bottom'>
                 <div className='count-div'>
                     개수: 

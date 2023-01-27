@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { AdvertisementProduct } from '../../../api/products';
+import { ProductCategory } from '../../../api/products';
 import NameAndId from '../../../components/name-and-id';
 
 
 type Props = {
-    rankingList?: AdvertisementProduct[]
+    rankingList?: ProductCategory[]
 }
 
-const ProductRankingTable : React.FC<Props> = (props) => {
+const CategoryRankingTable : React.FC<Props> = (props) => {
 
     const [ tableRows, setTableRows ] = useState<JSX.Element[] | undefined>(undefined);
 
@@ -17,12 +17,12 @@ const ProductRankingTable : React.FC<Props> = (props) => {
 
         let result : JSX.Element[] = [];
         for(let i = 0; i < props.rankingList.length; i++) {
-            let product = props.rankingList[i];
+            let category = props.rankingList[i];
             result.push(
                 <tr>
                     <td>대체 광고 #{ i + 1 }: </td>
-                    <td><NameAndId entity={ product } /></td>
-                    <td>{ product.bounceRateScore }</td>
+                    <td><NameAndId entity={ category } /></td>
+                    <td>{ category.bounceRateScore }</td>
                 </tr>
             )
         }
@@ -46,4 +46,4 @@ const ProductRankingTable : React.FC<Props> = (props) => {
     ) : <>Loading...</>
 }
 
-export default ProductRankingTable
+export default CategoryRankingTable

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import EntityTable, { EntityToJSXFunction, TableHeadColumns } from '../../components/entity-table';
-import { addProduct, AdvertisementProduct, deleteProduct, getProductsCount, getProductsPage } from '../../api/products';
+import { addCategory, ProductCategory, deleteCategory, getCategoriesCount, getCategoriesPage } from '../../api/products';
 import { addSetTopBox, deleteSetTopBox, getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 
 import './index.scss'
@@ -25,39 +25,39 @@ const MainPageTableModeButton : React.FC<MainPageTableModeButtonProps> = (props)
 
 
 export enum Mode {
-    PRODUCTS, SETTOPBOXES
+    CATEGORIES, SETTOPBOXES
 }
 const MainPageTableDiv : React.FC = () => {
 
-    const [ mode, setMode ] = useState<Mode>(Mode.PRODUCTS);
-    const setModeAsProducts = useCallback(() => setMode(Mode.PRODUCTS), [ setMode ])
+    const [ mode, setMode ] = useState<Mode>(Mode.CATEGORIES);
+    const setModeAsCategories = useCallback(() => setMode(Mode.CATEGORIES), [ setMode ])
     const setModeAsSetTopBoxes = useCallback(() => setMode(Mode.SETTOPBOXES), [ setMode ])
 
 
     const addEntity = useCallback(async (update: () => void) => {
-        let promptInput = prompt(`추가할 ${ mode === Mode.PRODUCTS ? '광고 상품' : '셋톱박스' }의 이름을 입력해주세요.`)
+        let promptInput = prompt(`추가할 ${ mode === Mode.CATEGORIES ? '광고 상품' : '셋톱박스' }의 이름을 입력해주세요.`)
         if(!promptInput) return;
 
-        mode === Mode.PRODUCTS ? 
-            await addProduct({ name: promptInput, availability: true }) : 
+        mode === Mode.CATEGORIES ?
+            await addCategory({ name: promptInput, availability: true }) :
             await addSetTopBox({ name: promptInput });
         update();
     }, [ mode ]);
 
 
-    const entityToJSX : EntityToJSXFunction<AdvertisementProduct | SetTopBox> = useCallback(async ({ id }, update) => {
+    const entityToJSX : EntityToJSXFunction<ProductCategory | SetTopBox> = useCallback(async ({ id }, update) => {
         return [
             <div key={ `${id}-delete` }
                 className='button red' 
                 onClick={ async () => { 
-                    mode === Mode.PRODUCTS ? await deleteProduct(id) : await deleteSetTopBox(id);
+                    mode === Mode.CATEGORIES ? await deleteCategories(id) : await deleteSetTopBox(id);
                     update() 
                 } }
             >삭제</div>,
             <div key={ `${id}-info` }
                 className='button darkblue'
                 onClick={ () => { 
-                    window.location.href = `/${mode === Mode.PRODUCTS ? 'products' : 'setTopBoxes'}?id=${id}` 
+                    window.location.href = `/${mode === Mode.CATEGORIES ? 'categories' : 'setTopBoxes'}?id=${id}`
                 } }
             >정보</div>
         ]
@@ -65,7 +65,7 @@ const MainPageTableDiv : React.FC = () => {
 
 
     const getTableHeadColumn : (update: () => void) => TableHeadColumns = useCallback((update) => [
-        <>{ mode === Mode.PRODUCTS ? '광고 상품 이름' : '셋톱박스 이름' }</>, 
+        <>{ mode === Mode.CATEGORIES ? '광고 상품 이름' : '셋톱박스 이름' }</>,
         [
             <div className='button blue' onClick={ () => addEntity(update) }>추가하기</div>, 
             2
@@ -73,12 +73,12 @@ const MainPageTableDiv : React.FC = () => {
     ], [ mode, addEntity ]);
 
 
-    const productTable = (
-        <EntityTable<AdvertisementProduct>
+    const categoryTable = (
+        <EntityTable<ProductCategory>
             mode={ mode }
             tableHeadColumn={ getTableHeadColumn }
-            getEntityCount={ getProductsCount }
-            getEntitiesPage={ getProductsPage }
+            getEntityCount={ getCategoriesCount }
+            getEntitiesPage={ getCategoriesPage }
             entityToJSX={ entityToJSX } 
         />
     )
@@ -96,8 +96,8 @@ const MainPageTableDiv : React.FC = () => {
     return <div className='main-page-table-div'>
         <div className='buttons'>
             <MainPageTableModeButton 
-                highlight={ mode === Mode.PRODUCTS }
-                callback={ setModeAsProducts }
+                highlight={ mode === Mode.CATEGORIES }
+                callback={ setModeAsCategories }
             >
                 광고 상품
             </MainPageTableModeButton>
@@ -108,7 +108,7 @@ const MainPageTableDiv : React.FC = () => {
                 셋톱박스
             </MainPageTableModeButton>
         </div>
-        { mode === Mode.PRODUCTS ? productTable : setTopBoxTable }
+        { mode === Mode.CATEGORIES ? categoryTable : setTopBoxTable }
         
     </div>
 }

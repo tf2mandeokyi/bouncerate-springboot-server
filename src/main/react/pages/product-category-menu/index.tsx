@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
-import { AdvertisementProduct, getProduct } from '../../api/products';
+import { ProductCategory, getProduct } from '../../api/products';
 import { getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
 import EntityTable, { EntityToJSXFunction } from '../../components/entity-table';
 
 
-const AdvertisementProductMenu : React.FC = () => {
+const ProductCategoryMenu : React.FC = () => {
 
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const productId = parseInt(params.get('id') ?? '-1');
+    const categoryId = parseInt(params.get('id') ?? '-1');
 
-    const [ product, setProduct ] = useState<AdvertisementProduct>();
+    const [ product, setProduct ] = useState<ProductCategory>();
     const [ updateBool, setUpdateBool ] = useState<boolean>();
 
 
@@ -22,14 +22,14 @@ const AdvertisementProductMenu : React.FC = () => {
         let newBounceRate = parseFloat(prompt('새로운 Bounce rate 값을 입력해주세요.') as string);
         if(isNaN(newBounceRate)) return;
 
-        await setBounceRate({ productId, setTopBoxId: setTopBox.id }, newBounceRate);
+        await setBounceRate({ categoryId, setTopBoxId: setTopBox.id }, newBounceRate);
         update();
         setUpdateBool(true);
-    }, [ productId ]);
+    }, [ categoryId ]);
 
 
     const entityToJSX : EntityToJSXFunction<SetTopBox> = useCallback(async (setTopBox, update) => {
-        let bounceRate = await getBounceRate({ productId, setTopBoxId: setTopBox.id });
+        let bounceRate = await getBounceRate({ categoryId, setTopBoxId: setTopBox.id });
         return [ 
             <>{ bounceRate ?? '-' }</>, 
             <div 
@@ -40,17 +40,17 @@ const AdvertisementProductMenu : React.FC = () => {
                 수정
             </div>
         ]
-    }, [ productId, onBounceRateEditButtonClick ]);
+    }, [ categoryId, onBounceRateEditButtonClick ]);
 
 
     useEffect(() => {
         (async () => {
-            setProduct(await getProduct(productId));
+            setProduct(await getProduct(categoryId));
         })();
         if(updateBool) {
             setUpdateBool(false);
         }
-    }, [ productId, setProduct, updateBool ]);
+    }, [ categoryId, setProduct, updateBool ]);
 
 
     return product ? (
@@ -73,4 +73,4 @@ const AdvertisementProductMenu : React.FC = () => {
     
 }
 
-export default AdvertisementProductMenu;
+export default ProductCategoryMenu;
