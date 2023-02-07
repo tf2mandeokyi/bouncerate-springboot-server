@@ -1,11 +1,9 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
-import com.mndk.bouncerate.db.SetTopBox;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.NullValidator;
-import com.mndk.bouncerate.util.StringRandomizer;
 import com.mndk.bouncerate.util.ValueWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +25,9 @@ public class SetTopBoxController {
 
     @GetMapping("")
     @ResponseBody
-    public List<SetTopBox> getMany(
+    public List<SetTopBoxesDAO.SetTopBox> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
-            @RequestParam(value = "page", defaultValue = "1") int pageNum
+            @RequestParam(value = "page",  defaultValue = "1")  int pageNum
     ) {
         if(count == -1) {
             return setTopBoxesDAO.getAll();
@@ -43,19 +41,19 @@ public class SetTopBoxController {
     }
 
 
-    record AddSetTopBoxBody(String name) {}
+    record AddSetTopBoxBody(String location) {}
     @PostMapping("")
     public void addOneOrMany(
             @RequestParam(value = "random", defaultValue = "false") boolean random,
-            @RequestParam(value = "count", defaultValue = "1") int count,
-            @RequestBody(required = false) AddSetTopBoxBody requestBody
+            @RequestParam(value = "count",  defaultValue = "1")     int count,
+            @RequestBody (required = false)                         AddSetTopBoxBody requestBody
     ) {
         if(random) {
             for (int i = 0; i < count; i++) {
-                setTopBoxesDAO.addSetTopBox(StringRandomizer.nextAZaz09String(5));
+                setTopBoxesDAO.addSetTopBox(null);
             }
         } else if(requestBody != null) {
-            setTopBoxesDAO.addSetTopBox(requestBody.name);
+            setTopBoxesDAO.addSetTopBox(requestBody.location);
         } else {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
@@ -64,21 +62,11 @@ public class SetTopBoxController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public SetTopBox getOne(@PathVariable("id") int id) {
+    public SetTopBoxesDAO.SetTopBox getOne(@PathVariable("id") int id) {
         return NullValidator.check(
                 setTopBoxesDAO.getSetTopBox(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
         );
-    }
-
-
-    record UpdateSetTopBoxBody(String name) {}
-    @PostMapping("/{id}")
-    public void updateOne(
-            @PathVariable("id") int id,
-            @RequestBody UpdateSetTopBoxBody requestBody
-    ) {
-        if(requestBody.name != null) setTopBoxesDAO.updateName(id, requestBody.name);
     }
 
 

@@ -1,15 +1,14 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.ProductCategory;
-import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.MinMax;
 import com.mndk.bouncerate.util.ValueWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/bounceRates")
@@ -22,46 +21,14 @@ public class BounceRateController {
     @Autowired SetTopBoxesDAO setTopBoxesDAO;
 
 
-    @GetMapping("/category/{categoryId}")
-    @ResponseBody
-    public Map<String, Float> getBounceRatesOfCategory(@PathVariable("categoryId") int categoryId) {
-        var bounceRateMap = bounceRateDAO.getBounceRatesOfCategory(categoryId);
-        Map<String, Float> result = new HashMap<>();
-
-        for(var bounceRateEntry : bounceRateMap.entrySet()) {
-            result.put(bounceRateEntry.getKey() + "", bounceRateEntry.getValue());
-        }
-        return result;
-    }
-
-
-    @GetMapping("/setTopBox/{setTopBoxId}")
-    @ResponseBody
-    public Map<String, Float> getBounceRatesOfSetTopBox(
-            @PathVariable("setTopBoxId")   int setTopBoxId
-    ) {
-        var bounceRateEntryList = bounceRateDAO.getBounceRatesOfSetTopBox(setTopBoxId);
-        Map<String, Float> result = new HashMap<>();
-
-        for(var bounceRateEntry : bounceRateEntryList.entrySet()) {
-            result.put(bounceRateEntry.getKey() + "", bounceRateEntry.getValue());
-        }
-        return result;
-    }
-
-
     @PostMapping("/setTopBox/{setTopBoxId}/randomize")
     public void randomizeBounceRatesOfSetTopBox(
-            @PathVariable("setTopBoxId")   int setTopBoxId,
-            @RequestBody MinMax<Integer> bounceRateMinMax
+            @PathVariable("setTopBoxId")    int setTopBoxId,
+            @RequestBody                    MinMax<Double> bounceRateMinMax
     ) {
-        List<ProductCategory> categories = categoryDAO.getAll();
-        List<Integer> categoryIdList = categories.stream().map(ProductCategory::id).toList();
-        
-        insertRandomizedBounceRates(
-                categoryIdList, Collections.singletonList(setTopBoxId),
-                bounceRateMinMax.min(), bounceRateMinMax.max()
-        );
+        double randomStart = bounceRateMinMax.min();
+        double randomSize = bounceRateMinMax.max() - bounceRateMinMax.min();
+        bounceRateDAO.randomizeBounceRatesOfSetTopBox(setTopBoxId, randomStart, randomSize);
     }
 
 
@@ -89,23 +56,13 @@ public class BounceRateController {
     public void setBounceRatesRandom(
             @RequestBody MinMax<Integer> bounceRateMinMax
     ) {
-        List<ProductCategory> categories = categoryDAO.getAll();
-        List<Integer> categoryIdList = categories.stream().map(ProductCategory::id).toList();
-        List<Integer> setTopBoxIdList = setTopBoxesDAO.getAllIds();
-        insertRandomizedBounceRates(
-                categoryIdList, setTopBoxIdList,
-                bounceRateMinMax.min(), bounceRateMinMax.max()
-        );
-    }
+        double randomStart = bounceRateMinMax.min();
+        double randomSize = bounceRateMinMax.max() - bounceRateMinMax.min();
 
-
-    private void insertRandomizedBounceRates(
-            List<Integer> categoryIdList, List<Integer> setTopBoxIdList, float min, float max
-    ) {
-        Random random = new Random();
-        for(int categoryId : categoryIdList) for(int setTopBoxId : setTopBoxIdList) {
-            this.setBounceRate(categoryId, setTopBoxId, random.nextFloat(min, max));
+        List<ProductCategoryDAO.ProductCategory> categories = categoryDAO.getAll();
+        List<Integer> categoryIdList = categories.stream().map(ProductCategoryDAO.ProductCategory::id).toList();
+        for(int categoryId : categoryIdList) {
+            bounceRateDAO.randomizeBounceRatesOfCategory(categoryId, randomStart, randomSize);
         }
     }
-
 }

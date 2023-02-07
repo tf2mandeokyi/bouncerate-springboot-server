@@ -31,7 +31,7 @@ export async function deleteCategory(id: number) {
 }
 
 
-export async function getCategory(params?: {
+export async function getPriority(params?: {
     count?: number, 
     forceUpdate?: boolean 
 }) : Promise<ProductCategory[]> {

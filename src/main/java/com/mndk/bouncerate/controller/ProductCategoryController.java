@@ -1,7 +1,6 @@
 package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.db.BounceRateDAO;
-import com.mndk.bouncerate.db.ProductCategory;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.util.NullValidator;
 import com.mndk.bouncerate.util.ValueWrapper;
@@ -24,7 +23,7 @@ public class ProductCategoryController {
 
     @GetMapping("")
     @ResponseBody
-    public List<ProductCategory> getMany(
+    public List<ProductCategoryDAO.ProductCategory> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page", defaultValue = "1")   int pageNum
     ) {
@@ -53,7 +52,7 @@ public class ProductCategoryController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ProductCategory getOne(@PathVariable("id") int id) {
+    public ProductCategoryDAO.ProductCategory getOne(@PathVariable("id") int id) {
         return NullValidator.check(
                 categoryDAO.getOne(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
@@ -78,18 +77,24 @@ public class ProductCategoryController {
     }
 
 
+    @GetMapping("/{id}/score")
+    @ResponseBody
+    public ValueWrapper<Double> getBounceRateScore(
+            @PathVariable("id")         int id,
+            @RequestParam("br_min")     double minBounceRate,
+            @RequestParam("br_max")     double maxBounceRate
+    ) {
+        return new ValueWrapper<>(
+                bounceRateDAO.getBounceRateCountOfCategory(
+                        id, minBounceRate, maxBounceRate
+                ).getScore()
+        );
+    }
+
+
     @GetMapping("/count")
     @ResponseBody
     public ValueWrapper<Integer> getCount() {
         return new ValueWrapper<>(categoryDAO.getCount());
-    }
-
-
-    @GetMapping("/getPriority")
-    @ResponseBody
-    public List<ProductCategory> getPriority(
-            @RequestParam(value = "count", defaultValue = "3") int count
-    ) {
-        return categoryDAO.getBulk_orderByScore(count, 0);
     }
 }

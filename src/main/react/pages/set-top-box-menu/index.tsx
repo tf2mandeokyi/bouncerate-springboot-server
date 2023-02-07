@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
-import { ProductCategory, getProductsCount, getProductsPage } from '../../api/products';
+import { ProductCategory, getCategoriesCount, getCategoriesPage } from '../../api/categories';
 import { getSetTopBox, randomizeBounceRatesOfSetTopBox, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
@@ -25,7 +25,7 @@ const SetTopBoxMenu : React.FC = () => {
     }, [ setTopBoxId ]);
 
 
-    const entityToJSX : EntityToJSXFunction<ProductCategory> = useCallback(async (product, update) => {
+    const entityToJSX : EntityToJSXFunction<ProductCategory> = useCallback(async (category, update) => {
         let bounceRate = await getBounceRate({ categoryId: category.id, setTopBoxId });
         return [ 
             <>{ bounceRate ?? '-' }</>, 

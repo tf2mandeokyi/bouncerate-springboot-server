@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import EntityTable, { EntityToJSXFunction, TableHeadColumns } from '../../components/entity-table';
-import { addCategory, ProductCategory, deleteCategory, getCategoriesCount, getCategoriesPage } from '../../api/products';
+import { addCategory, ProductCategory, deleteCategory, getCategoriesCount, getCategoriesPage } from '../../api/categories';
 import { addSetTopBox, deleteSetTopBox, getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 
 import './index.scss'
@@ -50,7 +50,7 @@ const MainPageTableDiv : React.FC = () => {
             <div key={ `${id}-delete` }
                 className='button red' 
                 onClick={ async () => { 
-                    mode === Mode.CATEGORIES ? await deleteCategories(id) : await deleteSetTopBox(id);
+                    mode === Mode.CATEGORIES ? await deleteCategory(id) : await deleteSetTopBox(id);
                     update() 
                 } }
             >삭제</div>,

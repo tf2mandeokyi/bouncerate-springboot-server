@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ProductCategory } from '../../../api/products';
+import { ProductCategory } from '../../../api/categories';
 import NameAndId from '../../../components/name-and-id';
 
 

@@ -1,7 +1,7 @@
 package com.mndk.bouncerate.config;
 
-import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -51,16 +51,24 @@ public class JdbiConfiguration {
 
     @Bean
     public ProductCategoryDAO productCategoryDAO(Jdbi jdbi) {
-        return jdbi.onDemand(ProductCategoryDAO.class);
-    }
-
-    @Bean
-    public BounceRateDAO bounceRateDAO(Jdbi jdbi) {
-        return jdbi.onDemand(BounceRateDAO.class);
+        var result = jdbi.onDemand(ProductCategoryDAO.class);
+        result.initializeTable();
+        return result;
     }
 
     @Bean
     public SetTopBoxesDAO setTopBoxesDAO(Jdbi jdbi) {
-        return jdbi.onDemand(SetTopBoxesDAO.class);
+        var result = jdbi.onDemand(SetTopBoxesDAO.class);
+        result.initializeTable();
+        return result;
+    }
+
+    @Bean
+    public BounceRateDAO bounceRateDAO(
+            Jdbi jdbi, ProductCategoryDAO productCategoryDAO, SetTopBoxesDAO setTopBoxesDAO
+    ) {
+        var result = jdbi.onDemand(BounceRateDAO.class);
+        result.initializeTable();
+        return result;
     }
 }

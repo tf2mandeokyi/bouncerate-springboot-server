@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { ProductCategory, getPriority } from '../../../api/products';
-import ProductRankingTable from './table';
+import { ProductCategory, getPriority } from '../../../api/categories';
+import CategoryRankingTable from './table';
 
 import './index.scss'
 

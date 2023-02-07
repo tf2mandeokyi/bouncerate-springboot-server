@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
-import { ProductCategory, getProduct } from '../../api/products';
+import { ProductCategory, getCategory } from '../../api/categories';
 import { getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
 import BackToHome from '../../components/back-to-home';
 import EntityDescriptionTable from '../../components/entity-description';
@@ -45,7 +45,7 @@ const ProductCategoryMenu : React.FC = () => {
 
     useEffect(() => {
         (async () => {
-            setProduct(await getProduct(categoryId));
+            setProduct(await getCategory(categoryId));
         })();
         if(updateBool) {
             setUpdateBool(false);
