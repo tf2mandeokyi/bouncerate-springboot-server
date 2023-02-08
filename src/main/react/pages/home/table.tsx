@@ -79,7 +79,8 @@ const MainPageTableDiv : React.FC = () => {
             tableHeadColumn={ getTableHeadColumn }
             getEntityCount={ getCategoriesCount }
             getEntitiesPage={ getCategoriesPage }
-            entityToJSX={ entityToJSX } 
+            entityToJSX={ entityToJSX }
+            selectable={ false }
         />
     )
     const setTopBoxTable = (
@@ -89,6 +90,7 @@ const MainPageTableDiv : React.FC = () => {
             getEntityCount={ getSetTopBoxesCount }
             getEntitiesPage={ getSetTopBoxesPage }
             entityToJSX={ entityToJSX } 
+            selectable={ false }
         />
     )
 

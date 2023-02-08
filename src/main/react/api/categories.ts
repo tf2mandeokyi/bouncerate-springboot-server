@@ -4,8 +4,6 @@ import { fetchFromApi } from ".";
 export interface ProductCategory {
     id: number;
     name: string;
-    availability: boolean;
-    bounceRateScore: number;
 }
 
 

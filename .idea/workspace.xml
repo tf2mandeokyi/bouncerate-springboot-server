@@ -4,25 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="rest api: Implement page-get + row-update system">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ScheduleTableDAO.java" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Multiple changes">
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/index-list/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/index-list/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/misc.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/product-category-/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/react-app-env.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/AdministrativeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ProductCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ProductCategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ProductCategory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ProductCategoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ProductCategoryDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBox.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/api/categories.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/categories.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/buttons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/back-to-home/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/back-to-home/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/title/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674314505412</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Multiple changes">
+      <created>1675770384988</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1675770384988</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -329,6 +346,7 @@
     <MESSAGE value="rest api: ../bounceRates/setRandom -&gt; ../bounceRates/randomize" />
     <MESSAGE value="Attach react into spring boot" />
     <MESSAGE value="rest api: Implement page-get + row-update system" />
-    <option name="LAST_COMMIT_MESSAGE" value="rest api: Implement page-get + row-update system" />
+    <MESSAGE value="Multiple changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Multiple changes" />
   </component>
 </project>

@@ -3,7 +3,8 @@ import { fetchFromApi } from ".";
 
 export interface SetTopBox {
     id: number;
-    name: string;
+    uuid: string;
+    location?: string;
 }
 
 

@@ -1,13 +1,14 @@
 import React from 'react'
-import MainPageTableDiv from './table';
-import CategoryRanking from '../product-category-menu/product-ranking';
+import Title from '../../components/title';
 
 
 const Home : React.FC = () => {
-    return <>
-        <CategoryRanking />
-        <MainPageTableDiv />
-    </>
+    return (
+        <div className='page-content'>
+            <Title>홈쇼핑 광고 편성표</Title>
+            {/* <ScheduleTable /> */}
+        </div>
+    )
 }
 
 export default Home;

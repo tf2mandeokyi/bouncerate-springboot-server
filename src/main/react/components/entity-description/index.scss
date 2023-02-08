@@ -1,10 +1,23 @@
 .entity-description-table {
     border-collapse: collapse;
+    flex: none;
+    align-self: stretch;
     
     tr {
-        td:first-child {
-            font-weight: 600;
-            padding-right: 10px;
+        height: 40px;
+        
+        td {
+            &:first-child {
+                width: 200px;
+
+                text-align: center;
+                font-weight: 600;
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            &:not(:first-child) {
+                padding-left: 20px;
+            }
         }
     }
 }
