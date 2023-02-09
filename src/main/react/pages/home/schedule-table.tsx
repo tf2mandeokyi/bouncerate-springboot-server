@@ -115,9 +115,7 @@ const MainPageScheduleTable : React.FC = () => {
 
     const getBounceRateList = useCallback((type: keyof TimeSlotBounceRate) => {
         let calculation: BounceRateCalculation = {
-            result: [
-                { onlyDefault: 50, withAlt: 50 }
-            ]
+            result: []
         }
 
         return timeSlotName.map((e, i) => {

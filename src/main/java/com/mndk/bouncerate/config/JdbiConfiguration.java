@@ -1,9 +1,6 @@
 package com.mndk.bouncerate.config;
 
-import com.mndk.bouncerate.db.BounceRateDAO;
-import com.mndk.bouncerate.db.ProductCategoryDAO;
-import com.mndk.bouncerate.db.ScheduleTableDAO;
-import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.db.*;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
@@ -69,6 +66,11 @@ public class JdbiConfiguration {
         var result = jdbi.onDemand(ScheduleTableDAO.class);
         result.initializeTable();
         return result;
+    }
+
+    @Bean
+    public TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO(Jdbi jdbi) {
+        return jdbi.onDemand(TemporaryBounceRateCalculationDAO.class);
     }
 
     @Bean

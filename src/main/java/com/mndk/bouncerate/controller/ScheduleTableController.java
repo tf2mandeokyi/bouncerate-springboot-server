@@ -1,6 +1,7 @@
 package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.db.ScheduleTableDAO;
+import com.mndk.bouncerate.db.TemporaryBounceRateCalculationDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class ScheduleTableController {
 
 
     @Autowired ScheduleTableDAO scheduleTableDAO;
+    @Autowired TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO;
 
 
     record ScheduleTable(Integer[][] table) {}
@@ -64,6 +66,22 @@ public class ScheduleTableController {
     public void deleteDefaultStreamSchedule(@RequestParam(value = "slotId") int slotId) {
         validateTimeSlot(slotId);
         scheduleTableDAO.deleteNode(slotId, 0);
+    }
+
+
+    @PostMapping("/calculate")
+    public void calculateBounceRate(@RequestParam(value = "slotId") int slotId) {
+        synchronized (temporaryBounceRateCalculationDAO) {
+            System.out.println("Bouncerate calculation start");
+
+            temporaryBounceRateCalculationDAO.initialize(slotId, 0, 30);
+            System.out.println("Initialization done");
+
+            for (int i = 0; i < ScheduleTableDAO.ALT_STREAM_COUNT; i++) {
+                temporaryBounceRateCalculationDAO.loop(slotId, i + 1, 0, 30);
+                System.out.println("Loop #" + (i + 1) + " done");
+            }
+        }
     }
 
 
