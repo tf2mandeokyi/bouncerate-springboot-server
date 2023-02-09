@@ -32,12 +32,14 @@ public interface SetTopBoxesDAO {
         }
     }
 
+
     String SETTOPBOX_QUERY = """
             SELECT  `id`,
                     BIN_TO_UUID(`uuid_bin`) AS `uuid`,
                     `location`
             FROM `settopboxes`
     """;
+
 
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `settopboxes` (

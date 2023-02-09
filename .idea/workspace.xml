@@ -5,34 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Multiple changes">
-      <change afterPath="$PROJECT_DIR$/src/main/react/components/index-list/index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/components/index-list/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/misc.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/pages/product-category-/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box/index.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/react-app-env.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ScheduleTableController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/redux/categoryListSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ProductCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ProductCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SetTopBoxController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ProductCategoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ProductCategoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ScheduleTableDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/ScheduleTableDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/SetTopBoxesDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/NullValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/Validator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/api/categories.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/categories.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/buttons.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/back-to-home/index.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/back-to-home/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/colors.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/colors.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/name-and-id/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/title/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/index-list/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/index-list/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/inputs.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/inputs.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category-menu/product-ranking/table.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box-menu/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/product-category/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/set-top-box/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/redux/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/redux/store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

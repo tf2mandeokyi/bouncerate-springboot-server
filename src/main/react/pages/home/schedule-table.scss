@@ -1,0 +1,71 @@
+@import '../../colors.scss';
+
+
+.schedule-table-wrapper {
+    width: 100%;
+    flex: none;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+
+        thead {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        tr {
+            height: 50px;
+            td {
+                min-width: 150px;
+
+                &:nth-child(2n-1):not(:first-child) {
+                    background-color: rgba(0, 0, 0, 0.05);
+                }
+                &:first-child {
+                    border-right: 1px solid rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            &:nth-child(2) {
+                border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
+            }
+
+            &.br-exp {
+                height: 35px;
+                background-color: rgba(255, 217, 0, 0.15);
+            }
+        }
+
+        /*
+        tr {
+            height: 50px;
+            td {
+                min-width: 150px;
+
+                &:first-child {
+                    border-right: 1px solid rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            &:nth-child(2) {
+                border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
+            }
+
+            &:not(.br-exp) {
+                td:nth-child(2n-1):not(:first-child) {
+                    background-color: rgba(0, 0, 0, 0.05);
+                }
+            }
+            &.br-exp {
+                height: 35px;
+                td {
+                    background-color: rgba(0, 0, 0, 0.1);
+                }
+            }
+        }
+        */
+    }
+}

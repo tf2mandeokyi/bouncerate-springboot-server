@@ -1,0 +1,32 @@
+@import '../../colors.scss';
+
+
+.non-table {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    align-self: stretch;
+    justify-content: space-between;
+
+    .br-control {
+        .control-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            padding: 5px 30px;
+
+            &.right {
+                flex-direction: row-reverse;
+            }
+
+            &.gray {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        }
+    }
+    .expected-br-span {
+        color: #0037ff;
+        font-size: 20px;
+    }
+}

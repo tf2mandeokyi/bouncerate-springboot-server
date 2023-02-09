@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { categoryListSlice } from "./categoryListSlice";
 import { currentIdSlice } from "./currentIdSlice";
 
 export const store = configureStore({
     reducer: {
-        currentId: currentIdSlice.reducer
+        currentId: currentIdSlice.reducer,
+        categoryList: categoryListSlice.reducer
     }
 })
 

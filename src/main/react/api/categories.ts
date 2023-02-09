@@ -43,6 +43,12 @@ export async function getPriority(params?: {
 }
 
 
+export async function getAllCategories() : Promise<ProductCategory[]> {
+    let response = await fetchFromApi(`/api/v1/categories`);
+    return await response.json();
+}
+
+
 export async function getCategoriesPage(count: number, pageNum: number) : Promise<ProductCategory[]> {
     let response = await fetchFromApi(`/api/v1/categories?count=${count}&page=${pageNum}`);
     return await response.json();

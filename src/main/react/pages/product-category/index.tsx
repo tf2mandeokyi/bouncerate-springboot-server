@@ -42,7 +42,7 @@ const ProductCategoryInformation : React.FC = () => {
             <>{ bounceRate ? padDecimal(bounceRate, 2) : '-' } %</>, 
             <div 
                 key={ setTopBox.id } 
-                className='button darkblue'
+                className='button gray'
                 onClick={ () => onBounceRateEditButtonClick(setTopBox, update) }
             >
                 수정
@@ -66,10 +66,11 @@ const ProductCategoryInformation : React.FC = () => {
             <div onClick={() => dispatch(resetCurrentId())} className='x-sign' />
             { category ? <>
                 <EntityDescriptionTable>
+                    <tr><td colSpan={ 2 }>상품 그룹 상세정보</td></tr>
                     <tr><td>상품 그룹명</td><td>{ category.name }</td></tr>
                 </EntityDescriptionTable>
                 <EntityTable<SetTopBox>
-                    tableHeadColumn={ [ <>셋톱박스 UUID</>, <>Bounce rate</> ] }
+                    tableHeadColumn={ [ <>셋톱박스 UUID</>, [ <>Bounce rate</>, 2 ] ] }
                     getEntityCount={ getSetTopBoxesCount }
                     getEntitiesPage={ getSetTopBoxesPage }
                     entityToJSX={ entityToJSX }
@@ -97,10 +98,10 @@ const ProductCategoryList : React.FC = () => {
     }, []);
 
     return <>
-        <div className={ typeof currentIdState.id !== 'undefined' ? 'sub-page-content' : 'page-content' }>
+        <div className='sub-page-content'>
             <Title>상품 그룹 목록</Title>
             <EntityTable<ProductCategory>
-                tableHeadColumn={ [ <>상품 그룹명</>, <>B.R. 값</> ] }
+                tableHeadColumn={ [ <>상품 그룹명</>, <>Bounce rate 값</> ] }
                 getEntityCount={ getCategoriesCount }
                 getEntitiesPage={ getCategoriesPage }
                 entityToJSX={ entityToJSX }

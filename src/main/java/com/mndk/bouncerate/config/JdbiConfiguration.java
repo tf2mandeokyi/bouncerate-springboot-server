@@ -2,6 +2,7 @@ package com.mndk.bouncerate.config;
 
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ScheduleTableDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
@@ -59,6 +60,13 @@ public class JdbiConfiguration {
     @Bean
     public SetTopBoxesDAO setTopBoxesDAO(Jdbi jdbi) {
         var result = jdbi.onDemand(SetTopBoxesDAO.class);
+        result.initializeTable();
+        return result;
+    }
+
+    @Bean
+    public ScheduleTableDAO scheduleTableDAO(Jdbi jdbi) {
+        var result = jdbi.onDemand(ScheduleTableDAO.class);
         result.initializeTable();
         return result;
     }

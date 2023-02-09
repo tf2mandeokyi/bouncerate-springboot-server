@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { getBounceRate, setBounceRate } from '../../api/bouncerate';
 import { ProductCategory, getCategoriesCount, getCategoriesPage } from '../../api/categories';
 import { getSetTopBox, getSetTopBoxesCount, getSetTopBoxesPage, SetTopBox } from '../../api/settopboxes';
-import EntityTable, { EntityToJSXFunction } from '../../components/entity-table';
-import EntityDescriptionTable from '../../components/entity-description';
-import Title from '../../components/title';
 import { padDecimal } from '../../utils/math';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { resetCurrentId } from '../../redux/currentIdSlice';
+import EntityTable, { EntityToJSXFunction } from '../../components/entity-table';
+import EntityDescriptionTable from '../../components/entity-description';
+import Title from '../../components/title';
 
 
 const SetTopBoxInformation : React.FC = () => {
@@ -42,7 +42,7 @@ const SetTopBoxInformation : React.FC = () => {
             <>{ bounceRate ? padDecimal(bounceRate, 2) : '-' } %</>, 
             <div 
                 key={ category.id } 
-                className='button darkblue'
+                className='button gray'
                 onClick={ () => onBounceRateEditButtonClick(category, update) }
             >
                 수정
@@ -66,10 +66,12 @@ const SetTopBoxInformation : React.FC = () => {
             <div onClick={() => dispatch(resetCurrentId())} className='x-sign' />
             { setTopBox ? <>
                 <EntityDescriptionTable>
+                    <tr><td colSpan={ 2 }>셋톱박스 상세정보</td></tr>
                     <tr><td>셋톱박스 UUID</td><td>{ setTopBox.uuid }</td></tr>
+                    <tr><td>셋톱박스 위치</td><td>{ setTopBox.location ?? '-' }</td></tr>
                 </EntityDescriptionTable>
                 <EntityTable<ProductCategory>
-                    tableHeadColumn={ [ <>셋톱박스 UUID</>, <>Bounce rate</> ] }
+                    tableHeadColumn={ [ <>상품 그룹명</>, [ <>Bounce rate</>, 2 ] ] }
                     getEntityCount={ getCategoriesCount }
                     getEntitiesPage={ getCategoriesPage }
                     entityToJSX={ entityToJSX }
@@ -96,7 +98,7 @@ const SetTopBoxList : React.FC = () => {
     }, []);
 
     return <>
-        <div className={ typeof currentIdState.id !== 'undefined' ? 'sub-page-content' : 'page-content' }>
+        <div className='sub-page-content'>
             <Title>셋톱박스 목록</Title>
             <EntityTable<SetTopBox>
                 tableHeadColumn={ [ <>셋톱박스 UUID</>, <>셋톱박스 위치</> ] }

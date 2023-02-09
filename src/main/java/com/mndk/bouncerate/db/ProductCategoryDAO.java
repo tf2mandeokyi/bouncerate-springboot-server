@@ -28,9 +28,12 @@ public interface ProductCategoryDAO {
             }
         }
     }
+
+
     String CATEGORY_QUERY = """
             SELECT * FROM `product_categories`
     """;
+
 
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `product_categories` (

@@ -3,7 +3,7 @@ package com.mndk.bouncerate.controller;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
-import com.mndk.bouncerate.util.NullValidator;
+import com.mndk.bouncerate.util.Validator;
 import com.mndk.bouncerate.util.ValueWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,7 +63,7 @@ public class SetTopBoxController {
     @GetMapping("/{id}")
     @ResponseBody
     public SetTopBoxesDAO.SetTopBox getOne(@PathVariable("id") int id) {
-        return NullValidator.check(
+        return Validator.checkNull(
                 setTopBoxesDAO.getSetTopBox(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
         );
