@@ -1,8 +1,6 @@
 package com.mndk.bouncerate.config;
 
-import com.mndk.bouncerate.db.AdvertisementProductDAO;
-import com.mndk.bouncerate.db.BounceRateDAO;
-import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.db.*;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
@@ -17,7 +15,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
-@ComponentScan(basePackageClasses = AdvertisementProductDAO.class)
+@ComponentScan(basePackageClasses = ProductCategoryDAO.class)
 @PropertySource("file:application.properties")
 @SuppressWarnings("unused")
 public class JdbiConfiguration {
@@ -50,17 +48,37 @@ public class JdbiConfiguration {
     }
 
     @Bean
-    public AdvertisementProductDAO productDAO(Jdbi jdbi) {
-        return jdbi.onDemand(AdvertisementProductDAO.class);
-    }
-
-    @Bean
-    public BounceRateDAO bounceRateDAO(Jdbi jdbi) {
-        return jdbi.onDemand(BounceRateDAO.class);
+    public ProductCategoryDAO productCategoryDAO(Jdbi jdbi) {
+        var result = jdbi.onDemand(ProductCategoryDAO.class);
+        result.initializeTable();
+        return result;
     }
 
     @Bean
     public SetTopBoxesDAO setTopBoxesDAO(Jdbi jdbi) {
-        return jdbi.onDemand(SetTopBoxesDAO.class);
+        var result = jdbi.onDemand(SetTopBoxesDAO.class);
+        result.initializeTable();
+        return result;
+    }
+
+    @Bean
+    public ScheduleTableDAO scheduleTableDAO(Jdbi jdbi) {
+        var result = jdbi.onDemand(ScheduleTableDAO.class);
+        result.initializeTable();
+        return result;
+    }
+
+    @Bean
+    public TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO(Jdbi jdbi) {
+        return jdbi.onDemand(TemporaryBounceRateCalculationDAO.class);
+    }
+
+    @Bean
+    public BounceRateDAO bounceRateDAO(
+            Jdbi jdbi, ProductCategoryDAO productCategoryDAO, SetTopBoxesDAO setTopBoxesDAO
+    ) {
+        var result = jdbi.onDemand(BounceRateDAO.class);
+        result.initializeTable();
+        return result;
     }
 }

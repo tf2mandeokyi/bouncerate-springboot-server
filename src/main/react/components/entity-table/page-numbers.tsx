@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import './page-numbers.scss'
+
 
 interface PageNumberProps {
     page: number; 

@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="rest api: Implement page-get + row-update system">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/handler/MysqlExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/util/ExceptionResponse.java" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Multiple changes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/TemporaryBounceRateCalculationDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/handler/HttpStatusCodeExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/handler/HttpExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ScheduleTableController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ScheduleTableController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +78,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -89,20 +96,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_directory_selection": "D:/Desktop/some_programs/Java/default/BounceRate/src/main/java/com/mndk/bouncerate/util",
-    "last_opened_file_path": "D:/Desktop/some_programs/Java/default/BounceRate/src/web/public",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;D:/Desktop/some_programs/Java/default/BounceRate/src/main/java/com/mndk/bouncerate/util&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/some_programs/Java/Forge mods/terraplusplus&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Desktop\some_programs\Java\default\BounceRate\src\web\public" />
@@ -286,11 +293,29 @@
       <option name="project" value="LOCAL" />
       <updated>1674314505412</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Multiple changes">
+      <created>1675770384988</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1675770384988</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.tsx" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -300,6 +325,7 @@
     <MESSAGE value="rest api: ../bounceRates/setRandom -&gt; ../bounceRates/randomize" />
     <MESSAGE value="Attach react into spring boot" />
     <MESSAGE value="rest api: Implement page-get + row-update system" />
-    <option name="LAST_COMMIT_MESSAGE" value="rest api: Implement page-get + row-update system" />
+    <MESSAGE value="Multiple changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Multiple changes" />
   </component>
 </project>
