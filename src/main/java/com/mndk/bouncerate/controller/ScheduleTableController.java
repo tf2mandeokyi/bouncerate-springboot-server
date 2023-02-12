@@ -1,6 +1,7 @@
 package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.service.ScheduleTableService;
+import com.mndk.bouncerate.util.MinMax;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,26 +23,47 @@ public class ScheduleTableController {
     }
 
 
-    @PostMapping("/default")
-    public void setDefaultStreamSchedule(
+    @PostMapping("")
+    public void setStreamSchedule(
             @RequestParam("slotId")         int timeSlotId,
+            @RequestParam("streamNumber")   int streamNumber,
             @RequestParam("categoryId")     int categoryId
     ) {
-        scheduleTableService.setOne(timeSlotId, 0, categoryId);
+        scheduleTableService.setOne(timeSlotId, streamNumber, categoryId);
     }
 
 
     @DeleteMapping("/default")
-    public void deleteDefaultStreamSchedule(@RequestParam("slotId") int timeSlotId) {
-        scheduleTableService.removeOne(timeSlotId, 0);
+    public void deleteStreamSchedule(
+            @RequestParam("slotId")         int timeSlotId,
+            @RequestParam("streamNumber")   int streamNumber
+    ) {
+        scheduleTableService.removeOne(timeSlotId, streamNumber);
     }
 
 
-    @PostMapping("/calculate")
-    public void calculateBounceRateOfTimeSlot(@RequestParam("slotId") int timeSlotId) {
-        // TODO: Include bounce rate range as a RequestBody
-        Integer[] alternativeCategories = scheduleTableService.getAltStreamsOfTimeSlot(timeSlotId, 0, 30);
+    record AlternativeStreamsBody(Integer[] altStreams) {}
+    @PostMapping("/alternatives")
+    @ResponseBody
+    public AlternativeStreamsBody calculateAlternativeStreams(
+            @RequestParam("slotId")     int timeSlotId,
+            @RequestBody                MinMax<Double> bounceRateMinMax
+    ) {
+        Integer[] alternativeCategories = scheduleTableService.getAltStreamsOfTimeSlot(
+                timeSlotId, bounceRateMinMax.min(), bounceRateMinMax.max()
+        );
         scheduleTableService.setAlternatives(timeSlotId, alternativeCategories);
+        return new AlternativeStreamsBody(alternativeCategories);
+    }
+
+
+    @GetMapping("/bounceRate")
+    @ResponseBody
+    public ScheduleTableService.TimeSlotBounceRate getTimeSlotBounceRate(
+            @RequestParam("slotId")     int timeSlotId,
+            @RequestBody                MinMax<Double> bounceRateMinMax
+    ) {
+        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, bounceRateMinMax.min(), bounceRateMinMax.max());
     }
 
 }

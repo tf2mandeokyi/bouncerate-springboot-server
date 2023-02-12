@@ -69,18 +69,6 @@ public interface ProductCategoryDAO {
     );
 
 
-    /**
-     * @param count Category count per page
-     * @param offset Works as same way as mysql's select offset
-     */
-    @SqlQuery("SELECT * FROM `product_categories` ORDER BY bouncerate_score DESC LIMIT :count OFFSET :offset")
-    @UseRowMapper(ProductCategory.Mapper.class)
-    List<ProductCategory> getBulk_orderByScore(
-            @Bind("count")      int count,
-            @Bind("offset")     int offset
-    );
-
-
     @SqlQuery("SELECT * FROM `product_categories` WHERE `id` = :id")
     @UseRowMapper(ProductCategory.Mapper.class)
     ProductCategory getOne(@Bind("id") int categoryId);

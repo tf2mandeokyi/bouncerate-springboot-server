@@ -1,6 +1,7 @@
 package com.mndk.bouncerate.db;
 
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindList;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
@@ -62,9 +63,9 @@ public interface AltStreamCalculationDAO {
 
 
     @SqlUpdate("""
-            INSERT INTO `alt_str_excluded_categories` VALUES (:categoryId);
+            INSERT INTO `alt_str_excluded_categories` VALUES (<categoryIdList>);
     """)
-    void excludeCategory(@Bind("categoryId") int categoryId);
+    void excludeCategory(@BindList("categoryIdList") Integer... categoryId);
 
 
     @SqlUpdate("""
@@ -73,10 +74,14 @@ public interface AltStreamCalculationDAO {
                 SET `captured` = TRUE
                 WHERE B.bouncerate >= :brMin AND B.bouncerate <= :brMax;
     """)
-    void excludeCapturedSetTopBoxes(
+    void setSetTopBoxesCaptured(
             @Bind("categoryId")     int categoryId,
             @Bind("brMin")          double minBounceRate,
             @Bind("brMax")          double maxBounceRate
     );
+
+
+    @SqlQuery("SELECT SUM(`captured`) FROM `alt_str_captured_settopboxes`")
+    int getCurrentCapturedCount();
 
 }

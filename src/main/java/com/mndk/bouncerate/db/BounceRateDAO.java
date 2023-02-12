@@ -1,36 +1,11 @@
 package com.mndk.bouncerate.db;
 
-import org.jdbi.v3.core.mapper.RowMapper;
-import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
-import org.jdbi.v3.sqlobject.statement.UseRowMapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public interface BounceRateDAO {
-
-    record BounceRateCount(
-            int enoughCount,
-            int availableCount
-    ) {
-        public double getScore() {
-            return (enoughCount + 1) / (double) (availableCount + 2);
-        }
-
-        public static class Mapper implements RowMapper<BounceRateCount> {
-            @Override
-            public BounceRateCount map(ResultSet resultSet, StatementContext context) throws SQLException {
-                return new BounceRateCount(
-                        resultSet.getInt("enough_count"),
-                        resultSet.getInt("available_count")
-                );
-            }
-        }
-    }
 
 
     @SqlScript("""
@@ -102,20 +77,11 @@ public interface BounceRateDAO {
     );
 
 
-//    @SqlQuery("""
-//            SELECT  SUM(if(B.`bouncerate` >= :br_min AND B.`bouncerate` <= :br_max, 1, 0)) AS enough_count,
-//                    CAST(COUNT(B.`bouncerate`) AS DECIMAL(30, 10)) AS available_count
-//            FROM `product_categories` A
-//                    LEFT JOIN `bouncerates` B ON B.`category_id`=:category_id
-//            GROUP BY A.id
-//    """)
     @SqlQuery("""
-            SELECT  SUM(if(`bouncerate` >= :br_min AND `bouncerate` <= :br_max, 1, 0)) AS enough_count,
-                    COUNT(*) AS available_count
-            FROM `bouncerates` WHERE `category_id` = :category_id
+            SELECT SUM(if(`bouncerate` >= :br_min AND `bouncerate` <= :br_max, 1, 0)) AS captured_count
+                FROM `bouncerates` WHERE `category_id` = :category_id
     """)
-    @UseRowMapper(BounceRateCount.Mapper.class)
-    BounceRateCount getBounceRateCountOfCategory(
+    int getCapturedCountOfCategory(
             @Bind("category_id")    int categoryId,
             @Bind("br_min")         double minBounceRate,
             @Bind("br_max")         double maxBounceRate
