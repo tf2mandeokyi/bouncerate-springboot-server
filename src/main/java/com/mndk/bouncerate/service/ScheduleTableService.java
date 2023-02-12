@@ -1,11 +1,12 @@
 package com.mndk.bouncerate.service;
 
+import com.mndk.bouncerate.db.AltStreamCalculationDAO;
 import com.mndk.bouncerate.db.ScheduleTableDAO;
-import com.mndk.bouncerate.db.TemporaryBounceRateCalculationDAO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class ScheduleTableService {
 
 
     final ScheduleTableDAO scheduleTableDAO;
-    final TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO;
+    final AltStreamCalculationDAO tableCalculationDAO;
 
 
     // ===== GETTERS =====
@@ -57,7 +58,18 @@ public class ScheduleTableService {
             validateTimeSlot(timeSlotId);
             scheduleTableDAO.insertNode(new ScheduleTableDAO.ScheduleNode(timeSlotId, streamNumber, categoryId));
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public void setAlternatives(int timeSlotId, Integer[] categoryIdList) {
+        validateTimeSlot(timeSlotId);
+        for(int i = 0; i < categoryIdList.length; i++) {
+            Integer category = categoryIdList[i];
+            if(category == null) continue;
+
+            setOne(timeSlotId, i + 1, category);
         }
     }
 
@@ -72,24 +84,46 @@ public class ScheduleTableService {
 
     // ===== MISC =====
 
-    public void calculateBounceRateOfTimeSlot(int timeSlotId) {
-        synchronized (temporaryBounceRateCalculationDAO) {
-            System.out.println("Bouncerate calculation start");
+    /**
+     * @param timeSlotId The ID of the Time slot to calculate the tables
+     * @param minBounceRate Lowest accepted value of the set-top boxes' bounce rate
+     * @param maxBounceRate Highest accepted value of the set-top boxes' bounce rate
+     * @return The list of category IDs for the alternative stream; null if the calculation fails
+     */
+    public Integer[] getAltStreamsOfTimeSlot(int timeSlotId, double minBounceRate, double maxBounceRate) {
+        synchronized (tableCalculationDAO) {
 
-            temporaryBounceRateCalculationDAO.initialize(timeSlotId, 0, 30);
+            System.out.println("Bouncerate calculation start");
+            tableCalculationDAO.resetCalculationTable();
+
+            Integer categoryId = scheduleTableDAO.getCategoryId(timeSlotId, 0);
+            if(categoryId == null) return null;
+
+            tableCalculationDAO.initializeData(categoryId, minBounceRate, maxBounceRate);
+            tableCalculationDAO.excludeCategory(categoryId);
+
             System.out.println("Initialization done");
 
+            Integer[] result = new Integer[ALT_STREAM_COUNT];
+            Arrays.fill(result, null);
+
             for (int i = 0; i < ALT_STREAM_COUNT; i++) {
-                temporaryBounceRateCalculationDAO.loop(timeSlotId, i + 1, 0, 30);
+                Integer altCategoryId = tableCalculationDAO.getCurrentBestCategoryId(timeSlotId, minBounceRate, maxBounceRate);
+                if(altCategoryId == null) return result;
+
+                result[i] = altCategoryId;
+                tableCalculationDAO.excludeCapturedSetTopBoxes(altCategoryId, minBounceRate, maxBounceRate);
+                tableCalculationDAO.excludeCategory(altCategoryId);
                 System.out.println("Loop #" + (i + 1) + " done");
             }
+            return result;
         }
     }
 
 
     private void validateTimeSlot(int timeSlotId) {
         if(timeSlotId < 0 || timeSlotId > TIME_SLOT_COUNT - 1) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid time slot ID!");
         }
     }
 

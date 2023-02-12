@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @SuppressWarnings("unused")
 public class SinglePageController {
 
-    @GetMapping(value = { "/categories", "/setTopBoxes" })
+    @GetMapping({ "/categories", "/setTopBoxes" })
     public String forward404() {
         return "forward:/";
     }

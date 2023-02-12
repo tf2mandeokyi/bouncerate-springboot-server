@@ -54,7 +54,17 @@ public interface ScheduleTableDAO {
     void initializeTable();
 
 
-    @SqlQuery("SELECT * FROM `schedule_table` A")
+    @SqlQuery("""
+            SELECT `category_id` FROM `schedule_table`
+                WHERE `time_slot_id` = :timeSlotId AND `stream_no` = :streamNumber
+    """)
+    Integer getCategoryId(
+            @Bind("timeSlotId")     int timeSlotId,
+            @Bind("streamNumber")   int streamNumber
+    );
+
+
+    @SqlQuery("SELECT * FROM `schedule_table`")
     @UseRowMapper(ScheduleNode.Mapper.class)
     List<ScheduleNode> getAll();
 
@@ -64,7 +74,7 @@ public interface ScheduleTableDAO {
                     VALUES (:node.timeSlotId, :node.streamNumber, :node.categoryId)
                     ON DUPLICATE KEY UPDATE `category_id` = :node.categoryId
     """)
-    void insertNode(@BindBean(value = "node") ScheduleNode node) throws SQLIntegrityConstraintViolationException;
+    void insertNode(@BindBean("node") ScheduleNode node) throws SQLIntegrityConstraintViolationException;
 
 
     @SqlUpdate("""
@@ -72,8 +82,8 @@ public interface ScheduleTableDAO {
                     WHERE `time_slot_id` = :timeSlotId AND `stream_no` = :streamNumber
     """)
     void deleteNode(
-            @Bind(value = "timeSlotId") int timeSlotId,
-            @Bind(value = "streamNumber") int streamNumber
+            @Bind("timeSlotId")     int timeSlotId,
+            @Bind("streamNumber")   int streamNumber
     );
 
     

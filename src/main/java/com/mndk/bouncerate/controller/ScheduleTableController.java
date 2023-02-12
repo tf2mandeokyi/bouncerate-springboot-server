@@ -24,22 +24,24 @@ public class ScheduleTableController {
 
     @PostMapping("/default")
     public void setDefaultStreamSchedule(
-            @RequestParam(value = "slotId")         int timeSlotId,
-            @RequestParam(value = "categoryId")     int categoryId
+            @RequestParam("slotId")         int timeSlotId,
+            @RequestParam("categoryId")     int categoryId
     ) {
         scheduleTableService.setOne(timeSlotId, 0, categoryId);
     }
 
 
     @DeleteMapping("/default")
-    public void deleteDefaultStreamSchedule(@RequestParam(value = "slotId") int timeSlotId) {
+    public void deleteDefaultStreamSchedule(@RequestParam("slotId") int timeSlotId) {
         scheduleTableService.removeOne(timeSlotId, 0);
     }
 
 
     @PostMapping("/calculate")
-    public void calculateBounceRateOfTimeSlot(@RequestParam(value = "slotId") int timeSlotId) {
-        scheduleTableService.calculateBounceRateOfTimeSlot(timeSlotId);
+    public void calculateBounceRateOfTimeSlot(@RequestParam("slotId") int timeSlotId) {
+        // TODO: Include bounce rate range as a RequestBody
+        Integer[] alternativeCategories = scheduleTableService.getAltStreamsOfTimeSlot(timeSlotId, 0, 30);
+        scheduleTableService.setAlternatives(timeSlotId, alternativeCategories);
     }
 
 }

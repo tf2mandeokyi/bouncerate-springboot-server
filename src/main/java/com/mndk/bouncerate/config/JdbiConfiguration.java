@@ -69,8 +69,8 @@ public class JdbiConfiguration {
     }
 
     @Bean
-    public TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO(Jdbi jdbi) {
-        return jdbi.onDemand(TemporaryBounceRateCalculationDAO.class);
+    public AltStreamCalculationDAO temporaryBounceRateCalculationDAO(Jdbi jdbi) {
+        return jdbi.onDemand(AltStreamCalculationDAO.class);
     }
 
     @Bean
