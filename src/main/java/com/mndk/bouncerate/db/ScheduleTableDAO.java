@@ -21,10 +21,6 @@ import java.util.List;
 public interface ScheduleTableDAO {
 
 
-    int TIME_SLOT_COUNT = 6;
-    int ALT_STREAM_COUNT = 3;
-
-
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
     class ScheduleNode {
