@@ -4,14 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Multiple changes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/TemporaryBounceRateCalculationDAO.java" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Set bouncerate store-able">
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ScheduleTableController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/ScheduleTableController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AltStreamCalculationDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/ScheduleTableService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/ScheduleTableService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/buttons.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/inputs.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/inputs.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +309,35 @@
       <option name="project" value="LOCAL" />
       <updated>1675770384988</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Separated service from controller">
+      <created>1676216971297</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1676216971297</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Split multiple queries of alt stream calculation">
+      <created>1676223613545</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1676223613545</updated>
+    </task>
+    <task id="LOCAL-00010" summary="api: Added /api/v1/scheduleTable/bounceRate">
+      <created>1676227193466</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1676227193466</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Set bouncerate store-able">
+      <created>1676287512191</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1676287512191</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -326,6 +363,10 @@
     <MESSAGE value="Attach react into spring boot" />
     <MESSAGE value="rest api: Implement page-get + row-update system" />
     <MESSAGE value="Multiple changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Multiple changes" />
+    <MESSAGE value="Separated service from controller" />
+    <MESSAGE value="Split multiple queries of alt stream calculation" />
+    <MESSAGE value="api: Added /api/v1/scheduleTable/bounceRate" />
+    <MESSAGE value="Set bouncerate store-able" />
+    <option name="LAST_COMMIT_MESSAGE" value="Set bouncerate store-able" />
   </component>
 </project>

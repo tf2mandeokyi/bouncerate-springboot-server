@@ -1,9 +1,13 @@
 package com.mndk.bouncerate.db;
 
+import org.jdbi.v3.sqlobject.config.KeyColumn;
+import org.jdbi.v3.sqlobject.config.ValueColumn;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+
+import java.util.Map;
 
 public interface BounceRateDAO {
 
@@ -77,15 +81,10 @@ public interface BounceRateDAO {
     );
 
 
-    @SqlQuery("""
-            SELECT SUM(if(`bouncerate` >= :br_min AND `bouncerate` <= :br_max, 1, 0)) AS captured_count
-                FROM `bouncerates` WHERE `category_id` = :category_id
-    """)
-    int getCapturedCountOfCategory(
-            @Bind("category_id")    int categoryId,
-            @Bind("br_min")         double minBounceRate,
-            @Bind("br_max")         double maxBounceRate
-    );
+    @SqlQuery("SELECT `settopbox_id`, `bouncerate` FROM `bouncerates` WHERE `category_id` = :category_id")
+    @KeyColumn("settopbox_id")
+    @ValueColumn("bouncerate")
+    Map<Integer, Float> getBounceRateMapOfCategory(@Bind("category_id") int categoryId);
 
 
     @SqlUpdate("DELETE FROM `bouncerates` WHERE `category_id` = :category_id")

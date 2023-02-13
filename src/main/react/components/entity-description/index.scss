@@ -16,9 +16,9 @@
         }
         
         &:not(:first-child) {
-            font-size: 20px;
+            font-size: 18px;
             td {
-                padding: 5px 20px;
+                padding: 7px 20px;
                 &:first-child {
                     background: rgba(0, 0, 0, 0.05);
                     text-align: right;
