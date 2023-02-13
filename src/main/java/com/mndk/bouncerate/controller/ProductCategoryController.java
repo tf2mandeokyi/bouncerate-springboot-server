@@ -1,10 +1,10 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.service.ProductCategoryService;
 import com.mndk.bouncerate.util.Validator;
 import com.mndk.bouncerate.util.ValueWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -12,13 +12,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/categories")
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProductCategoryController {
 
 
-    @Autowired ProductCategoryDAO categoryDAO;
-    @Autowired BounceRateDAO bounceRateDAO;
+    ProductCategoryService productCategoryService;
 
 
     @GetMapping("")
@@ -27,26 +27,21 @@ public class ProductCategoryController {
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page", defaultValue = "1")   int pageNum
     ) {
-        if(count == -1) {
-            return categoryDAO.getAll();
-        }
-        else if(count >= 1 && pageNum >= 1) {
-            return categoryDAO.getBulk(count, (pageNum - 1) * count);
-        }
-        else {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
-        }
+        return Validator.checkNull(
+                productCategoryService.getPage(count, pageNum),
+                () -> new HttpClientErrorException(HttpStatus.BAD_REQUEST)
+        );
     }
 
 
     record AddProductCategoryBody(String name) {}
     @PostMapping("")
-    public void addOneOrMany(@RequestBody(required = false) AddProductCategoryBody requestBody) {
-        if(requestBody != null) {
-            categoryDAO.addOne(requestBody.name);
-        } else {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
-        }
+    public void addOneOrMany(@RequestBody AddProductCategoryBody requestBody) {
+        String categoryName = Validator.checkNull(
+                requestBody.name,
+                () -> new HttpClientErrorException(HttpStatus.BAD_REQUEST)
+        );
+        productCategoryService.addOne(new ProductCategoryDAO.ProductCategory(-1, categoryName));
     }
 
 
@@ -54,7 +49,7 @@ public class ProductCategoryController {
     @ResponseBody
     public ProductCategoryDAO.ProductCategory getOne(@PathVariable("id") int id) {
         return Validator.checkNull(
-                categoryDAO.getOne(id),
+                productCategoryService.getOne(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
         );
     }
@@ -66,35 +61,19 @@ public class ProductCategoryController {
             @PathVariable("id") int id,
             @RequestBody UpdateProductCategoryBody requestBody
     ) {
-        if(requestBody.name != null) categoryDAO.updateName(id, requestBody.name);
+        productCategoryService.updateOne(id, new ProductCategoryDAO.ProductCategory(-1, requestBody.name));
     }
 
 
     @DeleteMapping("/{id}")
     public void deleteOne(@PathVariable("id") int id) {
-        categoryDAO.deleteOne(id);
-        bounceRateDAO.deleteBounceRatesOfCategory(id);
-    }
-
-
-    @GetMapping("/{id}/score")
-    @ResponseBody
-    public ValueWrapper<Double> getBounceRateScore(
-            @PathVariable("id")         int id,
-            @RequestParam("br_min")     double minBounceRate,
-            @RequestParam("br_max")     double maxBounceRate
-    ) {
-        return new ValueWrapper<>(
-                bounceRateDAO.getBounceRateCountOfCategory(
-                        id, minBounceRate, maxBounceRate
-                ).getScore()
-        );
+        productCategoryService.deleteOne(id);
     }
 
 
     @GetMapping("/count")
     @ResponseBody
     public ValueWrapper<Integer> getCount() {
-        return new ValueWrapper<>(categoryDAO.getCount());
+        return new ValueWrapper<>(productCategoryService.getCount());
     }
 }

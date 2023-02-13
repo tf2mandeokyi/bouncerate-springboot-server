@@ -30,11 +30,6 @@ public interface ProductCategoryDAO {
     }
 
 
-    String CATEGORY_QUERY = """
-            SELECT * FROM `product_categories`
-    """;
-
-
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `product_categories` (
                     `id`    INT             NOT NULL AUTO_INCREMENT,
@@ -57,7 +52,7 @@ public interface ProductCategoryDAO {
     );
 
 
-    @SqlQuery(CATEGORY_QUERY)
+    @SqlQuery("SELECT * FROM `product_categories`")
     @UseRowMapper(ProductCategory.Mapper.class)
     List<ProductCategory> getAll();
 
@@ -66,7 +61,7 @@ public interface ProductCategoryDAO {
      * @param count Category count per page
      * @param offset Works as same way as mysql's select offset
      */
-    @SqlQuery(CATEGORY_QUERY + "LIMIT :count OFFSET :offset")
+    @SqlQuery("SELECT * FROM `product_categories` LIMIT :count OFFSET :offset")
     @UseRowMapper(ProductCategory.Mapper.class)
     List<ProductCategory> getBulk(
             @Bind("count")      int count,
@@ -74,19 +69,7 @@ public interface ProductCategoryDAO {
     );
 
 
-    /**
-     * @param count Category count per page
-     * @param offset Works as same way as mysql's select offset
-     */
-    @SqlQuery(CATEGORY_QUERY + "ORDER BY bouncerate_score DESC LIMIT :count OFFSET :offset")
-    @UseRowMapper(ProductCategory.Mapper.class)
-    List<ProductCategory> getBulk_orderByScore(
-            @Bind("count")      int count,
-            @Bind("offset")     int offset
-    );
-
-
-    @SqlQuery(CATEGORY_QUERY + "WHERE `id` = :id")
+    @SqlQuery("SELECT * FROM `product_categories` WHERE `id` = :id")
     @UseRowMapper(ProductCategory.Mapper.class)
     ProductCategory getOne(@Bind("id") int categoryId);
 

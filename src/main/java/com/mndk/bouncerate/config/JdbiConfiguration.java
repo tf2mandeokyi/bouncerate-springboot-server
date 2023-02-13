@@ -69,11 +69,6 @@ public class JdbiConfiguration {
     }
 
     @Bean
-    public TemporaryBounceRateCalculationDAO temporaryBounceRateCalculationDAO(Jdbi jdbi) {
-        return jdbi.onDemand(TemporaryBounceRateCalculationDAO.class);
-    }
-
-    @Bean
     public BounceRateDAO bounceRateDAO(
             Jdbi jdbi, ProductCategoryDAO productCategoryDAO, SetTopBoxesDAO setTopBoxesDAO
     ) {
