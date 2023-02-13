@@ -29,7 +29,7 @@ public class ScheduleTableController {
             @RequestParam("streamNumber")   int streamNumber,
             @RequestParam("categoryId")     int categoryId
     ) {
-        scheduleTableService.setOne(timeSlotId, streamNumber, categoryId);
+        scheduleTableService.setScheduleStream(timeSlotId, streamNumber, categoryId);
     }
 
 
@@ -38,32 +38,39 @@ public class ScheduleTableController {
             @RequestParam("slotId")         int timeSlotId,
             @RequestParam("streamNumber")   int streamNumber
     ) {
-        scheduleTableService.removeOne(timeSlotId, streamNumber);
+        scheduleTableService.removeScheduleStream(timeSlotId, streamNumber);
     }
 
 
-    record AlternativeStreamsBody(Integer[] altStreams) {}
     @PostMapping("/alternatives")
     @ResponseBody
-    public AlternativeStreamsBody calculateAlternativeStreams(
+    public ScheduleTableService.AltStreamCalculationResult calculateAlternativeStreams(
             @RequestParam("slotId")     int timeSlotId,
-            @RequestBody                MinMax<Double> bounceRateMinMax
+            @RequestBody                MinMax<Double> bounceRateRange
     ) {
-        Integer[] alternativeCategories = scheduleTableService.getAltStreamsOfTimeSlot(
-                timeSlotId, bounceRateMinMax.min(), bounceRateMinMax.max()
+        var calculationResult = scheduleTableService.calculateAltStreamsOfTimeSlot(
+                timeSlotId, bounceRateRange.min(), bounceRateRange.max()
         );
-        scheduleTableService.setAlternatives(timeSlotId, alternativeCategories);
-        return new AlternativeStreamsBody(alternativeCategories);
+        scheduleTableService.setAlternativeStreams(timeSlotId, calculationResult.altStreams());
+        scheduleTableService.updateTimeSlotBounceRate(timeSlotId, calculationResult.bounceRate());
+        return calculationResult;
     }
 
 
     @GetMapping("/bounceRate")
     @ResponseBody
-    public ScheduleTableService.TimeSlotBounceRate getTimeSlotBounceRate(
-            @RequestParam("slotId")     int timeSlotId,
-            @RequestBody                MinMax<Double> bounceRateMinMax
+    public Object getAllTimeSlotBounceRates() {
+        return scheduleTableService.getAllTimeSlotBounceRates();
+    }
+
+
+    @PostMapping("/bounceRate")
+    @ResponseBody
+    public Object calculateTimeSlotBounceRate(
+            @RequestParam(value = "slotId")     int timeSlotId,
+            @RequestBody                        MinMax<Double> bounceRateRange
     ) {
-        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, bounceRateMinMax.min(), bounceRateMinMax.max());
+        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, true, bounceRateRange);
     }
 
 }

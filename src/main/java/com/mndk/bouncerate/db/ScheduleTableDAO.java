@@ -41,6 +41,26 @@ public interface ScheduleTableDAO {
     }
 
 
+    /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
+    @Getter @Setter @RequiredArgsConstructor
+    class TimeSlotBounceRate {
+        private final Double onlyDefault;
+        private final Double withAlt;
+        private final boolean needsUpdate;
+
+        public static class Mapper implements RowMapper<TimeSlotBounceRate> {
+            @Override
+            public TimeSlotBounceRate map(ResultSet resultSet, StatementContext context) throws SQLException {
+                return new TimeSlotBounceRate(
+                        resultSet.getDouble("only_default"),
+                        resultSet.getDouble("with_alt"),
+                        resultSet.getBoolean("needs_update")
+                );
+            }
+        }
+    }
+
+
     @SqlScript("""
             CREATE TABLE IF NOT EXISTS `schedule_table` (
                     `time_slot_id`  INT NOT NULL,
@@ -50,13 +70,21 @@ public interface ScheduleTableDAO {
                     FOREIGN KEY (`category_id`) REFERENCES `product_categories` (`id`),
                     PRIMARY KEY (`time_slot_id`, `stream_no`)
             );
+            CREATE TABLE IF NOT EXISTS `schedule_table_bouncerate` (
+                    `time_slot_id`  INT     NOT NULL,
+                    `only_default`  DOUBLE  NOT NULL,
+                    `with_alt`      DOUBLE  NOT NULL,
+                    `needs_update`  BOOL    DEFAULT FALSE,
+                    
+                    PRIMARY KEY (`time_slot_id`)
+            );
     """)
     void initializeTable();
 
 
     @SqlQuery("""
             SELECT `category_id` FROM `schedule_table`
-                WHERE `time_slot_id` = :timeSlotId AND `stream_no` = :streamNumber
+                    WHERE `time_slot_id` = :timeSlotId AND `stream_no` = :streamNumber
     """)
     Integer getCategoryId(
             @Bind("timeSlotId")     int timeSlotId,
@@ -86,6 +114,34 @@ public interface ScheduleTableDAO {
             @Bind("streamNumber")   int streamNumber
     );
 
-    
+
+    @SqlQuery("""
+            SELECT `only_default`, `with_alt`, `needs_update` FROM `schedule_table_bouncerate`
+                    WHERE `time_slot_id` = :timeSlotId
+    """)
+    @UseRowMapper(TimeSlotBounceRate.Mapper.class)
+    TimeSlotBounceRate getTimeSlotBounceRate(@Bind("timeSlotId") int timeSlotId);
+
+
+    @SqlUpdate("""
+            INSERT INTO `schedule_table_bouncerate` (`time_slot_id`, `only_default`, `with_alt`, `needs_update`)
+                    VALUES (:timeSlotId, :bounceRate.onlyDefault, :bounceRate.withAlt, FALSE)
+                    ON DUPLICATE KEY UPDATE
+                            `only_default` = :bounceRate.onlyDefault,
+                            `with_alt` = :bounceRate.withAlt,
+                            `needs_update` = FALSE
+    """)
+    void updateTimeSlotBounceRate(
+            @Bind("timeSlotId")         int timeSlotId,
+            @BindBean("bounceRate")     TimeSlotBounceRate bounceRate
+    );
+
+
+    @SqlUpdate("""
+            UPDATE `schedule_table_bouncerate`
+                    SET `needs_update` = TRUE
+                    WHERE `time_slot_id` = :timeSlotId
+    """)
+    void markTimeSlotBounceRateOutdated(@Bind("timeSlotId") int timeSlotId);
 
 }

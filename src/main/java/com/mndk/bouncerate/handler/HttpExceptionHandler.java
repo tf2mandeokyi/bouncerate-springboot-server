@@ -15,7 +15,7 @@ public class HttpExceptionHandler {
     @ExceptionHandler(HttpStatusCodeException.class)
     public ResponseEntity<ExceptionResponse> handleStatusCodeExceptions(HttpStatusCodeException exception) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
-                new Date(), exception.getStatusCode().value(), exception.getMessage()
+                new Date(), exception.getStatusCode().value(), exception.getStatusText()
         );
         return new ResponseEntity<>(exceptionResponse, exception.getStatusCode());
     }

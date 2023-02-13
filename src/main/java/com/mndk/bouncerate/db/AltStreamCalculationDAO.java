@@ -81,7 +81,7 @@ public interface AltStreamCalculationDAO {
     );
 
 
-    @SqlQuery("SELECT SUM(`captured`) FROM `alt_str_captured_settopboxes`")
+    @SqlQuery("SELECT COUNT(*) FROM `alt_str_captured_settopboxes` WHERE `captured` = TRUE")
     int getCurrentCapturedCount();
 
 }

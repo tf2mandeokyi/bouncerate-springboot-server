@@ -19,9 +19,9 @@ public class BounceRateController {
     @PostMapping("/setTopBox/{setTopBoxId}/randomize")
     public void randomizeBounceRatesOfSetTopBox(
             @PathVariable("setTopBoxId")    int setTopBoxId,
-            @RequestBody                    MinMax<Double> bounceRateMinMax
+            @RequestBody                    MinMax<Double> bounceRateRange
     ) {
-        bounceRateService.randomizeBounceRatesOfSetTopBox(setTopBoxId, bounceRateMinMax.min(), bounceRateMinMax.max());
+        bounceRateService.randomizeBounceRatesOfSetTopBox(setTopBoxId, bounceRateRange.min(), bounceRateRange.max());
     }
 
 
@@ -47,8 +47,8 @@ public class BounceRateController {
 
     @PostMapping("/randomize")
     public void setBounceRatesRandom(
-            @RequestBody MinMax<Integer> bounceRateMinMax
+            @RequestBody MinMax<Integer> bounceRateRange
     ) {
-        bounceRateService.randomizeAll(bounceRateMinMax.min(), bounceRateMinMax.max());
+        bounceRateService.randomizeAll(bounceRateRange.min(), bounceRateRange.max());
     }
 }
