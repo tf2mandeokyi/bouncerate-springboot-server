@@ -5,4 +5,4 @@ EXPOSE 8080
 WORKDIR /app
 COPY . /app
 
-CMD [ "./gradlew", "bootRun" ]
+CMD [ "gradle", "bootRun" ]
