@@ -44,32 +44,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-import org.apache.tools.ant.taskdefs.condition.Os
-
-void registerReactExec(String reactRunType, boolean buildTaskDepends) {
-    String reactRunTypeCap = reactRunType.substring(0, 1).toUpperCase() + reactRunType.substring(1)
-    String taskName = "react$reactRunTypeCap"
-
-    tasks.register(taskName, Exec) {
-        group = 'react'
-        description = 'does the exact same thing as the command "npm run build"'
-
-        workingDir "${projectDir}"
-        if(Os.isFamily(Os.FAMILY_WINDOWS)) {
-            commandLine 'cmd', '/c', "npm run $reactRunType"
-        } else {
-            commandLine "npm run $reactRunType"
-        }
-    }
-    if(buildTaskDepends) {
-        build.dependsOn taskName
-        bootRun.dependsOn taskName
-    }
-}
-
-registerReactExec('build', true)
-registerReactExec('start', false)
-
 test {
     useJUnitPlatform()
 }

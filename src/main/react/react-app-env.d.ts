@@ -1,1 +1,0 @@
-declare type UseStateArray<T> = [T, React.Dispatch<React.SetStateAction<T>>]

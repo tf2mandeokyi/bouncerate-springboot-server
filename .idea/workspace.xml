@@ -4,23 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Set bouncerate store-able">
-      <change afterPath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.tsx" afterDir="false" />
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Multiple changes&#10; - schedule table calculation is now done on the server side, not on the db side&#10; - Modified schedule table UI">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.development" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/config/JdbiConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/AltStreamCalculationDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/db/BounceRateDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/ScheduleTableService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/ScheduleTableService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/buttons.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/inputs.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/inputs.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-overrides.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/SinglePageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react-public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/bouncerate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/categories.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/scheduleTable.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/api/settopboxes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/buttons.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/colors.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-description/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/page-numbers.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/entity-table/page-numbers.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/index-list/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/index-list/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/loading-circle/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/components/title/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/inputs.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/misc.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/home/schedule-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/product-category/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/pages/set-top-box/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/react-app-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/redux/categoryListSlice.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/redux/currentIdSlice.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/redux/hooks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/redux/store.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/utils/math.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/react/utils/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,18 +90,6 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="application" type="c8890929:TasksNode$1" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="BounceRate" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="BounceRate" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="react" type="c8890929:TasksNode$1" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -89,7 +108,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/product-to-category" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -112,7 +131,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;D:/Desktop/some_programs/Java/default/BounceRate/src/main/java/com/mndk/bouncerate/util&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/some_programs/Java/Forge mods/terraplusplus&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Desktop/some_programs/bouncerate/bouncerate-springboot-server&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -337,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676287512191</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Multiple changes&#10; - schedule table calculation is now done on the server side, not on the db side&#10; - Modified schedule table UI">
+      <created>1676302312231</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1676302312231</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -367,6 +393,7 @@
     <MESSAGE value="Split multiple queries of alt stream calculation" />
     <MESSAGE value="api: Added /api/v1/scheduleTable/bounceRate" />
     <MESSAGE value="Set bouncerate store-able" />
-    <option name="LAST_COMMIT_MESSAGE" value="Set bouncerate store-able" />
+    <MESSAGE value="Multiple changes&#10; - schedule table calculation is now done on the server side, not on the db side&#10; - Modified schedule table UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Multiple changes&#10; - schedule table calculation is now done on the server side, not on the db side&#10; - Modified schedule table UI" />
   </component>
 </project>
