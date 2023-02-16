@@ -27,7 +27,7 @@ public class BounceRateController {
 
     @GetMapping({ "/category/{categoryId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{categoryId}" })
     @ResponseBody
-    public ValueWrapper<Double> getBounceRate(
+    public ValueWrapper<Float> getBounceRate(
             @PathVariable("categoryId")    int categoryId,
             @PathVariable("setTopBoxId")   int setTopBoxId
     ) {

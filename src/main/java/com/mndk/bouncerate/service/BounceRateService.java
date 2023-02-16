@@ -20,15 +20,15 @@ public class BounceRateService {
 
     // ===== GETTERS =====
 
-    public double getBounceRate(int categoryId, int setTopBoxId) {
+    public Float getBounceRate(int categoryId, int setTopBoxId) {
         return bounceRateDAO.getBounceRate(categoryId, setTopBoxId);
     }
 
 
     // ===== SETTERS =====
 
-    public void setBounceRate(int categoryId, int setTopBoxId, double bounceRate) {
-        bounceRateDAO.setBounceRate(categoryId, setTopBoxId, (float) bounceRate);
+    public void setBounceRate(int categoryId, int setTopBoxId, float bounceRate) {
+        bounceRateDAO.setBounceRate(categoryId, setTopBoxId, bounceRate);
     }
 
 
