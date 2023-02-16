@@ -1,6 +1,9 @@
 package com.mndk.bouncerate.service;
 
-import com.mndk.bouncerate.db.*;
+import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ScheduleTableDAO;
+import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import com.mndk.bouncerate.util.MinMax;
 import com.mndk.bouncerate.util.Validator;
 import jakarta.annotation.Nullable;
@@ -9,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -196,15 +201,11 @@ public class ScheduleTableService {
 
     // ===== SETTERS =====
 
-    public void setScheduleStream(int timeSlotId, int streamNumber, int categoryId) {
-        try {
-            validateTimeSlot(timeSlotId);
-            validateStreamNumber(streamNumber);
-            scheduleTableDAO.insertNode(new ScheduleTableDAO.ScheduleNode(timeSlotId, streamNumber, categoryId));
-            scheduleTableDAO.markTimeSlotBounceRateOutdated(timeSlotId);
-        } catch (SQLIntegrityConstraintViolationException e) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Cannot find a category with ID #" + categoryId);
-        }
+    public void setScheduleStream(int timeSlotId, int streamNumber, Integer categoryId) {
+        validateTimeSlot(timeSlotId);
+        validateStreamNumber(streamNumber);
+        scheduleTableDAO.insertNode(new ScheduleTableDAO.ScheduleNode(timeSlotId, streamNumber, categoryId));
+        scheduleTableDAO.markTimeSlotBounceRateOutdated(timeSlotId);
     }
 
 

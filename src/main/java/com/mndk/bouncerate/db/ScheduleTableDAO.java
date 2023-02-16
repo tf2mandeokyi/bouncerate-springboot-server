@@ -15,7 +15,6 @@ import org.jdbi.v3.sqlobject.statement.UseRowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface ScheduleTableDAO {
@@ -102,7 +101,7 @@ public interface ScheduleTableDAO {
                     VALUES (:node.timeSlotId, :node.streamNumber, :node.categoryId)
                     ON DUPLICATE KEY UPDATE `category_id` = :node.categoryId
     """)
-    void insertNode(@BindBean("node") ScheduleNode node) throws SQLIntegrityConstraintViolationException;
+    void insertNode(@BindBean("node") ScheduleNode node);
 
 
     @SqlUpdate("""

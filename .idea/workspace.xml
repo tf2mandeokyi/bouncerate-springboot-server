@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Fix gradle not running in docker container">
+    <list default="true" id="924284c5-b039-4cd0-a0d8-e275bd89f8ff" name="Changes" comment="Fix ((Float) null).floatValue() error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/controller/BounceRateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/BounceRateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mndk/bouncerate/service/BounceRateService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -342,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676492275582</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Fix ((Float) null).floatValue() error">
+      <created>1676546754235</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1676546754235</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -376,6 +380,7 @@
     <MESSAGE value="Detached react to https://github.com/tf2mandeokyi/bouncerate-react-server" />
     <MESSAGE value="Add Dockerfile" />
     <MESSAGE value="Fix gradle not running in docker container" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix gradle not running in docker container" />
+    <MESSAGE value="Fix ((Float) null).floatValue() error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix ((Float) null).floatValue() error" />
   </component>
 </project>
