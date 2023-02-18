@@ -1,7 +1,6 @@
 package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.service.BounceRateService;
-import com.mndk.bouncerate.util.MinMax;
 import com.mndk.bouncerate.util.ValueWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,8 @@ public class BounceRateController {
 
 
     @PostMapping("/setTopBox/{setTopBoxId}/randomize")
-    public void randomizeBounceRatesOfSetTopBox(
-            @PathVariable("setTopBoxId")    int setTopBoxId,
-            @RequestBody                    MinMax<Double> bounceRateRange
-    ) {
-        bounceRateService.randomizeBounceRatesOfSetTopBox(setTopBoxId, bounceRateRange.min(), bounceRateRange.max());
+    public void randomizeBounceRatesOfSetTopBox(@PathVariable("setTopBoxId") int setTopBoxId) {
+        bounceRateService.randomizeBounceRatesOfSetTopBox(setTopBoxId);
     }
 
 
@@ -46,9 +42,7 @@ public class BounceRateController {
 
 
     @PostMapping("/randomize")
-    public void setBounceRatesRandom(
-            @RequestBody MinMax<Integer> bounceRateRange
-    ) {
-        bounceRateService.randomizeAll(bounceRateRange.min(), bounceRateRange.max());
+    public void setBounceRatesRandom() {
+        bounceRateService.randomizeAll();
     }
 }

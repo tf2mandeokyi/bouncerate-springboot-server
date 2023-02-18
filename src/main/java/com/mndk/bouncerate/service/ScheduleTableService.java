@@ -4,7 +4,7 @@ import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.ScheduleTableDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
-import com.mndk.bouncerate.util.MinMax;
+import com.mndk.bouncerate.util.DoubleMinMax;
 import com.mndk.bouncerate.util.Validator;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -62,7 +62,7 @@ public class ScheduleTableService {
     public ScheduleTableDAO.TimeSlotBounceRate getTimeSlotBounceRate(
             int timeSlotId,
             boolean updateIfOutdated,
-            MinMax<Double> bounceRateRange
+            DoubleMinMax bounceRateRange
     ) {
         validateTimeSlot(timeSlotId);
         var bounceRate = scheduleTableDAO.getTimeSlotBounceRate(timeSlotId);
@@ -94,7 +94,7 @@ public class ScheduleTableService {
     // ===== CALCULATORS =====
 
     public ScheduleTableDAO.TimeSlotBounceRate calculateTimeSlotBounceRate(
-            int timeSlotId, MinMax<Double> bounceRateRange
+            int timeSlotId, DoubleMinMax bounceRateRange
     ) {
         var calculationResult = this.calculateAltStreamsOfTimeSlot(
                 timeSlotId,

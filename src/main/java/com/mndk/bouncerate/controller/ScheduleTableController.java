@@ -1,7 +1,7 @@
 package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.service.ScheduleTableService;
-import com.mndk.bouncerate.util.MinMax;
+import com.mndk.bouncerate.util.DoubleMinMax;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +46,7 @@ public class ScheduleTableController {
     @ResponseBody
     public ScheduleTableService.AltStreamCalculationResult calculateAlternativeStreams(
             @RequestParam("slotId")     int timeSlotId,
-            @RequestBody                MinMax<Double> bounceRateRange
+            @RequestBody                DoubleMinMax bounceRateRange
     ) {
         var calculationResult = scheduleTableService.calculateAltStreamsOfTimeSlot(
                 timeSlotId, bounceRateRange.min(), bounceRateRange.max()
@@ -68,7 +68,7 @@ public class ScheduleTableController {
     @ResponseBody
     public Object calculateTimeSlotBounceRate(
             @RequestParam(value = "slotId")     int timeSlotId,
-            @RequestBody                        MinMax<Double> bounceRateRange
+            @RequestBody                        DoubleMinMax bounceRateRange
     ) {
         return scheduleTableService.getTimeSlotBounceRate(timeSlotId, true, bounceRateRange);
     }

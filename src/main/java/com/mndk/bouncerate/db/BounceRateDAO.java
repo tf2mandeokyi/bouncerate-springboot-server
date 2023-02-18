@@ -1,15 +1,43 @@
 package com.mndk.bouncerate.db;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.KeyColumn;
 import org.jdbi.v3.sqlobject.config.ValueColumn;
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindBeanList;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlScript;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 public interface BounceRateDAO {
+
+
+    /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
+    @Getter @Setter @RequiredArgsConstructor
+    class BounceRateNode {
+        private final int categoryId;
+        private final int setTopBoxId;
+        private final double bounceRate;
+
+        public static class Mapper implements RowMapper<BounceRateNode> {
+            @Override
+            public BounceRateNode map(ResultSet resultSet, StatementContext context) throws SQLException {
+                return new BounceRateNode(
+                        resultSet.getInt("category_id"),
+                        resultSet.getInt("settopbox_id"),
+                        resultSet.getDouble("bouncerate")
+                );
+            }
+        }
+    }
 
 
     @SqlScript("""
@@ -28,46 +56,15 @@ public interface BounceRateDAO {
 
     @SqlUpdate("""
             INSERT INTO `bouncerates` (`category_id`, `settopbox_id`, `bouncerate`)
-                    VALUES (:category_id, :settopbox_id, :bouncerate)
+                    VALUES <nodes> AS N
                     ON DUPLICATE KEY UPDATE
-                            `bouncerate` = :bouncerate;
+                            `bouncerate` = N.bouncerate;
     """)
     void setBounceRate(
-            @Bind("category_id")    int categoryId,
-            @Bind("settopbox_id")   int setTopBoxId,
-            @Bind("bouncerate")     float bounceRate
-    );
-
-
-    @SqlUpdate("""
-            INSERT INTO `bouncerates` (category_id, settopbox_id, bouncerate) (
-                    SELECT  `id` AS category_id,
-                            :settopbox_id AS settopbox_id,
-                            (:rand_start + RAND() * :rand_size) AS bouncerate
-                    FROM `product_categories`
-            ) ON DUPLICATE KEY UPDATE
-                    `bouncerate` = (RAND()) * 100
-    """)
-    void randomizeBounceRatesOfSetTopBox(
-            @Bind("settopbox_id")   int setTopBoxId,
-            @Bind("rand_start")     double randomStart,
-            @Bind("rand_size")      double randomSize
-    );
-
-
-    @SqlUpdate("""
-            INSERT INTO `bouncerates` (category_id, settopbox_id, bouncerate) (
-                    SELECT  :category_id AS category_id,
-                            `id` AS settopbox_id,
-                            (:rand_start + RAND() * :rand_size) AS bouncerate
-                    FROM `settopboxes`
-            ) ON DUPLICATE KEY UPDATE
-                    `bouncerate` = (RAND()) * 100
-    """)
-    void randomizeBounceRatesOfCategory(
-            @Bind("category_id")    int categoryId,
-            @Bind("rand_start")     double randomStart,
-            @Bind("rand_size")      double randomSize
+            @BindBeanList(
+                    value = "nodes",
+                    propertyNames = { "categoryId", "setTopBoxId", "bounceRate" }
+            ) BounceRateNode... nodes
     );
 
 

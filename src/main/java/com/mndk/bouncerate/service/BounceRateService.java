@@ -3,14 +3,26 @@ package com.mndk.bouncerate.service;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.util.DoubleMinMax;
+import com.mndk.bouncerate.util.distribution.SkewNormalDistribution;
 import lombok.AllArgsConstructor;
+import org.apache.commons.math3.distribution.RealDistribution;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class BounceRateService {
+
+
+    /**
+     * Distribution object for random bounce rate values
+     */
+    private static final RealDistribution DISTRIBUTION = new SkewNormalDistribution(92, 32, -10);
+    private static final DoubleMinMax RANGE = new DoubleMinMax(0, 100);
 
 
     ProductCategoryDAO categoryDAO;
@@ -28,22 +40,35 @@ public class BounceRateService {
     // ===== SETTERS =====
 
     public void setBounceRate(int categoryId, int setTopBoxId, float bounceRate) {
-        bounceRateDAO.setBounceRate(categoryId, setTopBoxId, bounceRate);
+        bounceRateDAO.setBounceRate(new BounceRateDAO.BounceRateNode(categoryId, setTopBoxId, bounceRate));
     }
 
 
     // ===== RANDOMIZERS =====
 
-    public void randomizeBounceRatesOfSetTopBox(int setTopBoxId, double min, double max) {
-        bounceRateDAO.randomizeBounceRatesOfSetTopBox(setTopBoxId, min, max - min);
+    public void randomizeBounceRatesOfSetTopBox(int setTopBoxId) {
+        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategoryDAO.ProductCategory::id).toList();
+        this.randomize(categoryIdList, Collections.singletonList(setTopBoxId));
     }
 
 
-    public void randomizeAll(double min, double max) {
-        List<ProductCategoryDAO.ProductCategory> categories = categoryDAO.getAll();
-        List<Integer> categoryIdList = categories.stream().map(ProductCategoryDAO.ProductCategory::id).toList();
+    public void randomizeAll() {
+        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategoryDAO.ProductCategory::id).toList();
+        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBoxesDAO.SetTopBox::id).toList();
+        this.randomize(categoryIdList, setTopBoxIdList);
+    }
+
+
+    public void randomize(List<Integer> categoryIdList, List<Integer> setTopBoxIdList) {
+        var nodes = new ArrayList<BounceRateDAO.BounceRateNode>();
         for(int categoryId : categoryIdList) {
-            bounceRateDAO.randomizeBounceRatesOfCategory(categoryId, min, max - min);
+            for(int setTopBoxId : setTopBoxIdList) {
+                double bounceRate = DISTRIBUTION.sample();
+                bounceRate = RANGE.fitToRange(bounceRate);
+                nodes.add(new BounceRateDAO.BounceRateNode(categoryId, setTopBoxId, bounceRate));
+            }
         }
+
+        bounceRateDAO.setBounceRate(nodes.toArray(BounceRateDAO.BounceRateNode[]::new));
     }
 }
