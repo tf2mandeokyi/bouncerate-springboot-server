@@ -1,7 +1,7 @@
 package com.mndk.bouncerate.controller;
 
+import com.mndk.bouncerate.db.ScheduleTableDAO;
 import com.mndk.bouncerate.service.ScheduleTableService;
-import com.mndk.bouncerate.util.DoubleMinMax;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +15,10 @@ public class ScheduleTableController {
     ScheduleTableService scheduleTableService;
 
 
-    record ScheduleTable(Integer[][] table) {}
     @GetMapping("")
     @ResponseBody
-    public ScheduleTable getAll() {
-        return new ScheduleTable(scheduleTableService.getEntireTable());
+    public ScheduleTableService.ScheduleTable getAll() {
+        return scheduleTableService.getEntireTable();
     }
 
 
@@ -44,33 +43,28 @@ public class ScheduleTableController {
 
     @PostMapping("/alternatives")
     @ResponseBody
-    public ScheduleTableService.AltStreamCalculationResult calculateAlternativeStreams(
-            @RequestParam("slotId")     int timeSlotId,
-            @RequestBody                DoubleMinMax bounceRateRange
+    public ScheduleTableService.AltStreamCalculationResult calculateAndGetAlternativeStreams(
+            @RequestParam("slotId")         int timeSlotId,
+            @RequestParam("maxBounceRate")  double maxBounceRate
     ) {
-        var calculationResult = scheduleTableService.calculateAltStreamsOfTimeSlot(
-                timeSlotId, bounceRateRange.min(), bounceRateRange.max()
-        );
-        scheduleTableService.setAlternativeStreams(timeSlotId, calculationResult.altStreams());
-        scheduleTableService.updateTimeSlotBounceRate(timeSlotId, calculationResult.bounceRate());
-        return calculationResult;
+        return scheduleTableService.storeAndGetAltStreamCalculationResult(timeSlotId, maxBounceRate);
     }
 
 
     @GetMapping("/bounceRate")
     @ResponseBody
-    public Object getAllTimeSlotBounceRates() {
-        return scheduleTableService.getAllTimeSlotBounceRates();
+    public ScheduleTableService.BounceRateTable getAllTimeSlotBounceRates() {
+        return scheduleTableService.getAllTimeSlotBounceRatesWithoutUpdate();
     }
 
 
     @PostMapping("/bounceRate")
     @ResponseBody
-    public Object calculateTimeSlotBounceRate(
-            @RequestParam(value = "slotId")     int timeSlotId,
-            @RequestBody                        DoubleMinMax bounceRateRange
+    public ScheduleTableDAO.TimeSlotBounceRateValue[] calculateTimeSlotBounceRate(
+            @RequestParam("slotId")         int timeSlotId,
+            @RequestParam("maxBounceRate")  double maxBounceRate
     ) {
-        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, true, bounceRateRange);
+        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, true, maxBounceRate);
     }
 
 }

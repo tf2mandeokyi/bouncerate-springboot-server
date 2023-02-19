@@ -4,18 +4,15 @@ import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.ScheduleTableDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
-import com.mndk.bouncerate.util.DoubleMinMax;
-import com.mndk.bouncerate.util.Validator;
+import static com.mndk.bouncerate.db.ScheduleTableDAO.TimeSlotBounceRateValue;
+import static com.mndk.bouncerate.db.ScheduleTableDAO.TimeSlotBounceRateNode;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -26,88 +23,134 @@ public class ScheduleTableService {
     private static final int ALT_STREAM_COUNT = 3;
 
 
-    final BounceRateDAO bounceRateDAO;
-    final ProductCategoryDAO categoryDAO;
-    final ScheduleTableDAO scheduleTableDAO;
-    final SetTopBoxesDAO setTopBoxesDAO;
+    BounceRateDAO bounceRateDAO;
+    ProductCategoryDAO categoryDAO;
+    ScheduleTableDAO scheduleTableDAO;
+    SetTopBoxesDAO setTopBoxesDAO;
+
+
+    // ===== FUNCTIONS =====
+
+    interface ProductCategoryIdFunction {
+        Integer get(int streamNumber,
+                    Set<Integer> capturedSetTopBoxes,
+                    Map<Integer, Float> lowestSetTopBoxBounceRateMap);
+    }
+
+
+    // ===== RECORDS =====
+
+    public record AltStreamCalculationResult(
+            Integer[] altStreams,
+            TimeSlotBounceRateValue[] bounceRateArray
+    ) {}
+    
+    public record ScheduleTable(
+            Map<Integer, Integer[]> table
+    ) {}
+    
+    public record BounceRateTable(
+            Map<Integer, TimeSlotBounceRateValue[]> table
+    ) {}
 
 
     // ===== GETTERS =====
 
-    public Integer[][] getEntireTable() {
+    public ScheduleTable getEntireTable() {
         var scheduleNodes = scheduleTableDAO.getAll();
 
-        int timeSlotCount = TIME_SLOT_COUNT;
-        int altStreamCount = ALT_STREAM_COUNT;
+        var tableMap = new HashMap<Integer, Integer[]>();
 
-        var table = new Integer[6][];
-        for(int i = 0; i < timeSlotCount; i++) {
-            table[i] = new Integer[altStreamCount + 1];
-            Arrays.fill(table[i], null);
+        // TODO: Replace this tableMap setup to something else
+        for(int i = 0; i < TIME_SLOT_COUNT; i++) {
+            tableMap.put(i, new Integer[ALT_STREAM_COUNT + 1]);
         }
+
         for(var scheduleNode : scheduleNodes) {
             int timeSlotId = scheduleNode.getTimeSlotId(), streamNumber = scheduleNode.getStreamNumber();
 
-            if(timeSlotId < 0 || timeSlotId > timeSlotCount - 1) continue;
-            if(streamNumber < 0 || streamNumber > altStreamCount) continue;
+            // TODO: Replace this timeSlotId check to something else
+            if(timeSlotId < 0 || timeSlotId > TIME_SLOT_COUNT - 1) continue;
+            if(streamNumber < 0 || streamNumber > ALT_STREAM_COUNT) continue;
 
-            table[timeSlotId][streamNumber] = scheduleNode.getCategoryId();
+            tableMap.get(timeSlotId)[streamNumber] = scheduleNode.getCategoryId();
         }
 
-        return table;
+        return new ScheduleTable(tableMap);
+    }
+
+
+    public TimeSlotBounceRateValue[] getTimeSlotBounceRate(int timeSlotId,
+                                                           boolean updateIfOutdated,
+                                                           double maxBounceRate)
+    {
+        validateTimeSlotId(timeSlotId);
+        var bounceRateNodes = scheduleTableDAO.getTimeSlotBounceRate(timeSlotId);
+
+        int nonNullCount = 0;
+        var updateNeededStreamNumberList = new ArrayList<Integer>();
+        var bounceRateStreamArray = new TimeSlotBounceRateValue[ALT_STREAM_COUNT + 1];
+        for(var bounceRateNode : bounceRateNodes) {
+            int streamNumber = bounceRateNode.getStreamNumber();
+            if(streamNumber >= ALT_STREAM_COUNT + 1) continue;
+
+            bounceRateStreamArray[streamNumber] = bounceRateNode.toValueObject();
+            nonNullCount++;
+
+            if(bounceRateNode.isNeedsUpdate()) updateNeededStreamNumberList.add(streamNumber);
+        }
+
+        if(updateIfOutdated && (updateNeededStreamNumberList.size() != 0 || nonNullCount != ALT_STREAM_COUNT + 1)) {
+            bounceRateStreamArray = this.calculateBounceRateArrayFromExistingStreams(timeSlotId, maxBounceRate);
+            var newBounceRateNodes = TimeSlotBounceRateValue.toNodeArray(timeSlotId, bounceRateStreamArray);
+            this.updateTimeSlotBounceRate(newBounceRateNodes);
+        }
+        return bounceRateStreamArray;
+    }
+
+
+    public BounceRateTable getAllTimeSlotBounceRatesWithoutUpdate() {
+        var tableMap = new HashMap<Integer, TimeSlotBounceRateValue[]>();
+        for(int i = 0; i < TIME_SLOT_COUNT; i++) {
+            var bounceRateArray = this.getTimeSlotBounceRate(i, false, 0);
+            tableMap.put(i, bounceRateArray);
+        }
+        return new BounceRateTable(tableMap);
+    }
+
+    
+    public AltStreamCalculationResult storeAndGetAltStreamCalculationResult(int timeSlotId,
+                                                                            double maxBounceRate)
+    {
+        var calculationResult = calculateAltStreamsOfTimeSlot(timeSlotId, maxBounceRate);
+        setAlternativeStreams(timeSlotId, calculationResult.altStreams());
+        
+        var calculationResultNodes = TimeSlotBounceRateValue.toNodeArray(timeSlotId, calculationResult.bounceRateArray);
+        updateTimeSlotBounceRate(calculationResultNodes);
+        
+        return calculationResult;
+    }
+    
+
+    // ===== CALCULATORS =====
+
+    @Nullable
+    public TimeSlotBounceRateValue[] calculateBounceRateArrayFromExistingStreams(int timeSlotId,
+                                                                                 double maxBounceRate)
+    {
+        var calculationResult = this.calculateAltStreamsOfTimeSlot(
+                timeSlotId,
+                (streamNumber, _set, _map) -> scheduleTableDAO.getCategoryId(timeSlotId, streamNumber),
+                maxBounceRate
+        );
+        return calculationResult != null ? calculationResult.bounceRateArray() : null;
     }
 
 
     @Nullable
-    public ScheduleTableDAO.TimeSlotBounceRate getTimeSlotBounceRate(
-            int timeSlotId,
-            boolean updateIfOutdated,
-            DoubleMinMax bounceRateRange
-    ) {
-        validateTimeSlot(timeSlotId);
-        var bounceRate = scheduleTableDAO.getTimeSlotBounceRate(timeSlotId);
-        if(updateIfOutdated && (bounceRate == null || bounceRate.isNeedsUpdate())) {
-            Validator.checkNull(
-                    bounceRateRange,
-                    () -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bounce rate range cannot be null")
-            );
-
-            var newBounceRate = this.calculateTimeSlotBounceRate(timeSlotId, bounceRateRange);
-            this.updateTimeSlotBounceRate(timeSlotId, newBounceRate);
-            return newBounceRate;
-        }
-        return bounceRate;
-    }
-
-
-    public ScheduleTableDAO.TimeSlotBounceRate[] getAllTimeSlotBounceRates() {
-        var resultArray = new ScheduleTableDAO.TimeSlotBounceRate[TIME_SLOT_COUNT];
-        for(int i = 0; i < TIME_SLOT_COUNT; i++) {
-            resultArray[i] = this.getTimeSlotBounceRate(
-                    i, false, null
-            );
-        }
-        return resultArray;
-    }
-
-
-    // ===== CALCULATORS =====
-
-    public ScheduleTableDAO.TimeSlotBounceRate calculateTimeSlotBounceRate(
-            int timeSlotId, DoubleMinMax bounceRateRange
-    ) {
-        var calculationResult = this.calculateAltStreamsOfTimeSlot(
-                timeSlotId,
-                (streamNumber, capturedSetTopBoxes) -> scheduleTableDAO.getCategoryId(timeSlotId, streamNumber),
-                bounceRateRange.min(), bounceRateRange.max()
-        );
-        return calculationResult != null ? calculationResult.bounceRate() : null;
-    }
-
-
-    public AltStreamCalculationResult calculateAltStreamsOfTimeSlot(
-            int timeSlotId, double minBounceRate, double maxBounceRate
-    ) {
+    public AltStreamCalculationResult calculateAltStreamsOfTimeSlot(int timeSlotId,
+                                                                    double maxBounceRate)
+    {
         Integer defaultStreamCategoryId = scheduleTableDAO.getCategoryId(timeSlotId, 0);
         if(defaultStreamCategoryId == null) return null;
 
@@ -115,104 +158,111 @@ public class ScheduleTableService {
         Set<Integer> excludedCategories = new HashSet<>(List.of(defaultStreamCategoryId));
 
         return this.calculateAltStreamsOfTimeSlot(
-                timeSlotId, (streamNumber, capturedSetTopBoxes) -> {
-                    int mostCapturedCount = 0;
-                    int bestCateogryId = -1;
+                timeSlotId, (streamNumber, capturedSetTopBoxes, lowestSetTopBoxBounceRateMap) -> {
+                    double leastCategoryBounceRate = 100;
+                    int bestCategoryId = -1;
                     for (var category : categoryList) {
                         if (excludedCategories.contains(category.id())) continue;
 
                         var bounceRateMap = bounceRateDAO.getBounceRateMapOfCategory(category.id());
 
-                        int capturedCount = 0;
+                        double total = 0;
+                        int count = 0;
                         for (var bounceRateEntry : bounceRateMap.entrySet()) {
                             int setTopBoxId = bounceRateEntry.getKey();
-                            double bounceRate = bounceRateEntry.getValue();
+                            if(capturedSetTopBoxes.contains(setTopBoxId)) continue;
 
-                            if (capturedSetTopBoxes.contains(setTopBoxId)) continue;
-                            if (bounceRate >= minBounceRate && bounceRate <= maxBounceRate) capturedCount++;
+                            Float newBounceRate = bounceRateEntry.getValue();
+                            Float oldBounceRate = lowestSetTopBoxBounceRateMap.get(setTopBoxId);
+
+                            Float lowerBounceRate = getLowerBounceRate(oldBounceRate, newBounceRate);
+                            if (lowerBounceRate != null) { total += newBounceRate; count++; }
                         }
 
-                        if (mostCapturedCount < capturedCount) {
-                            mostCapturedCount = capturedCount;
-                            bestCateogryId = category.id();
+                        double categoryBounceRate = total / (double) count;
+                        if (categoryBounceRate < leastCategoryBounceRate) {
+                            leastCategoryBounceRate = categoryBounceRate;
+                            bestCategoryId = category.id();
                         }
                     }
-                    excludedCategories.add(bestCateogryId);
-                    return bestCateogryId;
-                }, minBounceRate, maxBounceRate
+                    excludedCategories.add(bestCategoryId);
+                    return bestCategoryId;
+                }, maxBounceRate
         );
     }
 
 
-    public record AltStreamCalculationResult(
-            Integer[] altStreams,
-            ScheduleTableDAO.TimeSlotBounceRate bounceRate
-    ) {}
-    interface ProductCategoryIdFunction {
-        Integer get(int streamNumber, Set<Integer> capturedSetTopBoxes);
-    }
     /**
      * @param timeSlotId The ID of the Time slot to calculate the tables
-     * @param minBounceRate Lowest accepted value of the set-top boxes' bounce rate
      * @param maxBounceRate Highest accepted value of the set-top boxes' bounce rate
      * @return The list of category IDs for the alternative stream; null if the calculation fails
      */
-    private AltStreamCalculationResult calculateAltStreamsOfTimeSlot(
-            int timeSlotId, ProductCategoryIdFunction categoryIdFunction, double minBounceRate, double maxBounceRate
-    ) {
-
+    @Nullable
+    private AltStreamCalculationResult calculateAltStreamsOfTimeSlot(int timeSlotId,
+                                                                     ProductCategoryIdFunction categoryIdFunction,
+                                                                     double maxBounceRate)
+    {
         Integer defaultStreamCategoryId = scheduleTableDAO.getCategoryId(timeSlotId, 0);
         if(defaultStreamCategoryId == null) return null;
 
-        int totalSetTopBoxesCount = setTopBoxesDAO.getCount();
+        var lowestSetTopBoxBounceRateMap = new HashMap<Integer, Float>();
+        var capturedSetTopBoxes = new HashSet<Integer>();
 
-        Set<Integer> capturedSetTopBoxes = new HashSet<>();
+        var altStreamArray = new Integer[ALT_STREAM_COUNT];
+        var bounceRateArray = new TimeSlotBounceRateValue[ALT_STREAM_COUNT + 1];
 
+        double bounceRateSum = 0, streamBounceRate;
         var bounceRateMap = bounceRateDAO.getBounceRateMapOfCategory(defaultStreamCategoryId);
         for(var bounceRateEntry : bounceRateMap.entrySet()) {
             int setTopBoxId = bounceRateEntry.getKey();
-            double bounceRate = bounceRateEntry.getValue();
-            if(bounceRate >= minBounceRate && bounceRate <= maxBounceRate) capturedSetTopBoxes.add(setTopBoxId);
-        }
-        int defaultCapturedSetTopBoxesCount = capturedSetTopBoxes.size();
+            Float bounceRate = bounceRateEntry.getValue();
 
-        Integer[] altStreamArray = new Integer[ALT_STREAM_COUNT];
+            bounceRateSum += bounceRate;
+            lowestSetTopBoxBounceRateMap.put(setTopBoxId, bounceRate);
+            if(bounceRate <= maxBounceRate) capturedSetTopBoxes.add(setTopBoxId);
+        }
+        streamBounceRate = bounceRateSum / lowestSetTopBoxBounceRateMap.size();
+        bounceRateArray[0] = new TimeSlotBounceRateValue(streamBounceRate, false);
+
         Arrays.fill(altStreamArray, null);
         for(int i = 0; i < ALT_STREAM_COUNT; i++) {
-            int cateogryId = categoryIdFunction.get(i + 1, capturedSetTopBoxes);
-            altStreamArray[i] = cateogryId;
-            bounceRateMap = bounceRateDAO.getBounceRateMapOfCategory(cateogryId);
+            int categoryId = categoryIdFunction.get(i + 1, capturedSetTopBoxes, lowestSetTopBoxBounceRateMap);
+            altStreamArray[i] = categoryId;
+            bounceRateMap = bounceRateDAO.getBounceRateMapOfCategory(categoryId);
+
             for(var bounceRateEntry : bounceRateMap.entrySet()) {
                 int setTopBoxId = bounceRateEntry.getKey();
-                double bounceRate = bounceRateEntry.getValue();
-                if(bounceRate >= minBounceRate && bounceRate <= maxBounceRate) capturedSetTopBoxes.add(setTopBoxId);
-            }
-        }
-        int altCapturedSetTopBoxesCount = capturedSetTopBoxes.size();
+                Float newBounceRate = bounceRateEntry.getValue();
+                Float oldBounceRate = lowestSetTopBoxBounceRateMap.get(setTopBoxId);
 
-        var bounceRate = new ScheduleTableDAO.TimeSlotBounceRate(
-                getBounceRatePercentage(defaultCapturedSetTopBoxesCount, totalSetTopBoxesCount),
-                getBounceRatePercentage(altCapturedSetTopBoxesCount, totalSetTopBoxesCount),
-                false
-        );
-        return new AltStreamCalculationResult(altStreamArray, bounceRate);
+                if(isNewBounceRateLower(oldBounceRate, newBounceRate)) {
+                    bounceRateSum += oldBounceRate == null ? newBounceRate : (newBounceRate - oldBounceRate);
+                    lowestSetTopBoxBounceRateMap.put(setTopBoxId, newBounceRate);
+                }
+                if(newBounceRate <= maxBounceRate) capturedSetTopBoxes.add(setTopBoxId);
+            }
+            streamBounceRate = bounceRateSum / lowestSetTopBoxBounceRateMap.size();
+            bounceRateArray[i + 1] = new TimeSlotBounceRateValue(streamBounceRate, false);
+        }
+
+        return new AltStreamCalculationResult(altStreamArray, bounceRateArray);
     }
 
 
     // ===== SETTERS =====
 
     public void setScheduleStream(int timeSlotId, int streamNumber, Integer categoryId) {
-        validateTimeSlot(timeSlotId);
+        validateTimeSlotId(timeSlotId);
         validateStreamNumber(streamNumber);
-        scheduleTableDAO.insertNode(new ScheduleTableDAO.ScheduleNode(timeSlotId, streamNumber, categoryId));
+        scheduleTableDAO.insertNode(new ScheduleTableDAO.TimeSlotScheduleNode(timeSlotId, streamNumber, categoryId));
         scheduleTableDAO.markTimeSlotBounceRateOutdated(timeSlotId);
     }
 
 
-    public void setAlternativeStreams(int timeSlotId, Integer[] categoryIdList) {
-        validateTimeSlot(timeSlotId);
-        for(int i = 0; i < categoryIdList.length; i++) {
-            Integer category = categoryIdList[i];
+    public void setAlternativeStreams(int timeSlotId, Integer[] altStreamArray) {
+        validateTimeSlotId(timeSlotId);
+        for(int i = 0; i < altStreamArray.length; i++) {
+            Integer category = altStreamArray[i];
             if(category == null) continue;
 
             setScheduleStream(timeSlotId, i + 1, category);
@@ -220,16 +270,16 @@ public class ScheduleTableService {
     }
 
 
-    public void updateTimeSlotBounceRate(int timeSlotId, ScheduleTableDAO.TimeSlotBounceRate bounceRate) {
-        validateTimeSlot(timeSlotId);
-        scheduleTableDAO.updateTimeSlotBounceRate(timeSlotId, bounceRate);
+    public void updateTimeSlotBounceRate(TimeSlotBounceRateNode... nodes) {
+        validateNodes(nodes);
+        scheduleTableDAO.updateTimeSlotBounceRate(nodes);
     }
 
 
     // ===== REMOVERS =====
 
     public void removeScheduleStream(int timeSlotId, int streamNumber) {
-        validateTimeSlot(timeSlotId);
+        validateTimeSlotId(timeSlotId);
         validateStreamNumber(streamNumber);
         scheduleTableDAO.deleteNode(timeSlotId, streamNumber);
     }
@@ -237,7 +287,8 @@ public class ScheduleTableService {
 
     // ===== MISC =====
 
-    private void validateTimeSlot(int timeSlotId) {
+    private void validateTimeSlotId(int timeSlotId) {
+        // TODO: Replace this validation into something else
         if(timeSlotId < 0 || timeSlotId > TIME_SLOT_COUNT - 1) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid time slot ID!");
         }
@@ -251,8 +302,23 @@ public class ScheduleTableService {
     }
 
 
-    private double getBounceRatePercentage(int captured, int total) {
-        return (1 - (captured + 1) / (double) (total + 2)) * 100;
+    private void validateNodes(TimeSlotBounceRateNode... nodes) {
+        for(var node : nodes) {
+            validateTimeSlotId(node.getTimeSlotId());
+            validateStreamNumber(node.getStreamNumber());
+        }
+    }
+
+
+    @Nullable
+    private Float getLowerBounceRate(@Nullable Float oldBounceRate, @Nullable Float newBounceRate) {
+        return isNewBounceRateLower(oldBounceRate, newBounceRate) ? newBounceRate : oldBounceRate;
+    }
+
+
+    @Nullable
+    private boolean isNewBounceRateLower(@Nullable Float oldBounceRate, @Nullable Float newBounceRate) {
+        return newBounceRate != null && (oldBounceRate == null || oldBounceRate > newBounceRate);
     }
 
 }

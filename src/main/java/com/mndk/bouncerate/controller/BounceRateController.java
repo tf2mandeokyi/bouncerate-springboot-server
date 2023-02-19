@@ -21,6 +21,12 @@ public class BounceRateController {
     }
 
 
+    @PostMapping("/category/{categoryId}/randomize")
+    public void randomizeBounceRatesOfCategory(@PathVariable("categoryId") int categoryId) {
+        bounceRateService.randomizeBounceRatesOfCategory(categoryId);
+    }
+
+
     @GetMapping({ "/category/{categoryId}/{setTopBoxId}", "/setTopBox/{setTopBoxId}/{categoryId}" })
     @ResponseBody
     public ValueWrapper<Float> getBounceRate(

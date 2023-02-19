@@ -18,6 +18,9 @@ import java.util.List;
 public class BounceRateService {
 
 
+    private static final int MAX_BOUNCERATE_UPDATE_PER_QUERY = 50000;
+
+
     /**
      * Distribution object for random bounce rate values
      */
@@ -52,6 +55,12 @@ public class BounceRateService {
     }
 
 
+    public void randomizeBounceRatesOfCategory(int categoryId) {
+        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBoxesDAO.SetTopBox::id).toList();
+        this.randomize(Collections.singletonList(categoryId), setTopBoxIdList);
+    }
+
+
     public void randomizeAll() {
         var categoryIdList = categoryDAO.getAll().stream().map(ProductCategoryDAO.ProductCategory::id).toList();
         var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBoxesDAO.SetTopBox::id).toList();
@@ -61,11 +70,19 @@ public class BounceRateService {
 
     public void randomize(List<Integer> categoryIdList, List<Integer> setTopBoxIdList) {
         var nodes = new ArrayList<BounceRateDAO.BounceRateNode>();
+        int i = 0;
         for(int categoryId : categoryIdList) {
             for(int setTopBoxId : setTopBoxIdList) {
                 double bounceRate = DISTRIBUTION.sample();
                 bounceRate = RANGE.fitToRange(bounceRate);
                 nodes.add(new BounceRateDAO.BounceRateNode(categoryId, setTopBoxId, bounceRate));
+                i++;
+
+                if(i >= MAX_BOUNCERATE_UPDATE_PER_QUERY) {
+                    bounceRateDAO.setBounceRate(nodes.toArray(BounceRateDAO.BounceRateNode[]::new));
+                    nodes.clear();
+                    i = 0;
+                }
             }
         }
 
