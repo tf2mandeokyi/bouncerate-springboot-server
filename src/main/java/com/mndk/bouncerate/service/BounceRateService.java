@@ -1,8 +1,11 @@
 package com.mndk.bouncerate.service;
 
 import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.BounceRateDAO.*;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO.*;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.db.SetTopBoxesDAO.*;
 import com.mndk.bouncerate.util.DoubleMinMax;
 import com.mndk.bouncerate.util.distribution.SkewNormalDistribution;
 import lombok.AllArgsConstructor;
@@ -43,49 +46,49 @@ public class BounceRateService {
     // ===== SETTERS =====
 
     public void setBounceRate(int categoryId, int setTopBoxId, float bounceRate) {
-        bounceRateDAO.setBounceRate(new BounceRateDAO.BounceRateNode(categoryId, setTopBoxId, bounceRate));
+        bounceRateDAO.setBounceRate(new BounceRateNode(categoryId, setTopBoxId, bounceRate));
     }
 
 
     // ===== RANDOMIZERS =====
 
     public void randomizeBounceRatesOfSetTopBox(int setTopBoxId) {
-        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategoryDAO.ProductCategory::id).toList();
+        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategory::id).toList();
         this.randomize(categoryIdList, Collections.singletonList(setTopBoxId));
     }
 
 
     public void randomizeBounceRatesOfCategory(int categoryId) {
-        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBoxesDAO.SetTopBox::id).toList();
+        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBox::id).toList();
         this.randomize(Collections.singletonList(categoryId), setTopBoxIdList);
     }
 
 
     public void randomizeAll() {
-        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategoryDAO.ProductCategory::id).toList();
-        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBoxesDAO.SetTopBox::id).toList();
+        var categoryIdList = categoryDAO.getAll().stream().map(ProductCategory::id).toList();
+        var setTopBoxIdList = setTopBoxesDAO.getAll().stream().map(SetTopBox::id).toList();
         this.randomize(categoryIdList, setTopBoxIdList);
     }
 
 
     public void randomize(List<Integer> categoryIdList, List<Integer> setTopBoxIdList) {
-        var nodes = new ArrayList<BounceRateDAO.BounceRateNode>();
+        var nodes = new ArrayList<BounceRateNode>();
         int i = 0;
         for(int categoryId : categoryIdList) {
             for(int setTopBoxId : setTopBoxIdList) {
                 double bounceRate = DISTRIBUTION.sample();
                 bounceRate = RANGE.fitToRange(bounceRate);
-                nodes.add(new BounceRateDAO.BounceRateNode(categoryId, setTopBoxId, bounceRate));
+                nodes.add(new BounceRateNode(categoryId, setTopBoxId, bounceRate));
                 i++;
 
                 if(i >= MAX_BOUNCERATE_UPDATE_PER_QUERY) {
-                    bounceRateDAO.setBounceRate(nodes.toArray(BounceRateDAO.BounceRateNode[]::new));
+                    bounceRateDAO.setBounceRate(nodes.toArray(BounceRateNode[]::new));
                     nodes.clear();
                     i = 0;
                 }
             }
         }
 
-        bounceRateDAO.setBounceRate(nodes.toArray(BounceRateDAO.BounceRateNode[]::new));
+        bounceRateDAO.setBounceRate(nodes.toArray(BounceRateNode[]::new));
     }
 }

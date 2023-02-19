@@ -1,9 +1,11 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.ScheduleTableDAO;
+import com.mndk.bouncerate.db.ScheduleTableDAO.*;
 import com.mndk.bouncerate.service.ScheduleTableService;
+import com.mndk.bouncerate.service.ScheduleTableService.*;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class ScheduleTableController {
 
     @GetMapping("")
     @ResponseBody
-    public ScheduleTableService.ScheduleTable getAll() {
+    public ScheduleTable getAll() {
         return scheduleTableService.getEntireTable();
     }
 
@@ -43,7 +45,7 @@ public class ScheduleTableController {
 
     @PostMapping("/alternatives")
     @ResponseBody
-    public ScheduleTableService.AltStreamCalculationResult calculateAndGetAlternativeStreams(
+    public AltStreamCalculationResult calculateAndGetAlternativeStreams(
             @RequestParam("slotId")         int timeSlotId,
             @RequestParam("maxBounceRate")  double maxBounceRate
     ) {
@@ -53,18 +55,18 @@ public class ScheduleTableController {
 
     @GetMapping("/bounceRate")
     @ResponseBody
-    public ScheduleTableService.BounceRateTable getAllTimeSlotBounceRates() {
-        return scheduleTableService.getAllTimeSlotBounceRatesWithoutUpdate();
+    public BounceRateTable getBounceRateTable() {
+        return scheduleTableService.getBounceRateTable();
     }
 
 
     @PostMapping("/bounceRate")
     @ResponseBody
-    public ScheduleTableDAO.TimeSlotBounceRateValue[] calculateTimeSlotBounceRate(
+    public ScheduleTableBounceRateNodeValue[] calculateAndGetTimeSlotBounceRate(
             @RequestParam("slotId")         int timeSlotId,
             @RequestParam("maxBounceRate")  double maxBounceRate
     ) {
-        return scheduleTableService.getTimeSlotBounceRate(timeSlotId, true, maxBounceRate);
+        return scheduleTableService.calculateAndGetTimeSlotBounceRate(timeSlotId, true, maxBounceRate);
     }
 
 }

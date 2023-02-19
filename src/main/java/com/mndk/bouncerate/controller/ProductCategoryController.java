@@ -1,6 +1,6 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO.*;
 import com.mndk.bouncerate.service.ProductCategoryService;
 import com.mndk.bouncerate.util.Validator;
 import com.mndk.bouncerate.util.ValueWrapper;
@@ -23,7 +23,7 @@ public class ProductCategoryController {
 
     @GetMapping("")
     @ResponseBody
-    public List<ProductCategoryDAO.ProductCategory> getMany(
+    public List<ProductCategory> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page", defaultValue = "1")   int pageNum
     ) {
@@ -41,13 +41,13 @@ public class ProductCategoryController {
                 requestBody.name,
                 () -> new HttpClientErrorException(HttpStatus.BAD_REQUEST)
         );
-        productCategoryService.addOne(new ProductCategoryDAO.ProductCategory(-1, categoryName));
+        productCategoryService.addOne(new ProductCategory(-1, categoryName));
     }
 
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ProductCategoryDAO.ProductCategory getOne(@PathVariable("id") int id) {
+    public ProductCategory getOne(@PathVariable("id") int id) {
         return Validator.checkNull(
                 productCategoryService.getOne(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
@@ -61,7 +61,7 @@ public class ProductCategoryController {
             @PathVariable("id") int id,
             @RequestBody UpdateProductCategoryBody requestBody
     ) {
-        productCategoryService.updateOne(id, new ProductCategoryDAO.ProductCategory(-1, requestBody.name));
+        productCategoryService.updateOne(id, new ProductCategory(-1, requestBody.name));
     }
 
 

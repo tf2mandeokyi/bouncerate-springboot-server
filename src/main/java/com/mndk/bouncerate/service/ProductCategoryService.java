@@ -2,6 +2,7 @@ package com.mndk.bouncerate.service;
 
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,18 +10,20 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProductCategoryService implements EntityService<ProductCategoryDAO.ProductCategory> {
+public class ProductCategoryService implements EntityService<ProductCategory> {
+
 
     ProductCategoryDAO categoryDAO;
     BounceRateDAO bounceRateDAO;
 
+
     @Override
-    public ProductCategoryDAO.ProductCategory getOne(int id) {
+    public ProductCategory getOne(int id) {
         return categoryDAO.getOne(id);
     }
 
     @Override
-    public List<ProductCategoryDAO.ProductCategory> getPage(int countPerPage, int pageNumber) {
+    public List<ProductCategory> getPage(int countPerPage, int pageNumber) {
         if(countPerPage == -1) return categoryDAO.getAll();
 
         if(countPerPage >= 1 && pageNumber >= 1) {
@@ -36,7 +39,7 @@ public class ProductCategoryService implements EntityService<ProductCategoryDAO.
     }
 
     @Override
-    public void addOne(ProductCategoryDAO.ProductCategory objectPart) {
+    public void addOne(ProductCategory objectPart) {
         categoryDAO.addOne(objectPart.name());
     }
 
@@ -46,7 +49,7 @@ public class ProductCategoryService implements EntityService<ProductCategoryDAO.
     }
 
     @Override
-    public void updateOne(int id, ProductCategoryDAO.ProductCategory objectPart) {
+    public void updateOne(int id, ProductCategory objectPart) {
         if(objectPart.name() != null) categoryDAO.updateName(id, objectPart.name());
     }
 

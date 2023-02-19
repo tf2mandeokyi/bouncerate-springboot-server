@@ -24,15 +24,15 @@ public interface ScheduleTableDAO {
 
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
-    class TimeSlotScheduleNode {
+    class ScheduleTableStreamNode {
         private final int timeSlotId;
         private final int streamNumber;
         private final @Nullable Integer categoryId;
 
-        public static class Mapper implements RowMapper<TimeSlotScheduleNode> {
+        public static class Mapper implements RowMapper<ScheduleTableStreamNode> {
             @Override
-            public TimeSlotScheduleNode map(ResultSet resultSet, StatementContext context) throws SQLException {
-                return new TimeSlotScheduleNode(
+            public ScheduleTableStreamNode map(ResultSet resultSet, StatementContext context) throws SQLException {
+                return new ScheduleTableStreamNode(
                         resultSet.getInt("time_slot_id"),
                         resultSet.getInt("stream_no"),
                         resultSet.getInt("category_id")
@@ -42,39 +42,39 @@ public interface ScheduleTableDAO {
     }
 
 
-    record TimeSlotBounceRateValue(
+    record ScheduleTableBounceRateNodeValue(
             double bounceRate,
             boolean needsUpdate
     ) {
-        public TimeSlotBounceRateNode toNode(int timeSlotId, int streamNumber) {
-            return new TimeSlotBounceRateNode(timeSlotId, streamNumber, this.bounceRate, this.needsUpdate);
+        public ScheduleTableBounceRateNode toNode(int timeSlotId, int streamNumber) {
+            return new ScheduleTableBounceRateNode(timeSlotId, streamNumber, this.bounceRate, this.needsUpdate);
         }
 
-        public static TimeSlotBounceRateNode[] toNodeArray(int timeSlotId, TimeSlotBounceRateValue[] valueArray) {
+        public static ScheduleTableBounceRateNode[] toNodeArray(int timeSlotId, ScheduleTableBounceRateNodeValue[] valueArray) {
             return IntStream.range(0, valueArray.length)
                     .filter(index -> valueArray[index] != null)
                     .mapToObj(index -> valueArray[index].toNode(timeSlotId, index))
-                    .toArray(TimeSlotBounceRateNode[]::new);
+                    .toArray(ScheduleTableBounceRateNode[]::new);
         }
     }
 
 
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
-    class TimeSlotBounceRateNode {
+    class ScheduleTableBounceRateNode {
         private final int timeSlotId;
         private final int streamNumber;
         private final double bounceRate;
         private final boolean needsUpdate;
 
-        public TimeSlotBounceRateValue toValueObject() {
-            return new TimeSlotBounceRateValue(this.bounceRate, this.needsUpdate);
+        public ScheduleTableBounceRateNodeValue toValueObject() {
+            return new ScheduleTableBounceRateNodeValue(this.bounceRate, this.needsUpdate);
         }
 
-        public static class Mapper implements RowMapper<TimeSlotBounceRateNode> {
+        public static class Mapper implements RowMapper<ScheduleTableBounceRateNode> {
             @Override
-            public TimeSlotBounceRateNode map(ResultSet resultSet, StatementContext context) throws SQLException {
-                return new TimeSlotBounceRateNode(
+            public ScheduleTableBounceRateNode map(ResultSet resultSet, StatementContext context) throws SQLException {
+                return new ScheduleTableBounceRateNode(
                         resultSet.getInt("time_slot_id"),
                         resultSet.getInt("stream_no"),
                         resultSet.getDouble("bouncerate"),
@@ -118,8 +118,8 @@ public interface ScheduleTableDAO {
 
 
     @SqlQuery("SELECT * FROM `schedule_table`")
-    @UseRowMapper(TimeSlotScheduleNode.Mapper.class)
-    List<TimeSlotScheduleNode> getAll();
+    @UseRowMapper(ScheduleTableStreamNode.Mapper.class)
+    List<ScheduleTableStreamNode> getAll();
 
 
     @SqlUpdate("""
@@ -127,7 +127,7 @@ public interface ScheduleTableDAO {
                     VALUES (:node.timeSlotId, :node.streamNumber, :node.categoryId)
                     ON DUPLICATE KEY UPDATE `category_id` = :node.categoryId
     """)
-    void insertNode(@BindBean("node") TimeSlotScheduleNode node);
+    void insertNode(@BindBean("node") ScheduleTableStreamNode node);
 
 
     @SqlUpdate("""
@@ -144,8 +144,8 @@ public interface ScheduleTableDAO {
             SELECT * FROM `schedule_table_bouncerate`
                     WHERE `time_slot_id` = :timeSlotId
     """)
-    @UseRowMapper(TimeSlotBounceRateNode.Mapper.class)
-    List<TimeSlotBounceRateNode> getTimeSlotBounceRate(@Bind("timeSlotId") int timeSlotId);
+    @UseRowMapper(ScheduleTableBounceRateNode.Mapper.class)
+    List<ScheduleTableBounceRateNode> getTimeSlotBounceRate(@Bind("timeSlotId") int timeSlotId);
 
 
     @SqlUpdate("""
@@ -159,7 +159,7 @@ public interface ScheduleTableDAO {
             @BindBeanList(
                     value = "nodes",
                     propertyNames = { "timeSlotId", "streamNumber", "bounceRate", "needsUpdate" }
-            ) TimeSlotBounceRateNode... bounceRate
+            ) ScheduleTableBounceRateNode... bounceRate
     );
 
 

@@ -1,6 +1,6 @@
 package com.mndk.bouncerate.controller;
 
-import com.mndk.bouncerate.db.SetTopBoxesDAO;
+import com.mndk.bouncerate.db.SetTopBoxesDAO.*;
 import com.mndk.bouncerate.service.SetTopBoxService;
 import com.mndk.bouncerate.util.Validator;
 import com.mndk.bouncerate.util.ValueWrapper;
@@ -23,7 +23,7 @@ public class SetTopBoxController {
 
     @GetMapping("")
     @ResponseBody
-    public List<SetTopBoxesDAO.SetTopBox> getMany(
+    public List<SetTopBox> getMany(
             @RequestParam(value = "count", defaultValue = "-1") int count,
             @RequestParam(value = "page",  defaultValue = "1")  int pageNum
     ) {
@@ -44,7 +44,7 @@ public class SetTopBoxController {
         if(random) {
             setTopBoxService.addManyRandom(count);
         } else if(requestBody != null) {
-            setTopBoxService.addOne(new SetTopBoxesDAO.SetTopBox(-1, null, requestBody.location));
+            setTopBoxService.addOne(new SetTopBox(-1, null, requestBody.location));
         } else {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
@@ -53,7 +53,7 @@ public class SetTopBoxController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public SetTopBoxesDAO.SetTopBox getOne(@PathVariable("id") int id) {
+    public SetTopBox getOne(@PathVariable("id") int id) {
         return Validator.checkNull(
                 setTopBoxService.getOne(id),
                 () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
