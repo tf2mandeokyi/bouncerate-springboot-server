@@ -34,7 +34,7 @@ public class ScheduleTableController {
     }
 
 
-    @DeleteMapping("/default")
+    @DeleteMapping("")
     public void deleteStreamSchedule(
             @RequestParam("slotId")         int timeSlotId,
             @RequestParam("streamNumber")   int streamNumber

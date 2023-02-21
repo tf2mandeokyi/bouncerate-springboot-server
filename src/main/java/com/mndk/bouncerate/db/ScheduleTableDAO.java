@@ -166,8 +166,11 @@ public interface ScheduleTableDAO {
     @SqlUpdate("""
             UPDATE `schedule_table_bouncerate`
                     SET `needs_update` = TRUE
-                    WHERE `time_slot_id` = :timeSlotId
+                    WHERE `time_slot_id` = :timeSlotId AND `stream_no` >= :streamNumber
     """)
-    void markTimeSlotBounceRateOutdated(@Bind("timeSlotId") int timeSlotId);
+    void markTimeSlotBounceRateOutdated(
+            @Bind("timeSlotId")     int timeSlotId,
+            @Bind("streamNumber")   int streamNumber
+    );
 
 }
