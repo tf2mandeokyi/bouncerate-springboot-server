@@ -1,5 +1,6 @@
 package com.mndk.bouncerate.db;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,8 +24,13 @@ public interface BounceRateDAO {
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
     class BounceRateNode {
+        @ApiModelProperty(value="카테고리 ID", example="1234", required=true)
         private final int categoryId;
+
+        @ApiModelProperty(value="셋톱박스 ID", example="1234", required=true)
         private final int setTopBoxId;
+
+        @ApiModelProperty(value="Bounce rate 값", example="1234", required=true)
         private final double bounceRate;
 
         public static class Mapper implements RowMapper<BounceRateNode> {

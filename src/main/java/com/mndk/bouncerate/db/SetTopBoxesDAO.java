@@ -1,5 +1,6 @@
 package com.mndk.bouncerate.db;
 
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.annotation.Nullable;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -16,8 +17,13 @@ import java.util.List;
 public interface SetTopBoxesDAO {
 
     record SetTopBox(
+            @ApiModelProperty(value="셋톱박스 ID", example="1234", required=true)
             int id,
+
+            @ApiModelProperty(value="셋톱박스 UUID", example="4eb2ea7e-c6f2-47f9-94d8-029cd2c4fc80", required=true)
             String uuid,
+
+            @ApiModelProperty(value="셋톱박스 지역", example="서울특별시 ...", required=true)
             @Nullable String location
     ) {
         public static class Mapper implements RowMapper<SetTopBox> {

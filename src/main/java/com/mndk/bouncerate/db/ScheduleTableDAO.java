@@ -1,5 +1,6 @@
 package com.mndk.bouncerate.db;
 
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,13 @@ public interface ScheduleTableDAO {
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
     class ScheduleTableStreamNode {
+        @ApiModelProperty(value="타임슬롯 ID", example="3", required=true)
         private final int timeSlotId;
+
+        @ApiModelProperty(value="스트림 번호", example="2", required=true)
         private final int streamNumber;
+
+        @ApiModelProperty(value="카테고리 ID", example="1234")
         private final @Nullable Integer categoryId;
 
         public static class Mapper implements RowMapper<ScheduleTableStreamNode> {
@@ -43,7 +49,10 @@ public interface ScheduleTableDAO {
 
 
     record ScheduleTableBounceRateNodeValue(
+            @ApiModelProperty(value="Bounce rate 값", example="51.247234")
             double bounceRate,
+
+            @ApiModelProperty(value="Bounce rate 업데이트 필요 여부", required = true)
             boolean needsUpdate
     ) {
         public ScheduleTableBounceRateNode toNode(int timeSlotId, int streamNumber) {
@@ -62,9 +71,16 @@ public interface ScheduleTableDAO {
     /* Don't make this a record! The current jdbi isn't smart enough to detect record's getters/setters! */
     @Getter @Setter @RequiredArgsConstructor
     class ScheduleTableBounceRateNode {
+        @ApiModelProperty(value="타임슬롯 ID", example="3", required=true)
         private final int timeSlotId;
+
+        @ApiModelProperty(value="스트림 번호", example="2", required=true)
         private final int streamNumber;
+
+        @ApiModelProperty(value="Bounce rate 값", example="51.247234")
         private final double bounceRate;
+
+        @ApiModelProperty(value="Bounce rate 업데이트 필요 여부", required = true)
         private final boolean needsUpdate;
 
         public ScheduleTableBounceRateNodeValue toValueObject() {
