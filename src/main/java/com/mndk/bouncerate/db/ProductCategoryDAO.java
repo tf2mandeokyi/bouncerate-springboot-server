@@ -1,5 +1,6 @@
 package com.mndk.bouncerate.db;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.customizer.Bind;
@@ -15,7 +16,10 @@ import java.util.List;
 public interface ProductCategoryDAO {
 
     record ProductCategory(
+            @ApiModelProperty(value="카테고리 ID", example="1234", required=true)
             int id,
+
+            @ApiModelProperty(value="카테고리 이름", example="가전제품", required=true)
             String name
     ) {
         public static class Mapper implements RowMapper<ProductCategory> {

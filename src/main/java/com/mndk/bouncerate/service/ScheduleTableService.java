@@ -6,6 +6,7 @@ import com.mndk.bouncerate.db.ScheduleTableDAO;
 import com.mndk.bouncerate.db.ScheduleTableDAO.ScheduleTableBounceRateNode;
 import com.mndk.bouncerate.db.ScheduleTableDAO.ScheduleTableBounceRateNodeValue;
 import com.mndk.bouncerate.db.ScheduleTableDAO.ScheduleTableStreamNode;
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,15 +43,20 @@ public class ScheduleTableService {
     // ===== RECORDS =====
 
     public record AltStreamCalculationResult(
+            @ApiModelProperty(value="대체 스트림용 셋톱박스 ID 목록", example="[3, 2, 5, ...]", required=true)
             Integer[] altStreams,
+
+            @ApiModelProperty(value="타임슬롯 Bounce rate 계산 결과", example="[66.6, 55.5, 44.4, ...]", required=true)
             ScheduleTableBounceRateNodeValue[] bounceRateArray
     ) {}
     
     public record ScheduleTable(
+            @ApiModelProperty(value="셋톱박스 ID 편성표 데이터", example="{\"0\": [1, 2, 3, ...], ...}", required=true)
             Map<Integer, Integer[]> table
     ) {}
     
     public record BounceRateTable(
+            @ApiModelProperty(value="Bounce rate 편성표 데이터", example="{\"0\": [66.6, 55.5, 44.4, ...], ...}", required=true)
             Map<Integer, ScheduleTableBounceRateNodeValue[]> table
     ) {}
 

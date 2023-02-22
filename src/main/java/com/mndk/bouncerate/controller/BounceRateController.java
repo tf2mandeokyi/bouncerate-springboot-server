@@ -2,11 +2,15 @@ package com.mndk.bouncerate.controller;
 
 import com.mndk.bouncerate.service.BounceRateService;
 import com.mndk.bouncerate.util.ValueWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@Api(tags = "Bounce rate 컨트롤러")
 @RequestMapping("/api/v1/bounceRates")
 @SuppressWarnings("unused")
 public class BounceRateController {
@@ -15,6 +19,8 @@ public class BounceRateController {
     BounceRateService bounceRateService;
 
 
+    @ApiOperation("셋톱박스에 해당하는 카테고리 별 Bounce rate 무작위화")
+    @ApiResponse(code = 200, message = "ok")
     @PostMapping("/setTopBox/{setTopBoxId}/randomize")
     public void randomizeBounceRatesOfSetTopBox(@PathVariable("setTopBoxId") int setTopBoxId) {
         bounceRateService.randomizeBounceRatesOfSetTopBox(setTopBoxId);
