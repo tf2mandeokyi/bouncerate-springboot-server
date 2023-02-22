@@ -34,6 +34,7 @@ dependencies {
 
     // Spring boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Javax Annotation
@@ -42,7 +43,13 @@ dependencies {
     // Apache Commons Math
     implementation 'org.apache.commons:commons-math3:3.6.1'
 
+    // H2 database
+    testImplementation 'com.h2database:h2'
+
     // JUnit Jupiter
+    testImplementation ('org.junit.vintage:junit-vintage-engine') {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
