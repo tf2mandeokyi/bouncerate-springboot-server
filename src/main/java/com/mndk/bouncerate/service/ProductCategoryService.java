@@ -3,26 +3,30 @@ package com.mndk.bouncerate.service;
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO;
 import com.mndk.bouncerate.db.ProductCategoryDAO.*;
+import com.mndk.bouncerate.util.Validator;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ProductCategoryService implements EntityService<ProductCategory> {
+public class ProductCategoryService {
 
 
     ProductCategoryDAO categoryDAO;
     BounceRateDAO bounceRateDAO;
 
 
-    @Override
     public ProductCategory getOne(int id) {
-        return categoryDAO.getOne(id);
+        return Validator.checkNull(
+                categoryDAO.getOne(id),
+                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
+        );
     }
 
-    @Override
     public List<ProductCategory> getPage(int countPerPage, int pageNumber) {
         if(countPerPage == -1) return categoryDAO.getAll();
 
@@ -33,28 +37,27 @@ public class ProductCategoryService implements EntityService<ProductCategory> {
         return null;
     }
 
-    @Override
     public int getCount() {
         return categoryDAO.getCount();
     }
 
-    @Override
-    public void addOne(ProductCategory objectPart) {
-        categoryDAO.addOne(objectPart.name());
+    public void addOne(String name) {
+        categoryDAO.addOne(name);
     }
 
-    @Override
-    public void addManyRandom(int count) {
-        throw new UnsupportedOperationException();
+    public void updateOne(int id, String name) {
+        Validator.checkNull(
+                categoryDAO.getOne(id),
+                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
+        );
+        if(name != null) categoryDAO.updateName(id, name);
     }
 
-    @Override
-    public void updateOne(int id, ProductCategory objectPart) {
-        if(objectPart.name() != null) categoryDAO.updateName(id, objectPart.name());
-    }
-
-    @Override
     public void deleteOne(int id) {
+        Validator.checkNull(
+                categoryDAO.getOne(id),
+                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
+        );
         categoryDAO.deleteOne(id);
         bounceRateDAO.deleteBounceRatesOfCategory(id);
     }

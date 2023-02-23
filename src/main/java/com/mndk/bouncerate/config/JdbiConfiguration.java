@@ -12,6 +12,8 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -33,6 +35,11 @@ public class JdbiConfiguration {
         jdbi.installPlugin(new SqlObjectPlugin());
         rowMappers.forEach(jdbi::registerRowMapper);
         return jdbi;
+    }
+
+    @Bean
+    public PlatformTransactionManager platformTransactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean

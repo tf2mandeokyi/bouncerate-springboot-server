@@ -2,7 +2,9 @@ package com.mndk.bouncerate.service;
 
 import com.mndk.bouncerate.db.BounceRateDAO;
 import com.mndk.bouncerate.db.SetTopBoxesDAO;
-import com.mndk.bouncerate.db.SetTopBoxesDAO.*;
+import com.mndk.bouncerate.db.SetTopBoxesDAO.SetTopBox;
+import com.mndk.bouncerate.util.UUIDUtils;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +12,17 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SetTopBoxService implements EntityService<SetTopBox> {
+public class SetTopBoxService {
 
 
     BounceRateDAO bounceRateDAO;
     SetTopBoxesDAO setTopBoxesDAO;
 
 
-    @Override
     public SetTopBox getOne(int id) {
         return setTopBoxesDAO.getSetTopBox(id);
     }
 
-    @Override
     public List<SetTopBox> getPage(int countPerPage, int pageNumber) {
         if(countPerPage == -1) return setTopBoxesDAO.getAll();
 
@@ -33,30 +33,29 @@ public class SetTopBoxService implements EntityService<SetTopBox> {
         return null;
     }
 
-    @Override
     public int getCount() {
         return setTopBoxesDAO.getCount();
     }
 
-    @Override
-    public void addOne(SetTopBox objectPart) {
-        setTopBoxesDAO.addSetTopBox(objectPart.location());
+    public void addOne(@Nullable String location) {
+        addOne(UUIDUtils.getRandomBytes(), location);
     }
 
-    @Override
+    public void addOne(byte[] uuidBuffer, @Nullable String location) {
+        setTopBoxesDAO.addSetTopBox(uuidBuffer, location);
+    }
+
     public void addManyRandom(int count) {
         for (int i = 0; i < count; i++) {
-            setTopBoxesDAO.addSetTopBox(null);
+            addOne(null);
         }
     }
 
-    @Override
-    public void updateOne(int id, SetTopBox objectPart) {
+    public void updateOne(int id, @Nullable String location) {
         // TODO: implement this
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void deleteOne(int id) {
         setTopBoxesDAO.deleteOne(id);
         bounceRateDAO.deleteBounceRatesOfSetTopBox(id);

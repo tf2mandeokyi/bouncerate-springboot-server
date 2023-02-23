@@ -85,8 +85,15 @@ public interface SetTopBoxesDAO {
     int getCount();
 
 
-    @SqlUpdate("INSERT INTO `settopboxes` (uuid_bin, location) VALUES (UUID_TO_BIN(UUID()), :location)")
-    void addSetTopBox(@Bind("location") String location);
+    /**
+     * @param uuidBuffer Must be a buffer of a random UUID.
+     * @param location The location where the set-top box is located at
+     */
+    @SqlUpdate("INSERT INTO `settopboxes` (uuid_bin, location) VALUES (:uuidBuffer, :location)")
+    void addSetTopBox(
+            @Bind("uuidBuffer")     byte[] uuidBuffer,
+            @Bind("location")       String location
+    );
 
 
     @SqlUpdate("DELETE FROM `settopboxes` WHERE `id` = :id")
