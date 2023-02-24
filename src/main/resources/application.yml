@@ -1,0 +1,6 @@
+spring:
+   datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: "jdbc:mysql://localhost:3306/bouncerate?allowMultiQueries=true"
+      username: root
+      password: asdf

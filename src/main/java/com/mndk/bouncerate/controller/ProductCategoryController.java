@@ -41,17 +41,14 @@ public class ProductCategoryController {
                 requestBody.name,
                 () -> new HttpClientErrorException(HttpStatus.BAD_REQUEST)
         );
-        productCategoryService.addOne(new ProductCategory(-1, categoryName));
+        productCategoryService.addOne(categoryName);
     }
 
 
     @GetMapping("/{id}")
     @ResponseBody
     public ProductCategory getOne(@PathVariable("id") int id) {
-        return Validator.checkNull(
-                productCategoryService.getOne(id),
-                () -> new HttpClientErrorException(HttpStatus.NOT_FOUND)
-        );
+        return productCategoryService.getOne(id);
     }
 
 
@@ -61,7 +58,7 @@ public class ProductCategoryController {
             @PathVariable("id") int id,
             @RequestBody UpdateProductCategoryBody requestBody
     ) {
-        productCategoryService.updateOne(id, new ProductCategory(-1, requestBody.name));
+        productCategoryService.updateOne(id, requestBody.name);
     }
 
 

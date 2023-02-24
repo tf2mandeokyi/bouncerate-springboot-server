@@ -1,42 +1,32 @@
 package com.mndk.bouncerate.config;
 
-import com.mndk.bouncerate.db.*;
+import com.mndk.bouncerate.db.BounceRateDAO;
+import com.mndk.bouncerate.db.ProductCategoryDAO;
+import com.mndk.bouncerate.db.ScheduleTableDAO;
+import com.mndk.bouncerate.db.SetTopBoxesDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 @ComponentScan(basePackageClasses = ProductCategoryDAO.class)
-@PropertySource("file:application.properties")
 @SuppressWarnings("unused")
 public class JdbiConfiguration {
 
-    @Value("${bouncerate_db.url}")
-    private String databaseUrl;
-
-    @Value("${bouncerate_db.user}")
-    private String databaseUsername;
-
-    @Value("${bouncerate_db.password}")
-    private String databasePassword;
-
     @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
-        DriverManagerDataSource result = new DriverManagerDataSource();
-        result.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        result.setUrl(databaseUrl);
-        result.setUsername(databaseUsername);
-        result.setPassword(databasePassword);
-        return result;
+        return DataSourceBuilder.create().build();
     }
 
     @Bean
@@ -45,6 +35,11 @@ public class JdbiConfiguration {
         jdbi.installPlugin(new SqlObjectPlugin());
         rowMappers.forEach(jdbi::registerRowMapper);
         return jdbi;
+    }
+
+    @Bean
+    public PlatformTransactionManager platformTransactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean

@@ -44,7 +44,7 @@ public class SetTopBoxController {
         if(random) {
             setTopBoxService.addManyRandom(count);
         } else if(requestBody != null) {
-            setTopBoxService.addOne(new SetTopBox(-1, null, requestBody.location));
+            setTopBoxService.addOne(requestBody.location);
         } else {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
